@@ -19,7 +19,7 @@ This repository is organized as a study-day learning log. Each completed day has
 
 ## Image Cleanup
 
-Unrelated screenshots were removed from `images/`. The local `.image-review/` folder is ignored by git and is only used for temporary contact sheets while classifying screenshots.
+Unrelated screenshots should be moved to `C:\Users\kapil\OneDrive\Desktop\To Review` for manual review instead of being deleted directly. The local `.image-review/` folder is ignored by git and is only used for temporary contact sheets while classifying screenshots.
 
 ## Study Order
 
