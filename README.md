@@ -19,7 +19,7 @@ This repository is organized as a study-day learning log. Each completed day has
 
 ## Handwritten Notes
 
-The folder [images/HandWrittenNotes](images/HandWrittenNotes/) contains rendered page images from the handwritten PDFs in [HandWrittenNotes](HandWrittenNotes/). Every page is mapped to a day and topic in [Handwritten Notes Index.md](Handwritten%20Notes%20Index.md), and the relevant handwritten pages are embedded directly inside the day files.
+The folder [images/HandWrittenNotes](images/HandWrittenNotes/) contains rendered page images from the handwritten PDFs in [HandWrittenNotes](HandWrittenNotes/). Every page is mapped to a day and topic in [Handwritten Notes Index.md](Handwritten%20Notes%20Index.md), where the pages are also shown larger with explanations after each image. The relevant handwritten pages are embedded directly inside the day files.
 
 ## Image Cleanup
 

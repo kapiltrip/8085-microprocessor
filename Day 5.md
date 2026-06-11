@@ -18,20 +18,20 @@ These handwritten pages are the calculation layer for Day 5. For every arithmeti
 
 | Page | Handwritten note | How to revise it with the screenshots |
 | --- | --- | --- |
-| [till47 p011](images/HandWrittenNotes/till47/page-011.jpg) | <img src="images/HandWrittenNotes/till47/page-011.jpg" width="250"> | Use with `SUB` and `SBB`. Carry means borrow in subtraction. |
-| [till47 p012](images/HandWrittenNotes/till47/page-012.jpg) | <img src="images/HandWrittenNotes/till47/page-012.jpg" width="250"> | Use with `SUI` and two's-complement result. Convert negative results back into 8-bit hex. |
-| [till47 p013](images/HandWrittenNotes/till47/page-013.jpg) | <img src="images/HandWrittenNotes/till47/page-013.jpg" width="250"> | Use with `INR`, `DCR`, `INX`, and `DCX`. Remember `INX/DCX` affect register pairs and do not update all normal arithmetic flags. |
-| [till47 p014](images/HandWrittenNotes/till47/page-014.jpg) | <img src="images/HandWrittenNotes/till47/page-014.jpg" width="250"> | Use with `DAA`. The auxiliary carry and lower nibble decide whether BCD correction is needed. |
-| [till47 p015](images/HandWrittenNotes/till47/page-015.jpg) | <img src="images/HandWrittenNotes/till47/page-015.jpg" width="250"> | Use with compare and subtraction. The flag result tells relation: `CY=1` means accumulator was smaller. |
-| [till47 p016](images/HandWrittenNotes/till47/page-016.jpg) | <img src="images/HandWrittenNotes/till47/page-016.jpg" width="250"> | Use with `INR M`. The operand is memory at `HL`, not the register pair itself. |
-| [till47 p017](images/HandWrittenNotes/till47/page-017.jpg) | <img src="images/HandWrittenNotes/till47/page-017.jpg" width="250"> | Use with mixed traces involving `DAA`, `XRA`, and `DAD`. Separate 8-bit flag behavior from 16-bit register-pair behavior. |
-| [till47 p018](images/HandWrittenNotes/till47/page-018.jpg) | <img src="images/HandWrittenNotes/till47/page-018.jpg" width="250"> | Use with logical operations. Complement and logical instructions are bit-level operations, not decimal arithmetic. |
-| [till47 p019](images/HandWrittenNotes/till47/page-019.jpg) | <img src="images/HandWrittenNotes/till47/page-019.jpg" width="250"> | Use with `ANA` and `ORA`. These instructions use the accumulator and update flags from the logical result. |
-| [till47 p020](images/HandWrittenNotes/till47/page-020.jpg) | <img src="images/HandWrittenNotes/till47/page-020.jpg" width="250"> | Use with `XRA`, `XRI`, and `CMA`. XOR with self clears a value; complement flips every bit. |
-| [till47 p021](images/HandWrittenNotes/till47/page-021.jpg) | <img src="images/HandWrittenNotes/till47/page-021.jpg" width="250"> | Use with `CMP`, `STC`, and `CMC`. `CMP` affects flags only; `STC/CMC` affect carry directly. |
-| [till47 p022](images/HandWrittenNotes/till47/page-022.jpg) | <img src="images/HandWrittenNotes/till47/page-022.jpg" width="250"> | Use with `RRC` and `RAL`. Mark the carry bit outside the accumulator before rotating. |
-| [till47 p023](images/HandWrittenNotes/till47/page-023.jpg) | <img src="images/HandWrittenNotes/till47/page-023.jpg" width="250"> | Use with branch instructions. Branch conditions are just named tests of flag bits. |
-| [till47 p024](images/HandWrittenNotes/till47/page-024.jpg) | <img src="images/HandWrittenNotes/till47/page-024.jpg" width="250"> | Use with the rotate/branch practice screenshot. Trace `A` and `CY` after every rotate, then decide the jump. |
+| [till47 p011](images/HandWrittenNotes/till47/page-011.jpg) | <img src="images/HandWrittenNotes/till47/page-011.jpg" width="420"> | Use with `SUB` and `SBB`. Carry means borrow in subtraction. |
+| [till47 p012](images/HandWrittenNotes/till47/page-012.jpg) | <img src="images/HandWrittenNotes/till47/page-012.jpg" width="420"> | Use with `SUI` and two's-complement result. Convert negative results back into 8-bit hex. |
+| [till47 p013](images/HandWrittenNotes/till47/page-013.jpg) | <img src="images/HandWrittenNotes/till47/page-013.jpg" width="420"> | Use with `INR`, `DCR`, `INX`, and `DCX`. Remember `INX/DCX` affect register pairs and do not update all normal arithmetic flags. |
+| [till47 p014](images/HandWrittenNotes/till47/page-014.jpg) | <img src="images/HandWrittenNotes/till47/page-014.jpg" width="420"> | Use with `DAA`. The auxiliary carry and lower nibble decide whether BCD correction is needed. |
+| [till47 p015](images/HandWrittenNotes/till47/page-015.jpg) | <img src="images/HandWrittenNotes/till47/page-015.jpg" width="420"> | Use with compare and subtraction. The flag result tells relation: `CY=1` means accumulator was smaller. |
+| [till47 p016](images/HandWrittenNotes/till47/page-016.jpg) | <img src="images/HandWrittenNotes/till47/page-016.jpg" width="420"> | Use with `INR M`. The operand is memory at `HL`, not the register pair itself. |
+| [till47 p017](images/HandWrittenNotes/till47/page-017.jpg) | <img src="images/HandWrittenNotes/till47/page-017.jpg" width="420"> | Use with mixed traces involving `DAA`, `XRA`, and `DAD`. Separate 8-bit flag behavior from 16-bit register-pair behavior. |
+| [till47 p018](images/HandWrittenNotes/till47/page-018.jpg) | <img src="images/HandWrittenNotes/till47/page-018.jpg" width="420"> | Use with logical operations. Complement and logical instructions are bit-level operations, not decimal arithmetic. |
+| [till47 p019](images/HandWrittenNotes/till47/page-019.jpg) | <img src="images/HandWrittenNotes/till47/page-019.jpg" width="420"> | Use with `ANA` and `ORA`. These instructions use the accumulator and update flags from the logical result. |
+| [till47 p020](images/HandWrittenNotes/till47/page-020.jpg) | <img src="images/HandWrittenNotes/till47/page-020.jpg" width="420"> | Use with `XRA`, `XRI`, and `CMA`. XOR with self clears a value; complement flips every bit. |
+| [till47 p021](images/HandWrittenNotes/till47/page-021.jpg) | <img src="images/HandWrittenNotes/till47/page-021.jpg" width="420"> | Use with `CMP`, `STC`, and `CMC`. `CMP` affects flags only; `STC/CMC` affect carry directly. |
+| [till47 p022](images/HandWrittenNotes/till47/page-022.jpg) | <img src="images/HandWrittenNotes/till47/page-022.jpg" width="420"> | Use with `RRC` and `RAL`. Mark the carry bit outside the accumulator before rotating. |
+| [till47 p023](images/HandWrittenNotes/till47/page-023.jpg) | <img src="images/HandWrittenNotes/till47/page-023.jpg" width="420"> | Use with branch instructions. Branch conditions are just named tests of flag bits. |
+| [till47 p024](images/HandWrittenNotes/till47/page-024.jpg) | <img src="images/HandWrittenNotes/till47/page-024.jpg" width="420"> | Use with the rotate/branch practice screenshot. Trace `A` and `CY` after every rotate, then decide the jump. |
 
 ## 1. Subtraction and Borrow
 

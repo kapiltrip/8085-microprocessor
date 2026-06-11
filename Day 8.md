@@ -27,22 +27,22 @@ Day 8 covers the May 31 afternoon screenshots. The session moves from CPU-contro
 
 | Page | Handwritten note | How to revise it with the screenshots |
 | --- | --- | --- |
-| [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg) | <img src="images/HandWrittenNotes/85completed/page-011.jpg" width="250"> | Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. |
-| [85completed p012](images/HandWrittenNotes/85completed/page-012.jpg) | <img src="images/HandWrittenNotes/85completed/page-012.jpg" width="250"> | Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. |
-| [85completed p013](images/HandWrittenNotes/85completed/page-013.jpg) | <img src="images/HandWrittenNotes/85completed/page-013.jpg" width="250"> | Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. |
-| [85completed p014](images/HandWrittenNotes/85completed/page-014.jpg) | <img src="images/HandWrittenNotes/85completed/page-014.jpg" width="250"> | Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. |
-| [85completed p015](images/HandWrittenNotes/85completed/page-015.jpg) | <img src="images/HandWrittenNotes/85completed/page-015.jpg" width="250"> | Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. |
-| [85completed p016](images/HandWrittenNotes/85completed/page-016.jpg) | <img src="images/HandWrittenNotes/85completed/page-016.jpg" width="250"> | Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. |
-| [85completed p017](images/HandWrittenNotes/85completed/page-017.jpg) | <img src="images/HandWrittenNotes/85completed/page-017.jpg" width="250"> | Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. |
-| [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg) | <img src="images/HandWrittenNotes/85completed/page-018.jpg" width="250"> | Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. |
+| [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg) | <img src="images/HandWrittenNotes/85completed/page-011.jpg" width="420"> | Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. |
+| [85completed p012](images/HandWrittenNotes/85completed/page-012.jpg) | <img src="images/HandWrittenNotes/85completed/page-012.jpg" width="420"> | Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. |
+| [85completed p013](images/HandWrittenNotes/85completed/page-013.jpg) | <img src="images/HandWrittenNotes/85completed/page-013.jpg" width="420"> | Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. |
+| [85completed p014](images/HandWrittenNotes/85completed/page-014.jpg) | <img src="images/HandWrittenNotes/85completed/page-014.jpg" width="420"> | Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. |
+| [85completed p015](images/HandWrittenNotes/85completed/page-015.jpg) | <img src="images/HandWrittenNotes/85completed/page-015.jpg" width="420"> | Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. |
+| [85completed p016](images/HandWrittenNotes/85completed/page-016.jpg) | <img src="images/HandWrittenNotes/85completed/page-016.jpg" width="420"> | Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. |
+| [85completed p017](images/HandWrittenNotes/85completed/page-017.jpg) | <img src="images/HandWrittenNotes/85completed/page-017.jpg" width="420"> | Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. |
+| [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg) | <img src="images/HandWrittenNotes/85completed/page-018.jpg" width="420"> | Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. |
 
 ## 1. Programmed I/O and Handshaking
 
 ![I/O data transfer handshaking sequence](images/Day%208/day-8-io-data-transfer-handshaking-sequence.png)
 
-<img src="images/HandWrittenNotes/85completed/page-011.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-011.jpg" width="720">
 
-<img src="images/HandWrittenNotes/85completed/page-012.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-012.jpg" width="720">
 
 In simple programmed I/O, the CPU controls the transfer directly. The program checks whether a device is ready, then reads or writes data using instructions such as `IN` and `OUT`. This is easy to understand, but it wastes CPU time when a device is slow.
 
@@ -90,7 +90,7 @@ The screenshot's port-number question depends on this rule: I/O mapped devices a
 
 ![DMA HOLD/HLDA transfer steps](images/Day%208/day-8-dma-hold-hlda-transfer-steps.png)
 
-<img src="images/HandWrittenNotes/85completed/page-013.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-013.jpg" width="720">
 
 DMA means **Direct Memory Access**. It lets a controller move data between an I/O device and memory without the CPU executing one instruction per byte.
 
@@ -124,7 +124,7 @@ The key hardware idea is bus ownership. During DMA, the CPU is not the bus maste
 
 ![Cycle stealing DMA efficiency note](images/Day%208/day-8-cycle-stealing-dma-efficiency-note.png)
 
-<img src="images/HandWrittenNotes/85completed/page-014.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-014.jpg" width="720">
 
 DMA mode decides how aggressively the controller uses the bus.
 
@@ -143,7 +143,7 @@ The note about efficiency means: if the CPU is not using the bus during some int
 
 ![Intel 8255 programmable peripheral interface](images/Day%208/day-8-intel-8255-programmable-peripheral-interface.png)
 
-<img src="images/HandWrittenNotes/85completed/page-015.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-015.jpg" width="720">
 
 The 8155 and 8255 are peripheral interface chips. They let the processor connect to external devices through programmable ports instead of building all control logic from discrete gates.
 
@@ -165,7 +165,7 @@ The 8155 combines RAM, I/O, and timer functions. It is useful in small systems b
 
 ![Intel 8253 operating modes](images/Day%208/day-8-intel-8253-operating-modes.png)
 
-<img src="images/HandWrittenNotes/85completed/page-016.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-016.jpg" width="720">
 
 The 8253 is a programmable timer/counter. It has multiple counters that can be loaded with count values and programmed into different modes.
 
@@ -202,7 +202,7 @@ So the 8257 is the hardware that makes the Day 8 DMA diagrams practical.
 
 ![Intel 8259 PIC features](images/Day%208/day-8-intel-8259-pic-features.png)
 
-<img src="images/HandWrittenNotes/85completed/page-017.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-017.jpg" width="720">
 
 The 8085 has only a limited number of interrupt input pins. The 8259 expands interrupt handling by accepting multiple interrupt request inputs and presenting a controlled interrupt request to the CPU.
 
