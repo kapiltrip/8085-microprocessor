@@ -17,6 +17,25 @@ Day 4 is about control flow and stack-based execution. Earlier days explained ho
 | 9 | [SIM SOD and RST 7.5 mask bits](images/Day%204/day-4-sim-sod-rst75-mask-bits.png) | Accumulator bit fields used by `SIM`. |
 | 10 | [NOP, DI, EI, SIM, RIM common features](images/Day%204/day-4-nop-di-ei-sim-rim-common-features.png) | One-byte implied instructions with no flags affected. |
 
+## Handwritten Notes Linked To Day 4
+
+These handwritten pages connect the screenshots to actual control-flow tracing. Read them in this order: branch condition, call/return, stack byte order, then `SIM/RIM` bit fields.
+
+| Page | Handwritten note | How to revise it with the screenshots |
+| --- | --- | --- |
+| [till73 p001](images/HandWrittenNotes/till73/page-001.jpg) | <img src="images/HandWrittenNotes/till73/page-001.jpg" width="250"> | Use with subroutine motivation. Repeated code becomes a callable routine; `CALL` transfers control and stores the return path. |
+| [till73 p002](images/HandWrittenNotes/till73/page-002.jpg) | <img src="images/HandWrittenNotes/till73/page-002.jpg" width="250"> | Use with conditional call/return. The condition is always decided from existing flags, not from the `CALL` instruction itself. |
+| [till73 p003](images/HandWrittenNotes/till73/page-003.jpg) | <img src="images/HandWrittenNotes/till73/page-003.jpg" width="250"> | Use with branch tables. It groups carry, zero, sign, and parity conditions for calls and returns. |
+| [till73 p004](images/HandWrittenNotes/till73/page-004.jpg) | <img src="images/HandWrittenNotes/till73/page-004.jpg" width="250"> | Use with program tracing. Update registers and flags one instruction at a time before deciding whether a branch is taken. |
+| [till73 p005](images/HandWrittenNotes/till73/page-005.jpg) | <img src="images/HandWrittenNotes/till73/page-005.jpg" width="250"> | Use with `CALL` and stack screenshots. The return address is pushed before `PC` is loaded with the subroutine address. |
+| [till73 p006](images/HandWrittenNotes/till73/page-006.jpg) | <img src="images/HandWrittenNotes/till73/page-006.jpg" width="250"> | Use with `PUSH`, `POP`, `XTHL`, and `SPHL`. These are all stack/register-transfer ideas, not ALU operations. |
+| [till73 p007](images/HandWrittenNotes/till73/page-007.jpg) | <img src="images/HandWrittenNotes/till73/page-007.jpg" width="250"> | Use with the `CALL 1006H` and `POP H` question. Track `SP`, low byte, and high byte separately. |
+| [till73 p008](images/HandWrittenNotes/till73/page-008.jpg) | <img src="images/HandWrittenNotes/till73/page-008.jpg" width="250"> | Use with stack trace practice. Draw the stack vertically; pushes move downward and pops move upward. |
+| [till73 p009](images/HandWrittenNotes/till73/page-009.jpg) | <img src="images/HandWrittenNotes/till73/page-009.jpg" width="250"> | Use with the signed input loop. `RAL` moves the old sign bit into carry, and `JNC` repeats while that bit is zero. |
+| [till73 p010](images/HandWrittenNotes/till73/page-010.jpg) | <img src="images/HandWrittenNotes/till73/page-010.jpg" width="250"> | Use with `NOP`, `DI`, `EI`, and `SIM`. These are one-byte implied instructions with control effects. |
+| [till73 p011](images/HandWrittenNotes/till73/page-011.jpg) | <img src="images/HandWrittenNotes/till73/page-011.jpg" width="250"> | Use with `RIM`. This page is the status-byte view: pending interrupt bits, mask bits, interrupt enable, and serial input. |
+| [till73 p012](images/HandWrittenNotes/till73/page-012.jpg) | <img src="images/HandWrittenNotes/till73/page-012.jpg" width="250"> | Use with `SIM`. This page is the control-byte view: mask set enable, interrupt masks, reset `RST 7.5`, and serial output. |
+
 ## 1. Conditional Jump Instructions
 
 ![Conditional jump instructions table](images/Day%204/day-4-conditional-jump-instructions-table.png)
