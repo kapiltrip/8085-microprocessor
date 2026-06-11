@@ -28,6 +28,20 @@ This file explains every major term shown in the Day 1 screenshots: microprocess
 | 20 | [Power supply and frequency signals](images/Day%201/day-1-8085-power-frequency-signals.png) | `VCC`, `VSS`, `X1`, `X2`, and internal divide-by-two clocking |
 | 21 | [Serial I/O ports: SID and SOD](images/Day%201/day-1-8085-serial-io-ports-sid-sod.png) | Serial input/output pins and the accumulator `D7` bit path |
 
+## Handwritten Notes Linked To Day 1
+
+These handwritten pages are the revision layer for the Day 1 screenshots. They are strongest for remembering the **inside of the 8085**: ALU, accumulator, flags, register groups, pin groups, status/control lines, multiplexed bus, and the first interrupt-vector idea.
+
+| Page | Handwritten note | How to revise it with the screenshots |
+| --- | --- | --- |
+| [till46 p001](images/HandWrittenNotes/till46/page-001.jpg) | <img src="images/HandWrittenNotes/till46/page-001.jpg" width="260"> | Use with the CPU/ALU screenshots. This page turns the ALU explanation into flag logic: result goes through the accumulator, and the status result appears in `S`, `Z`, `AC`, `P`, and `CY`. |
+| [till46 p002](images/HandWrittenNotes/till46/page-002.jpg) | <img src="images/HandWrittenNotes/till46/page-002.jpg" width="260"> | Use with the internal-register discussion. It connects accumulator, general-purpose registers, `PC`, `SP`, instruction register, and timing/control into one CPU model. |
+| [till46 p003](images/HandWrittenNotes/till46/page-003.jpg) | <img src="images/HandWrittenNotes/till46/page-003.jpg" width="260"> | Use with the key-points screenshot. This page is the quick specification sheet: 8-bit data bus, 16-bit addressing, tri-state bus, serial I/O, and interrupt support. |
+| [till46 p004](images/HandWrittenNotes/till46/page-004.jpg) | <img src="images/HandWrittenNotes/till46/page-004.jpg" width="260"> | Use with the pin-configuration screenshots. The page groups power, clock, reset, DMA, interrupt, address, and data pins so the 40-pin diagram becomes easier to memorize. |
+| [till46 p005](images/HandWrittenNotes/till46/page-005.jpg) | <img src="images/HandWrittenNotes/till46/page-005.jpg" width="260"> | Use with the machine-cycle status table. The important link is that `IO/M`, `S1`, and `S0` identify the bus cycle while `/RD`, `/WR`, and `/INTA` perform the control action. |
+| [till46 p006](images/HandWrittenNotes/till46/page-006.jpg) | <img src="images/HandWrittenNotes/till46/page-006.jpg" width="260"> | Use with the multiplexed-bus and `ALE` screenshots. It shows why `AD0-AD7` need a latch and also records the serial pins and interrupt pins in one place. |
+| [till46 p007](images/HandWrittenNotes/till46/page-007.jpg) | <img src="images/HandWrittenNotes/till46/page-007.jpg" width="260"> | Use as a bridge into Day 7. It introduces the fixed interrupt vector calculation such as `RST 7.5 -> 7.5 x 8 = 003CH`. |
+
 ## 1. Meaning of "Microprocessor"
 
 ![What is a microprocessor?](images/Day%201/day-1-what-is-a-microprocessor.png)

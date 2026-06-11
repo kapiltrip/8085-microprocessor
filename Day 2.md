@@ -24,6 +24,31 @@ Day 2 moves from "what the 8085 is" into "how it communicates with memory and I/
 | 16 | [Two-byte MVI instruction example](images/Day%202/day-2-two-byte-instruction-mvi-example.png) | Opcode byte plus one immediate data byte. |
 | 17 | [Implicit addressing mode](images/Day%202/day-2-implicit-addressing-mode.png) | Instructions where the operand is understood, often the accumulator. |
 
+## Handwritten Notes Linked To Day 2
+
+These handwritten pages are the revision layer for timing, memory interfacing, address decoding, memory/I/O mapping, and instruction formats. Read them after the screenshot index, then use the detailed explanations below to clean up the exact timing and byte-order rules.
+
+| Page | Handwritten note | How to revise it with the screenshots |
+| --- | --- | --- |
+| [till46 p008](images/HandWrittenNotes/till46/page-008.jpg) | <img src="images/HandWrittenNotes/till46/page-008.jpg" width="250"> | Pairs with memory mapped versus I/O mapped I/O. Focus on whether the device is selected through the memory address space or the I/O port space. |
+| [till46 p009](images/HandWrittenNotes/till46/page-009.jpg) | <img src="images/HandWrittenNotes/till46/page-009.jpg" width="250"> | Use with `ALE` and timing diagrams. It links `T`-state, machine cycle, and low-address latching. |
+| [till46 p010](images/HandWrittenNotes/till46/page-010.jpg) | <img src="images/HandWrittenNotes/till46/page-010.jpg" width="250"> | Use with the machine-cycle status table. It separates instruction cycle, machine cycle, and T-state so timing questions do not blur them. |
+| [till46 p011](images/HandWrittenNotes/till46/page-011.jpg) | <img src="images/HandWrittenNotes/till46/page-011.jpg" width="250"> | Use with opcode fetch and `ADD B`. The page shows how a complete instruction is built from one or more bus cycles. |
+| [till46 p012](images/HandWrittenNotes/till46/page-012.jpg) | <img src="images/HandWrittenNotes/till46/page-012.jpg" width="250"> | Use with instruction-set symbols. It records word, instruction, opcode, address bus, and data bus meanings. |
+| [till46 p013](images/HandWrittenNotes/till46/page-013.jpg) | <img src="images/HandWrittenNotes/till46/page-013.jpg" width="250"> | Use with the opcode-fetch timing diagram. Follow `ALE`, `/RD`, address lines, and data lines in order. |
+| [till46 p014](images/HandWrittenNotes/till46/page-014.jpg) | <img src="images/HandWrittenNotes/till46/page-014.jpg" width="250"> | Use with `MVI B,05H`. It reinforces that the second byte is immediate data, not an address. |
+| [till46 p015](images/HandWrittenNotes/till46/page-015.jpg) | <img src="images/HandWrittenNotes/till46/page-015.jpg" width="250"> | Use with instruction classification. This page is the handwritten map of addressing modes and instruction categories. |
+| [till46 p016](images/HandWrittenNotes/till46/page-016.jpg) | <img src="images/HandWrittenNotes/till46/page-016.jpg" width="250"> | Use with address decoding and chip select. The key rule is that low lines select a location inside a chip while high lines select the chip. |
+| [till46 p017](images/HandWrittenNotes/till46/page-017.jpg) | <img src="images/HandWrittenNotes/till46/page-017.jpg" width="250"> | Use with ROM interfacing. Track address decoder output, ROM data output, and why only the selected chip may drive the data bus. |
+| [till46 p018](images/HandWrittenNotes/till46/page-018.jpg) | <img src="images/HandWrittenNotes/till46/page-018.jpg" width="250"> | Use with memory mapped/I/O mapped I/O. Pay attention to 16-bit memory addresses versus 8-bit port addresses. |
+| [till46 p019](images/HandWrittenNotes/till46/page-019.jpg) | <img src="images/HandWrittenNotes/till46/page-019.jpg" width="250"> | Use with memory-capacity questions. Convert `4K x 8` to 4096 byte locations and 12 address lines. |
+| [till46 p020](images/HandWrittenNotes/till46/page-020.jpg) | <img src="images/HandWrittenNotes/till46/page-020.jpg" width="250"> | Use with decoder logic. It shows how address bits combine into a chip-select signal. |
+| [till46 p021](images/HandWrittenNotes/till46/page-021.jpg) | <img src="images/HandWrittenNotes/till46/page-021.jpg" width="250"> | Use with `LDA/STA` and machine-cycle counting. It connects instruction length to bus operations. |
+| [till46 p022](images/HandWrittenNotes/till46/page-022.jpg) | <img src="images/HandWrittenNotes/till46/page-022.jpg" width="250"> | Use as the handwritten classification sheet: data transfer, arithmetic, logical, branch, stack/I/O/machine control. |
+| [till46 p023](images/HandWrittenNotes/till46/page-023.jpg) | <img src="images/HandWrittenNotes/till46/page-023.jpg" width="250"> | Use with symbol notation. It records `A`, `B`, `C`, `D`, `E`, `H`, `L`, `M`, flags, register pairs, and memory symbols. |
+| [till46 p024](images/HandWrittenNotes/till46/page-024.jpg) | <img src="images/HandWrittenNotes/till46/page-024.jpg" width="250"> | Use with one-byte instructions and control-signal generation. The important point is that implied operands need no extra data/address byte. |
+| [85completed p020](images/HandWrittenNotes/85completed/page-020.jpg) | <img src="images/HandWrittenNotes/85completed/page-020.jpg" width="250"> | Use as a later recap of instruction format, machine cycles, and addressing modes after you finish Day 2 once. |
+
 ## 1. Machine Cycle Status and Control Signals
 
 ![Machine cycle status/control table](images/Day%202/day-2-machine-cycle-status-control-table.png)

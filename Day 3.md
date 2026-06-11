@@ -13,6 +13,23 @@ Day 3 focuses on how the 8085 moves data between registers and memory, how `HL` 
 | 5 | [ORI data immediate with accumulator](images/Day%203/day-3-ori-data-immediate-accumulator.png) | Immediate OR operation: `A <- A OR data`. |
 | 6 | [XRA A clears accumulator](images/Day%203/day-3-xra-a-clear-accumulator-note.png) | XORing a value with itself gives zero; `XRA A` clears `A`. |
 
+## Handwritten Notes Linked To Day 3
+
+These pages are the handwritten layer for data transfer and register-pair tracing. The main revision target is to stop treating `M` as a register: `M` always means **memory at the address currently stored in `HL`**.
+
+| Page | Handwritten note | How to revise it with the screenshots |
+| --- | --- | --- |
+| [till47 p001](images/HandWrittenNotes/till47/page-001.jpg) | <img src="images/HandWrittenNotes/till47/page-001.jpg" width="250"> | Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. |
+| [till47 p002](images/HandWrittenNotes/till47/page-002.jpg) | <img src="images/HandWrittenNotes/till47/page-002.jpg" width="250"> | Use with register and memory addressing. It connects `M`, register operands, and flag layout. |
+| [till47 p003](images/HandWrittenNotes/till47/page-003.jpg) | <img src="images/HandWrittenNotes/till47/page-003.jpg" width="250"> | Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. |
+| [till47 p004](images/HandWrittenNotes/till47/page-004.jpg) | <img src="images/HandWrittenNotes/till47/page-004.jpg" width="250"> | Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. |
+| [till47 p005](images/HandWrittenNotes/till47/page-005.jpg) | <img src="images/HandWrittenNotes/till47/page-005.jpg" width="250"> | Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. |
+| [till47 p006](images/HandWrittenNotes/till47/page-006.jpg) | <img src="images/HandWrittenNotes/till47/page-006.jpg" width="250"> | Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. |
+| [till47 p007](images/HandWrittenNotes/till47/page-007.jpg) | <img src="images/HandWrittenNotes/till47/page-007.jpg" width="250"> | Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. |
+| [till47 p008](images/HandWrittenNotes/till47/page-008.jpg) | <img src="images/HandWrittenNotes/till47/page-008.jpg" width="250"> | Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. |
+| [till47 p009](images/HandWrittenNotes/till47/page-009.jpg) | <img src="images/HandWrittenNotes/till47/page-009.jpg" width="250"> | Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. |
+| [till47 p010](images/HandWrittenNotes/till47/page-010.jpg) | <img src="images/HandWrittenNotes/till47/page-010.jpg" width="250"> | Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. |
+
 ## 1. `MVI M,data`: Immediate Data to Memory Through `HL`
 
 ![MVI M,data and indirect addressing](images/Day%203/day-3-mvi-m-data-indirect-addressing.png)
