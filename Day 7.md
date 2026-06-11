@@ -25,20 +25,20 @@ Day 7 covers the May 31 interrupt screenshots. The main idea is that an interrup
 
 | Page | Handwritten note | How to revise it with the screenshots |
 | --- | --- | --- |
-| [85completed p004](images/HandWrittenNotes/85completed/page-004.jpg) | <img src="images/HandWrittenNotes/85completed/page-004.jpg" width="250"> | Use with the ISR flow. It compares ordinary subroutine calls with interrupt-triggered service routines. |
-| [85completed p005](images/HandWrittenNotes/85completed/page-005.jpg) | <img src="images/HandWrittenNotes/85completed/page-005.jpg" width="250"> | Use with vector addresses. It shows `RST n` address calculation and software/hardware interrupt meaning. |
-| [85completed p006](images/HandWrittenNotes/85completed/page-006.jpg) | <img src="images/HandWrittenNotes/85completed/page-006.jpg" width="250"> | Use with the priority table. It separates `TRAP`, `RST 7.5`, `RST 6.5`, `RST 5.5`, and `INTR`. |
-| [85completed p007](images/HandWrittenNotes/85completed/page-007.jpg) | <img src="images/HandWrittenNotes/85completed/page-007.jpg" width="250"> | Use with `INTR` and triggering levels. It explains edge versus level and why `INTR` is non-vectored. |
-| [85completed p008](images/HandWrittenNotes/85completed/page-008.jpg) | <img src="images/HandWrittenNotes/85completed/page-008.jpg" width="250"> | Use with vector-table flow. It links `EI`, interrupt enable, pending state, and ISR branching. |
-| [85completed p009](images/HandWrittenNotes/85completed/page-009.jpg) | <img src="images/HandWrittenNotes/85completed/page-009.jpg" width="250"> | Use with `SIM/RIM` and mask bits. It shows how the accumulator controls interrupt masks. |
-| [85completed p010](images/HandWrittenNotes/85completed/page-010.jpg) | <img src="images/HandWrittenNotes/85completed/page-010.jpg" width="250"> | Use as final interrupt recap: priority, vectoring, masking, and `TRAP` behavior. |
-| [85completed p019](images/HandWrittenNotes/85completed/page-019.jpg) | <img src="images/HandWrittenNotes/85completed/page-019.jpg" width="250"> | Use with `RIM`, mask status, pending bits, and the flag/PSW relationship. |
+| [85completed p004](images/HandWrittenNotes/85completed/page-004.jpg) | <img src="images/HandWrittenNotes/85completed/page-004.jpg" width="420"> | Use with the ISR flow. It compares ordinary subroutine calls with interrupt-triggered service routines. |
+| [85completed p005](images/HandWrittenNotes/85completed/page-005.jpg) | <img src="images/HandWrittenNotes/85completed/page-005.jpg" width="420"> | Use with vector addresses. It shows `RST n` address calculation and software/hardware interrupt meaning. |
+| [85completed p006](images/HandWrittenNotes/85completed/page-006.jpg) | <img src="images/HandWrittenNotes/85completed/page-006.jpg" width="420"> | Use with the priority table. It separates `TRAP`, `RST 7.5`, `RST 6.5`, `RST 5.5`, and `INTR`. |
+| [85completed p007](images/HandWrittenNotes/85completed/page-007.jpg) | <img src="images/HandWrittenNotes/85completed/page-007.jpg" width="420"> | Use with `INTR` and triggering levels. It explains edge versus level and why `INTR` is non-vectored. |
+| [85completed p008](images/HandWrittenNotes/85completed/page-008.jpg) | <img src="images/HandWrittenNotes/85completed/page-008.jpg" width="420"> | Use with vector-table flow. It links `EI`, interrupt enable, pending state, and ISR branching. |
+| [85completed p009](images/HandWrittenNotes/85completed/page-009.jpg) | <img src="images/HandWrittenNotes/85completed/page-009.jpg" width="420"> | Use with `SIM/RIM` and mask bits. It shows how the accumulator controls interrupt masks. |
+| [85completed p010](images/HandWrittenNotes/85completed/page-010.jpg) | <img src="images/HandWrittenNotes/85completed/page-010.jpg" width="420"> | Use as final interrupt recap: priority, vectoring, masking, and `TRAP` behavior. |
+| [85completed p019](images/HandWrittenNotes/85completed/page-019.jpg) | <img src="images/HandWrittenNotes/85completed/page-019.jpg" width="420"> | Use with `RIM`, mask status, pending bits, and the flag/PSW relationship. |
 
 ## 1. Interrupt Service Routine Flow
 
 ![Interrupt service routine flow](images/Day%207/day-7-interrupt-service-routine-flow.png)
 
-<img src="images/HandWrittenNotes/85completed/page-004.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-004.jpg" width="720">
 
 An **interrupt** is a request for service from an event that is outside the normal sequence of the current program. The event may be a hardware signal such as `TRAP`, `RST 7.5`, or `INTR`, or it may be a software restart instruction such as `RST n`.
 
@@ -61,7 +61,7 @@ An ISR is similar to a subroutine because both are service code blocks, but the 
 
 ![Disable interrupt DI](images/Day%207/day-7-disable-interrupt-di.png)
 
-<img src="images/HandWrittenNotes/85completed/page-008.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-008.jpg" width="720">
 
 The 8085 has an interrupt enable flip-flop for maskable interrupts. The instruction:
 
@@ -89,7 +89,7 @@ Do not confuse a physical interrupt pin with CPU acceptance. A signal can physic
 
 ![INTR acknowledge sequence](images/Day%207/day-7-intr-acknowledge-sequence.png)
 
-<img src="images/HandWrittenNotes/85completed/page-006.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-006.jpg" width="720">
 
 The 8085 interrupt priority is:
 
@@ -117,7 +117,7 @@ For `INTR`, the CPU responds with interrupt acknowledge. External hardware must 
 
 ![Interrupt priority vector table](images/Day%207/day-7-interrupt-priority-vector-table.png)
 
-<img src="images/HandWrittenNotes/85completed/page-005.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-005.jpg" width="720">
 
 A **vectored interrupt** has a predefined service address. For restart-style vectors:
 
@@ -143,7 +143,7 @@ The reason vectoring matters is speed and hardware simplicity. A vectored interr
 
 ![Interrupt mask flip-flop diagram](images/Day%207/day-7-interrupt-mask-flip-flop-diagram.png)
 
-<img src="images/HandWrittenNotes/85completed/page-009.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-009.jpg" width="720">
 
 `SIM` and `RIM` use the accumulator as a bit field.
 
@@ -168,7 +168,7 @@ This is why the screenshots show flip-flops. A mask bit is not just a number in 
 
 ![Triggering levels: edge and level](images/Day%207/day-7-triggering-levels-edge-level.png)
 
-<img src="images/HandWrittenNotes/85completed/page-007.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-007.jpg" width="720">
 
 Triggering tells what kind of signal the CPU recognizes:
 
@@ -206,7 +206,7 @@ The device closest to the grant source has the highest priority. This is simple 
 
 ![Non-maskable interrupt answer](images/Day%207/day-7-non-maskable-interrupt-answer.png)
 
-<img src="images/HandWrittenNotes/85completed/page-010.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-010.jpg" width="720">
 
 A non-maskable interrupt is used when the event is too important to ignore through ordinary interrupt masking. Examples in basic microprocessor courses include power failure warning, emergency shutdown, or other high-priority fault conditions.
 

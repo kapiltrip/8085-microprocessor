@@ -18,20 +18,20 @@ Day 9 is the transition from 8085 to 8086. The biggest change is not only that t
 
 | Page | Handwritten note | How to revise it with the screenshots |
 | --- | --- | --- |
-| [85completed p021](images/HandWrittenNotes/85completed/page-021.jpg) | <img src="images/HandWrittenNotes/85completed/page-021.jpg" width="250"> | Use with the BIU/EU screenshots. It introduces 8086 architecture, queue, ALU, registers, and segment registers. |
-| [85completed p022](images/HandWrittenNotes/85completed/page-022.jpg) | <img src="images/HandWrittenNotes/85completed/page-022.jpg" width="250"> | Use with the block diagram. It sketches internal buses, queue, BIU, EU, and physical address generation. |
-| [86tilllnow p001](images/HandWrittenNotes/86tilllnow/page-001.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" width="250"> | Use with the pin configuration. It compares 8086 with 8085 and identifies multiplexed address/data pins. |
-| [86tilllnow p002](images/HandWrittenNotes/86tilllnow/page-002.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" width="250"> | Use with min/max mode signals. It lists the control signals that change meaning with `MN/MX`. |
-| [86tilllnow p003](images/HandWrittenNotes/86tilllnow/page-003.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-003.jpg" width="250"> | Use with multiplexed 8086 pins. It covers `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and bus status signals. |
-| [86tilllnow p004](images/HandWrittenNotes/86tilllnow/page-004.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" width="250"> | Use with min/max mode and the EU/BIU split. It connects signal mode to system design. |
-| [86tilllnow p005](images/HandWrittenNotes/86tilllnow/page-005.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" width="250"> | Use with internal architecture. It shows ALU, flags, bus interface, and queue support. |
-| [86tilllnow p006](images/HandWrittenNotes/86tilllnow/page-006.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" width="250"> | Use with BIU/EU and segmentation. It summarizes the queue, segment registers, and physical-address calculation. |
+| [85completed p021](images/HandWrittenNotes/85completed/page-021.jpg) | <img src="images/HandWrittenNotes/85completed/page-021.jpg" width="420"> | Use with the BIU/EU screenshots. It introduces 8086 architecture, queue, ALU, registers, and segment registers. |
+| [85completed p022](images/HandWrittenNotes/85completed/page-022.jpg) | <img src="images/HandWrittenNotes/85completed/page-022.jpg" width="420"> | Use with the block diagram. It sketches internal buses, queue, BIU, EU, and physical address generation. |
+| [86tilllnow p001](images/HandWrittenNotes/86tilllnow/page-001.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" width="420"> | Use with the pin configuration. It compares 8086 with 8085 and identifies multiplexed address/data pins. |
+| [86tilllnow p002](images/HandWrittenNotes/86tilllnow/page-002.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" width="420"> | Use with min/max mode signals. It lists the control signals that change meaning with `MN/MX`. |
+| [86tilllnow p003](images/HandWrittenNotes/86tilllnow/page-003.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-003.jpg" width="420"> | Use with multiplexed 8086 pins. It covers `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and bus status signals. |
+| [86tilllnow p004](images/HandWrittenNotes/86tilllnow/page-004.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" width="420"> | Use with min/max mode and the EU/BIU split. It connects signal mode to system design. |
+| [86tilllnow p005](images/HandWrittenNotes/86tilllnow/page-005.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" width="420"> | Use with internal architecture. It shows ALU, flags, bus interface, and queue support. |
+| [86tilllnow p006](images/HandWrittenNotes/86tilllnow/page-006.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" width="420"> | Use with BIU/EU and segmentation. It summarizes the queue, segment registers, and physical-address calculation. |
 
 ## 1. Why 8086 Feels Different From 8085
 
 ![8086 internal architecture](images/Day%209/day-9-8086-internal-architecture.png)
 
-<img src="images/HandWrittenNotes/85completed/page-021.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-021.jpg" width="720">
 
 The 8085 is an 8-bit processor with a 16-bit address bus, so it directly addresses `2^16 = 64 KB`. The 8086 has a 16-bit data bus and a 20-bit address bus, so it can address:
 
@@ -52,7 +52,7 @@ The important consequence is overlap. While the EU executes the current instruct
 
 ![8086 pin configuration](images/Day%209/day-9-8086-pin-configuration.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" width="720">
 
 The 8086 is a 40-pin processor, but it exposes more address information than the 8085. It does this by multiplexing pins.
 
@@ -75,9 +75,9 @@ The 8086 can transfer a word through its 16-bit data bus, but memory is still by
 
 ![8086 min/max mode signals](images/Day%209/day-9-8086-min-max-mode-signals.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" width="720">
 
-<img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" width="720">
 
 The `MN/MX` pin changes how the 8086 system is controlled.
 
@@ -94,7 +94,7 @@ This is why some pins have two names. The same physical pin can have one meaning
 
 ![8086 bus interface unit](images/Day%209/day-9-8086-bus-interface-unit.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" width="720">
 
 The BIU is responsible for the outside-world interface and address generation.
 
@@ -134,7 +134,7 @@ The segment register gives the starting region; the offset selects a byte inside
 
 ![8086 execution unit](images/Day%209/day-9-8086-execution-unit.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" width="720">
 
 The EU executes instructions. It does not normally fetch instruction bytes directly from memory; it takes them from the BIU queue.
 
@@ -160,7 +160,7 @@ If a branch, call, return, or interrupt changes the flow, the prefetched queue m
 
 ![8086 block diagram](images/Day%209/day-9-8086-block-diagram.png)
 
-<img src="images/HandWrittenNotes/85completed/page-022.jpg" width="420">
+<img src="images/HandWrittenNotes/85completed/page-022.jpg" width="720">
 
 The block diagram shows why the 8086 is often taught as a two-stage architecture:
 

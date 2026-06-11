@@ -30,12 +30,12 @@ Day 10 continues the 8086 introduction from Day 9. The screenshots move from arc
 
 | Page | Handwritten note | How to revise it with the screenshots |
 | --- | --- | --- |
-| [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="250"> | Use with the flag screenshots. It records the flag register layout and control flags such as `TF`, `IF`, and `DF`. |
-| [86tilllnow p008](images/HandWrittenNotes/86tilllnow/page-008.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="250"> | Use with addressing modes. It connects segment:offset, physical address, direct addressing, and displacement. |
-| [86tilllnow p009](images/HandWrittenNotes/86tilllnow/page-009.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="250"> | Use with register/index/base addressing and interrupt notes. |
-| [86tilllnow p010](images/HandWrittenNotes/86tilllnow/page-010.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="250"> | Use with `MOV` examples and direct/register addressing examples. |
-| [86tilllnow p011](images/HandWrittenNotes/86tilllnow/page-011.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="250"> | Use with `XLAT`, `IN`, `OUT`, port addressing, and memory-versus-I/O distinction. |
-| [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="250"> | Use with branch instructions and the 8085 versus 8086 comparison. |
+| [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="420"> | Use with the flag screenshots. It records the flag register layout and control flags such as `TF`, `IF`, and `DF`. |
+| [86tilllnow p008](images/HandWrittenNotes/86tilllnow/page-008.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="420"> | Use with addressing modes. It connects segment:offset, physical address, direct addressing, and displacement. |
+| [86tilllnow p009](images/HandWrittenNotes/86tilllnow/page-009.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="420"> | Use with register/index/base addressing and interrupt notes. |
+| [86tilllnow p010](images/HandWrittenNotes/86tilllnow/page-010.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="420"> | Use with `MOV` examples and direct/register addressing examples. |
+| [86tilllnow p011](images/HandWrittenNotes/86tilllnow/page-011.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="420"> | Use with `XLAT`, `IN`, `OUT`, port addressing, and memory-versus-I/O distinction. |
+| [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="420"> | Use with branch instructions and the 8085 versus 8086 comparison. |
 
 ## 1. 8086 Flag Register and Single-Step Mode
 
@@ -43,7 +43,7 @@ Day 10 continues the 8086 introduction from Day 9. The screenshots move from arc
 
 ![Direction flag and interrupt flag](images/Day%2010/Screenshot%202026-06-10%20113801.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="720">
 
 The screenshot asks which 8086 flag bit is used to put the processor in single-step mode. The answer is:
 
@@ -77,9 +77,9 @@ The 8086 flag register contains status flags and control flags.
 
 ![Addressing mode examples close-up](images/Day%2010/Screenshot%202026-06-10%20115108.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="720">
 
-<img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="720">
 
 An addressing mode tells the processor where the operand is.
 
@@ -134,7 +134,7 @@ The difference:
 
 ## 3. Other 8086 Addressing Ideas
 
-<img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="720">
 
 The handwritten notes expand beyond direct/register addressing into common 8086 effective-address forms:
 
@@ -233,7 +233,7 @@ The vector table does not store the ISR code itself. It stores the address of th
 
 ![OUT instruction](images/Day%2010/Screenshot%202026-06-10%20125135.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="720">
 
 8086 is not accumulator-centered in the same way as 8085. Many instructions can use several general-purpose registers.
 
@@ -405,7 +405,7 @@ before string instructions.
 
 ## 12. 8085 to 8086 Comparison
 
-<img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="420">
+<img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="720">
 
 | Feature | 8085 | 8086 |
 | --- | --- | --- |
