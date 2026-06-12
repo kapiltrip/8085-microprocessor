@@ -14,147 +14,225 @@ Day 5 is mostly about careful instruction execution. The screenshots cover subtr
 
 ## Handwritten Notes Linked To Day 5
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
 
 ### [till47 p011](images/HandWrittenNotes/till47/page-011.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-011.jpg"><img src="images/HandWrittenNotes/till47/page-011.jpg" alt="till47 p011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SUB`, `SBB`, borrow, carry, and signed result. Use with `SUB` and `SBB`. Carry means borrow in subtraction. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `SUB`, `SBB`, borrow, carry, and signed result. Use with `SUB` and `SBB`. Carry means borrow in subtraction. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For subtraction and comparison, work in 8-bit arithmetic. A negative intermediate result is represented in two's complement, and `CMP` changes flags without changing the accumulator.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p012](images/HandWrittenNotes/till47/page-012.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-012.jpg"><img src="images/HandWrittenNotes/till47/page-012.jpg" alt="till47 p012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SUI`, two's-complement subtraction, carry, sign, and auxiliary carry. Use with `SUI` and two's-complement result. Convert negative results back into 8-bit hex. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `SUI`, two's-complement subtraction, carry, sign, and auxiliary carry. Use with `SUI` and two's-complement result. Convert negative results back into 8-bit hex. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For subtraction and comparison, work in 8-bit arithmetic. A negative intermediate result is represented in two's complement, and `CMP` changes flags without changing the accumulator.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p013](images/HandWrittenNotes/till47/page-013.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-013.jpg"><img src="images/HandWrittenNotes/till47/page-013.jpg" alt="till47 p013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INR`, `DCR`, `INX`, and `DCX`. Use with `INR`, `DCR`, `INX`, and `DCX`. Remember `INX/DCX` affect register pairs and do not update all normal arithmetic flags. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `INR`, `DCR`, `INX`, and `DCX`. Use with `INR`, `DCR`, `INX`, and `DCX`. Remember `INX/DCX` affect register pairs and do not update all normal arithmetic flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For increment/decrement and BCD pages, note exactly which flags are affected. Register-pair changes and decimal correction have different flag behavior from ordinary 8-bit addition.
+**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p014](images/HandWrittenNotes/till47/page-014.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-014.jpg"><img src="images/HandWrittenNotes/till47/page-014.jpg" alt="till47 p014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `DAA`, BCD correction, and auxiliary carry. Use with `DAA`. The auxiliary carry and lower nibble decide whether BCD correction is needed. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `DAA`, BCD correction, and auxiliary carry. Use with `DAA`. The auxiliary carry and lower nibble decide whether BCD correction is needed. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For increment/decrement and BCD pages, note exactly which flags are affected. Register-pair changes and decimal correction have different flag behavior from ordinary 8-bit addition.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p015](images/HandWrittenNotes/till47/page-015.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-015.jpg"><img src="images/HandWrittenNotes/till47/page-015.jpg" alt="till47 p015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Arithmetic comparison, borrow, sign, and zero flags. Use with compare and subtraction. The flag result tells relation: `CY=1` means accumulator was smaller. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Arithmetic comparison, borrow, sign, and zero flags. Use with compare and subtraction. The flag result tells relation: `CY=1` means accumulator was smaller. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For subtraction and comparison, work in 8-bit arithmetic. A negative intermediate result is represented in two's complement, and `CMP` changes flags without changing the accumulator.
+**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p016](images/HandWrittenNotes/till47/page-016.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-016.jpg"><img src="images/HandWrittenNotes/till47/page-016.jpg" alt="till47 p016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INR M`, memory increment, and flags. Use with `INR M`. The operand is memory at `HL`, not the register pair itself. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `INR M`, memory increment, and flags. Use with `INR M`. The operand is memory at `HL`, not the register pair itself. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p017](images/HandWrittenNotes/till47/page-017.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-017.jpg"><img src="images/HandWrittenNotes/till47/page-017.jpg" alt="till47 p017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `DAA`, `XRA`, `DAD`, and program trace. Use with mixed traces involving `DAA`, `XRA`, and `DAD`. Separate 8-bit flag behavior from 16-bit register-pair behavior. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `DAA`, `XRA`, `DAD`, and program trace. Use with mixed traces involving `DAA`, `XRA`, and `DAD`. Separate 8-bit flag behavior from 16-bit register-pair behavior. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For increment/decrement and BCD pages, note exactly which flags are affected. Register-pair changes and decimal correction have different flag behavior from ordinary 8-bit addition. For logical instructions, think bit by bit. `ANA`, `ORA`, and `XRA` form the new accumulator value from corresponding bits; `CMA` flips bits without being an arithmetic subtraction.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
+
+**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p018](images/HandWrittenNotes/till47/page-018.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-018.jpg"><img src="images/HandWrittenNotes/till47/page-018.jpg" alt="till47 p018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Logical instructions and complement behavior. Use with logical operations. Complement and logical instructions are bit-level operations, not decimal arithmetic. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Logical instructions and complement behavior. Use with logical operations. Complement and logical instructions are bit-level operations, not decimal arithmetic. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For logical instructions, think bit by bit. `ANA`, `ORA`, and `XRA` form the new accumulator value from corresponding bits; `CMA` flips bits without being an arithmetic subtraction.
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p019](images/HandWrittenNotes/till47/page-019.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-019.jpg"><img src="images/HandWrittenNotes/till47/page-019.jpg" alt="till47 p019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `ORA`, `ANA`, memory operands, and logical flags. Use with `ANA` and `ORA`. These instructions use the accumulator and update flags from the logical result. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `ORA`, `ANA`, memory operands, and logical flags. Use with `ANA` and `ORA`. These instructions use the accumulator and update flags from the logical result. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p020](images/HandWrittenNotes/till47/page-020.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-020.jpg"><img src="images/HandWrittenNotes/till47/page-020.jpg" alt="till47 p020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XRA`, `XRI`, and `CMA`. Use with `XRA`, `XRI`, and `CMA`. XOR with self clears a value; complement flips every bit. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `XRA`, `XRI`, and `CMA`. Use with `XRA`, `XRI`, and `CMA`. XOR with self clears a value; complement flips every bit. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For logical instructions, think bit by bit. `ANA`, `ORA`, and `XRA` form the new accumulator value from corresponding bits; `CMA` flips bits without being an arithmetic subtraction.
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p021](images/HandWrittenNotes/till47/page-021.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-021.jpg"><img src="images/HandWrittenNotes/till47/page-021.jpg" alt="till47 p021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `CMP`, `STC`, `CMC`, and rotate carry behavior. Use with `CMP`, `STC`, and `CMC`. `CMP` affects flags only; `STC/CMC` affect carry directly. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `CMP`, `STC`, `CMC`, and rotate carry behavior. Use with `CMP`, `STC`, and `CMC`. `CMP` affects flags only; `STC/CMC` affect carry directly. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For subtraction and comparison, work in 8-bit arithmetic. A negative intermediate result is represented in two's complement, and `CMP` changes flags without changing the accumulator. For rotates, draw the accumulator bits and the carry bit before each step. The important distinction is whether the rotation is circular inside the accumulator or passes through `CY`.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+
+**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p022](images/HandWrittenNotes/till47/page-022.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-022.jpg"><img src="images/HandWrittenNotes/till47/page-022.jpg" alt="till47 p022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `RRC`, `RAL`, and accumulator/carry rotation. Use with `RRC` and `RAL`. Mark the carry bit outside the accumulator before rotating. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `RRC`, `RAL`, and accumulator/carry rotation. Use with `RRC` and `RAL`. Mark the carry bit outside the accumulator before rotating. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For rotates, draw the accumulator bits and the carry bit before each step. The important distinction is whether the rotation is circular inside the accumulator or passes through `CY`.
+**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p023](images/HandWrittenNotes/till47/page-023.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-023.jpg"><img src="images/HandWrittenNotes/till47/page-023.jpg" alt="till47 p023 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Branch instructions and conditional jump table. Use with branch instructions. Branch conditions are just named tests of flag bits. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Branch instructions and conditional jump table. Use with branch instructions. Branch conditions are just named tests of flag bits. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p024](images/HandWrittenNotes/till47/page-024.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-024.jpg"><img src="images/HandWrittenNotes/till47/page-024.jpg" alt="till47 p024 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Rotate/branch practice and carry tracing. Use with the rotate/branch practice screenshot. Trace `A` and `CY` after every rotate, then decide the jump. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Rotate/branch practice and carry tracing. Use with the rotate/branch practice screenshot. Trace `A` and `CY` after every rotate, then decide the jump. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For rotates, draw the accumulator bits and the carry bit before each step. The important distinction is whether the rotation is circular inside the accumulator or passes through `CY`. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
+
+**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
+
+**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ## 1. Subtraction and Borrow
 
