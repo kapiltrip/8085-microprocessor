@@ -28,101 +28,55 @@ Day 10 continues the 8086 introduction from Day 9. The screenshots move from arc
 
 ## Handwritten Notes Linked To Day 10
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
 ### [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-007.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" alt="86tilllnow p007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 flag register, trap/interrupt/direction flags, and stack addressing notes. Use with the flag screenshots. It records the flag register layout and control flags such as `TF`, `IF`, and `DF`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 flags include status flags and control flags. `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF` describe arithmetic/logical results. `TF` enables single-step trap behavior, `IF` controls maskable interrupt recognition, and `DF` controls string-instruction direction. Do not map the 8086 flag register directly onto the 8085 flag register; overflow, trap, interrupt, and direction behavior are important additions.
 
-**Flag meaning:** For the 8086 flag page, separate status flags from control flags. Status flags describe the result of arithmetic or logic, while `TF`, `IF`, and `DF` control processor behavior: single-step trapping, interrupt enabling, and string direction. That separation is the main reason the flag register is not just an arithmetic result register.
-
-**8086 status flags:** When the page asks you to interpret 8086 flags, use the 8086 names and operand size. `ZF`, `SF`, `PF`, `CF`, `AF`, and `OF` describe the result, while `TF`, `IF`, and `DF` control execution behavior. The safest habit is to compute the result first, then decide which status flags changed, and only then interpret control flags separately.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 stack references normally use the `SS` segment with `SP` or `BP` as the offset source. A push reduces `SP` before storing a word, and a pop reads the word before increasing `SP`. This is still stack-in-memory behavior, but the 8086 explanation must include segmentation because the physical stack address is formed from `SS:SP` or `SS:BP`.
 
 ### [86tilllnow p008](images/HandWrittenNotes/86tilllnow/page-008.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-008.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" alt="86tilllnow p008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 addressing modes, segment offset, physical address, and direct addressing. Use with addressing modes. It connects segment:offset, physical address, direct addressing, and displacement. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 physical addresses are formed from `segment:offset`. The segment value is shifted left four bits and the 16-bit offset is added: `physical = segment x 10H + offset`. This produces a 20-bit address and allows access to 1 MB even though most visible registers are 16 bits. Different segment:offset pairs can refer to the same physical address.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-**8086 addressing:** Keep segment and offset separate. Base, index, and displacement form an effective offset, and the segment register supplies the segment base used to form the physical address. This is why the same offset can refer to different physical memory depending on the active segment register.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 ### [86tilllnow p009](images/HandWrittenNotes/86tilllnow/page-009.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-009.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" alt="86tilllnow p009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Register, index, base, base-index, and interrupt notes. Use with register/index/base addressing and interrupt notes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-**8086 addressing:** Keep segment and offset separate. Base, index, and displacement form an effective offset, and the segment register supplies the segment base used to form the physical address. This is why the same offset can refer to different physical memory depending on the active segment register.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 interrupts use a vector table rather than the 8085 restart-address pattern. Each interrupt type has a four-byte entry containing offset and segment, so the vector address is `type x 4`. `NMI` is non-maskable, `INTR` is maskable through `IF`, and software `INT n` uses the same vectoring idea. That is why 8086 interrupt tracing must load both `CS` and `IP`, not just a single 16-bit program counter.
 
 ### [86tilllnow p010](images/HandWrittenNotes/86tilllnow/page-010.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-010.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" alt="86tilllnow p010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MOV` examples, direct/register addressing, and instruction operands. Use with `MOV` examples and direct/register addressing examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for 8086 data-transfer instructions, identify source, destination, operand size, and address form. `MOV` copies between allowed register/memory forms but not arbitrary memory-to-memory forms. `IN` and `OUT` use I/O port addressing. `XLAT` performs a table lookup using `AL` as an index, so the effective table address must be derived before the moved byte is known.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**8086 data movement:** For these 8086 data-transfer notes, separate register-to-register movement, memory operands, I/O port access, and table lookup. `MOV` copies between allowed registers or memory operands, `IN` and `OUT` use I/O port addressing, and `XLAT` uses a table-style lookup based on the accumulator and base address. The important point is still the same: identify the source, destination, and addressing form before deciding what value moves.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 ### [86tilllnow p011](images/HandWrittenNotes/86tilllnow/page-011.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-011.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" alt="86tilllnow p011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XLAT`, `IN`, `OUT`, I/O port addressing, and memory/addressing distinction. Use with `XLAT`, `IN`, `OUT`, port addressing, and memory-versus-I/O distinction. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for 8086 data-transfer instructions, identify source, destination, operand size, and address form. `MOV` copies between allowed register/memory forms but not arbitrary memory-to-memory forms. `IN` and `OUT` use I/O port addressing. `XLAT` performs a table lookup using `AL` as an index, so the effective table address must be derived before the moved byte is known.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-**8086 data movement:** For these 8086 data-transfer notes, separate register-to-register movement, memory operands, I/O port access, and table lookup. `MOV` copies between allowed registers or memory operands, `IN` and `OUT` use I/O port addressing, and `XLAT` uses a table-style lookup based on the accumulator and base address. The important point is still the same: identify the source, destination, and addressing form before deciding what value moves.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 ### [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-012.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" alt="86tilllnow p012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Multiple branching and 8086 versus 8085 bus/address comparison. Use with branch instructions and the 8085 versus 8086 comparison. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 branch instructions modify instruction flow by changing `IP` and sometimes `CS`. Short and near branches stay in the current code segment; far transfers also change `CS`. Conditional branches test flags such as `ZF`, `CF`, `SF`, and `OF`, so signed and unsigned comparisons use different branch conditions even if the previous comparison instruction was the same.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
-
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Compared with the 8085, the 8086 has a wider external data bus, a 20-bit address space, segmentation, a prefetch queue, richer addressing modes, and a more complex flag model. That is why an 8086 trace often begins by forming `segment:offset`, while an 8085 trace usually begins with a direct 16-bit address or a register-pair pointer.
 
 ## 1. 8086 Flag Register and Single-Step Mode
 

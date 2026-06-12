@@ -15,135 +15,97 @@ Day 3 focuses on how the 8085 moves data between registers and memory, how `HL` 
 
 ## Handwritten Notes Linked To Day 3
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
 ### [till47 p001](images/HandWrittenNotes/till47/page-001.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-001.jpg"><img src="images/HandWrittenNotes/till47/page-001.jpg" alt="till47 p001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction byte length, addressing modes, `MVI`, `LDA`, and `JMP`. Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+Data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 ### [till47 p002](images/HandWrittenNotes/till47/page-002.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-002.jpg"><img src="images/HandWrittenNotes/till47/page-002.jpg" alt="till47 p002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Implicit, memory, and register addressing plus flag layout. Use with register and memory addressing. It connects `M`, register operands, and flag layout. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Keep flag layout separate from addressing mode. Addressing mode tells where the operand comes from; flags tell what happened after an ALU-style result. A data-transfer instruction may use an addressing mode without changing flags, so a later conditional branch may still be testing older flag values.
 
 ### [till47 p003](images/HandWrittenNotes/till47/page-003.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-003.jpg"><img src="images/HandWrittenNotes/till47/page-003.jpg" alt="till47 p003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 ### [till47 p004](images/HandWrittenNotes/till47/page-004.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-004.jpg"><img src="images/HandWrittenNotes/till47/page-004.jpg" alt="till47 p004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MVI M,data`, `LXI H`, and register-indirect memory access. Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for `MVI M,data`, `M` is not a separate register. It means `[HL]`, the memory byte at the address currently stored in the `HL` pair. Therefore `LXI H,addr16` must come first when the target memory address is not already in `HL`; `LXI` loads the pointer, and `MVI M,data` writes the immediate byte through that pointer. The instruction bytes and data/address bytes must be separated when tracing: `LXI H,2050H` fetches opcode, low byte `50H`, high byte `20H`; then `MVI M,32H` fetches its opcode and data byte `32H`, and writes `32H` into memory location `2050H`.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+The timing follows the bus cycles. `LXI H,addr16` is opcode fetch 4T + low-byte memory read 3T + high-byte memory read 3T = 10T. `MVI M,data` is opcode fetch 4T + immediate-byte memory read 3T + memory write to `[HL]` 3T = 10T. `MVI B,data` lacks that final external memory write, so it is shorter even though the mnemonic family is the same.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LXI rp,data16` loads a 16-bit register pair using the two bytes after the opcode. The low byte is fetched first and loaded into the lower register of the pair; the high byte is fetched next and loaded into the higher register. For `LXI H,2050H`, the final state is `H=20H`, `L=50H`, so `M` now refers to memory address `2050H`.
 
 ### [till47 p005](images/HandWrittenNotes/till47/page-005.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-005.jpg"><img src="images/HandWrittenNotes/till47/page-005.jpg" alt="till47 p005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about One-, two-, and three-byte instructions with `LDA`. Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+Data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 ### [till47 p006](images/HandWrittenNotes/till47/page-006.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-006.jpg"><img src="images/HandWrittenNotes/till47/page-006.jpg" alt="till47 p006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `STAX`, and register-pair indirect addressing. Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LDAX` and `STAX` use register-pair indirect addressing through `BC` or `DE`; `MOV A,M` and `MOV M,A` use `HL` through the symbol `M`. The effective address is not stored in the instruction bytes. The opcode selects which pair supplies the address, and the bus performs a memory read or write at that 16-bit address.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LDAX` and `STAX` are restricted in the 8085: they use `BC` or `DE` as the pointer, not `HL`. If the handwritten example changes `B/C` or `D/E` before the instruction, the effective memory address changes even though the instruction mnemonic is unchanged.
 
 ### [till47 p007](images/HandWrittenNotes/till47/page-007.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-007.jpg"><img src="images/HandWrittenNotes/till47/page-007.jpg" alt="till47 p007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LHLD`, `SHLD`, and low-byte/high-byte order. Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LHLD addr` and `SHLD addr` are direct 16-bit memory transfers involving `HL`. The address bytes are part of the instruction, low byte first. `LHLD 2050H` loads `L` from `2050H` and `H` from `2051H`; `SHLD 2050H` stores `L` at `2050H` and `H` at `2051H`. The low-address/low-register pairing is the key detail.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The timing comes from the extra bus transfers. `LHLD` and `SHLD` fetch the opcode and two address bytes, then perform two data memory reads or writes. That gives five machine cycles and commonly 16 T-states: `4T + 3T + 3T + 3T + 3T`.
 
 ### [till47 p008](images/HandWrittenNotes/till47/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-008.jpg"><img src="images/HandWrittenNotes/till47/page-008.jpg" alt="till47 p008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `XCHG`, and memory/register-pair tracing. Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LDAX` and `STAX` use register-pair indirect addressing through `BC` or `DE`; `MOV A,M` and `MOV M,A` use `HL` through the symbol `M`. The effective address is not stored in the instruction bytes. The opcode selects which pair supplies the address, and the bus performs a memory read or write at that 16-bit address.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
 ### [till47 p009](images/HandWrittenNotes/till47/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-009.jpg"><img src="images/HandWrittenNotes/till47/page-009.jpg" alt="till47 p009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LXI H`, `SHLD`, register-pair memory storage. Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LXI rp,data16` loads a 16-bit register pair using the two bytes after the opcode. The low byte is fetched first and loaded into the lower register of the pair; the high byte is fetched next and loaded into the higher register. For `LXI H,2050H`, the final state is `H=20H`, `L=50H`, so `M` now refers to memory address `2050H`.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LHLD addr` and `SHLD addr` are direct 16-bit memory transfers involving `HL`. The address bytes are part of the instruction, low byte first. `LHLD 2050H` loads `L` from `2050H` and `H` from `2051H`; `SHLD 2050H` stores `L` at `2050H` and `H` at `2051H`. The low-address/low-register pairing is the key detail.
 
 ### [till47 p010](images/HandWrittenNotes/till47/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-010.jpg"><img src="images/HandWrittenNotes/till47/page-010.jpg" alt="till47 p010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XCHG`, `DAD`, and register-pair trace practice. Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 ## 1. `MVI M,data`: Immediate Data to Memory Through `HL`
 

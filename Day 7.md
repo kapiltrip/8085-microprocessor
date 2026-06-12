@@ -23,123 +23,81 @@ Day 7 covers the May 31 interrupt screenshots. The main idea is that an interrup
 
 ## Handwritten Notes Linked To Day 7
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
 ### [85completed p004](images/HandWrittenNotes/85completed/page-004.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-004.jpg"><img src="images/HandWrittenNotes/85completed/page-004.jpg" alt="85completed p004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt purpose, ISR idea, subroutine comparison, and priority. Use with the ISR flow. It compares ordinary subroutine calls with interrupt-triggered service routines. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+`CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 ### [85completed p005](images/HandWrittenNotes/85completed/page-005.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-005.jpg"><img src="images/HandWrittenNotes/85completed/page-005.jpg" alt="85completed p005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Software/hardware interrupts, vectors, and `RST` address examples. Use with vector addresses. It shows `RST n` address calculation and software/hardware interrupt meaning. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Software interrupts execute a restart-like instruction, while hardware interrupts arrive through pins and priority logic. In both cases, the useful technical question is where control goes next and whether the return address or processor state must be preserved before the ISR runs.
 
 ### [85completed p006](images/HandWrittenNotes/85completed/page-006.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-006.jpg"><img src="images/HandWrittenNotes/85completed/page-006.jpg" alt="85completed p006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Maskable/non-maskable interrupts, `TRAP`, `RST 7.5/6.5/5.5`, and `INTR`. Use with the priority table. It separates `TRAP`, `RST 7.5`, `RST 6.5`, `RST 5.5`, and `INTR`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Flag meaning:** For the 8086 flag page, separate status flags from control flags. Status flags describe the result of arithmetic or logic, while `TF`, `IF`, and `DF` control processor behavior: single-step trapping, interrupt enabling, and string direction. That separation is the main reason the flag register is not just an arithmetic result register.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Maskable interrupts can be disabled or masked; non-maskable `TRAP` cannot be ignored by the normal interrupt-enable mechanism. `RST 7.5` is edge-sensitive and latched, while `RST 6.5` and `RST 5.5` are level-sensitive. That difference matters when deciding whether a request remains pending.
 
 ### [85completed p007](images/HandWrittenNotes/85completed/page-007.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-007.jpg"><img src="images/HandWrittenNotes/85completed/page-007.jpg" alt="85completed p007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INTR`, triggering, priority, ISR, and interrupt classes. Use with `INTR` and triggering levels. It explains edge versus level and why `INTR` is non-vectored. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`INTR` is non-vectored, so the external device or interrupt controller must provide the instruction during interrupt acknowledge. This is why `INTA` exists: it gives external hardware a controlled point to place the restart or call instruction on the data bus.
 
 ### [85completed p008](images/HandWrittenNotes/85completed/page-008.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-008.jpg"><img src="images/HandWrittenNotes/85completed/page-008.jpg" alt="85completed p008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt vector table, `EI`, pending interrupts, and maskable vectoring. Use with vector-table flow. It links `EI`, interrupt enable, pending state, and ISR branching. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Pending interrupt questions are state questions. `EI` enables maskable recognition after the instruction boundary, mask bits can still block individual restart lines, and priority decides which accepted request is serviced first. A pending request is not the same as an immediately executed request.
 
 ### [85completed p009](images/HandWrittenNotes/85completed/page-009.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-009.jpg"><img src="images/HandWrittenNotes/85completed/page-009.jpg" alt="85completed p009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SIM` mask byte and `RIM` interrupt-mask status. Use with `SIM/RIM` and mask bits. It shows how the accumulator controls interrupt masks. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
-
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For `SIM/RIM`, always decode the accumulator bit-by-bit. A mask bit, a pending bit, and the global interrupt-enable state are different facts. Mixing those fields is the usual reason students get interrupt-status questions wrong.
 
 ### [85completed p010](images/HandWrittenNotes/85completed/page-010.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-010.jpg"><img src="images/HandWrittenNotes/85completed/page-010.jpg" alt="85completed p010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt masking, priority, and vectored/non-vectored recap. Use as final interrupt recap: priority, vectoring, masking, and `TRAP` behavior. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Flag meaning:** For the 8086 flag page, separate status flags from control flags. Status flags describe the result of arithmetic or logic, while `TF`, `IF`, and `DF` control processor behavior: single-step trapping, interrupt enabling, and string direction. That separation is the main reason the flag register is not just an arithmetic result register.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 ### [85completed p019](images/HandWrittenNotes/85completed/page-019.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-019.jpg"><img src="images/HandWrittenNotes/85completed/page-019.jpg" alt="85completed p019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `RIM`, interrupt pending bits, mask bits, and PSW/flag recap. Use with `RIM`, mask status, pending bits, and the flag/PSW relationship. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+`SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 ## 1. Interrupt Service Routine Flow
 

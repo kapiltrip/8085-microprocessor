@@ -125,7 +125,7 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 
 ## Expanded Page Notes
 
-Each handwritten page is displayed as a large full-page image first, followed by a deeper explanation of the ideas written on that page. Click any page image to open the full-resolution extracted JPG.
+Each handwritten page is displayed as a large full-page image first. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
 
 ### `till46.pdf`
 
@@ -133,317 +133,221 @@ Each handwritten page is displayed as a large full-page image first, followed by
 
 <a href="images/HandWrittenNotes/till46/page-001.jpg"><img src="images/HandWrittenNotes/till46/page-001.jpg" alt="till46 page 001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about ALU, accumulator, flags, byte/nibble, carry and auxiliary carry. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
-
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till46 page 002](images/HandWrittenNotes/till46/page-002.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-002.jpg"><img src="images/HandWrittenNotes/till46/page-002.jpg" alt="till46 page 002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Accumulator, temporary registers, general-purpose registers, PC, SP, instruction register, timing/control. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
+The 8085 register set mixes 8-bit storage and 16-bit addressing. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit registers, but `BC`, `DE`, and `HL` can be used as 16-bit pairs. `HL` has the special memory role: `M` means the memory byte addressed by `HL`. `PC` and `SP` are 16-bit because program bytes and stack bytes live in the 64 KB memory space.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+Separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
+
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
 #### [till46 page 003](images/HandWrittenNotes/till46/page-003.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-003.jpg"><img src="images/HandWrittenNotes/till46/page-003.jpg" alt="till46 page 003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8085 features: 8-bit data, 16-bit addressing, tri-state bus, interrupts, serial I/O. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 is an 8-bit processor because its main data path and accumulator are 8 bits wide, but it can address 16-bit memory locations, giving `2^16 = 65536` byte addresses. The tri-state bus matters because the processor, memory, I/O devices, and DMA hardware may need to share external lines. Only the selected device should drive the bus; otherwise two devices could electrically fight each other.
 
-**System meaning:** These points define the basic size and capability of the 8085 system. An 8-bit data bus means one byte moves at a time, while a 16-bit address bus means the processor can select up to 64 KB of memory locations. Tri-state behavior matters because memory, I/O, and the processor may share buses, so only the selected device should drive the lines at one time.
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8085 serial I/O is bit-oriented. `SID` is the serial input data pin and `SOD` is the serial output data pin. They are controlled through `RIM` and `SIM`, not through normal parallel `IN` and `OUT` port transfers. Serial transfer moves one bit under software control; normal I/O ports move an 8-bit byte through the data bus.
 
 #### [till46 page 004](images/HandWrittenNotes/till46/page-004.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-004.jpg"><img src="images/HandWrittenNotes/till46/page-004.jpg" alt="till46 page 004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Pin diagram, clock, reset, `HOLD/HLDA`, `READY`, interrupts, address/data pins. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 pin diagram becomes technical when pins are grouped by bus role. `A8-A15` carry the high address. `AD0-AD7` are multiplexed: low address first, data later. `/RD` and `/WR` are active-low control outputs, while `IO/M`, `S1`, and `S0` identify the current bus cycle. `READY` can insert wait states, and `HOLD/HLDA` hands bus ownership to DMA hardware.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+DMA transfers data without the CPU executing every byte transfer. A DMA controller requests the bus with `HOLD`; the 8085 responds with `HLDA` after it can release the bus. During DMA, the controller supplies addresses and read/write control for memory or I/O. The CPU is temporarily not the bus master, which is why DMA improves block-transfer efficiency.
 
 #### [till46 page 005](images/HandWrittenNotes/till46/page-005.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-005.jpg"><img src="images/HandWrittenNotes/till46/page-005.jpg" alt="till46 page 005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `IO/M`, `S1`, `S0`, `ALE`, `/RD`, `/WR`, and status/control table. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `IO/M`, `S1`, and `S0` tell external hardware what type of machine cycle is occurring. That status decoding is how the system distinguishes opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, halt, and bus idle behavior. `/RD` and `/WR` then provide the actual read/write strobes, so status lines describe the cycle and control lines perform the transfer.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+`ALE` exists because the lower address and data share `AD0-AD7`. During the first T-state of a bus cycle the low address is valid on those pins, so an external latch captures it when `ALE` pulses. After that, the same pins can become the bidirectional data bus. Without the latch, memory decoding would lose `A0-A7` before the read or write finished.
 
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
 #### [till46 page 006](images/HandWrittenNotes/till46/page-006.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-006.jpg"><img src="images/HandWrittenNotes/till46/page-006.jpg" alt="till46 page 006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Multiplexed address/data bus, latch, `SID/SOD`, and interrupt pin grouping. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `ALE` exists because the lower address and data share `AD0-AD7`. During the first T-state of a bus cycle the low address is valid on those pins, so an external latch captures it when `ALE` pulses. After that, the same pins can become the bidirectional data bus. Without the latch, memory decoding would lose `A0-A7` before the read or write finished.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8085 serial I/O is bit-oriented. `SID` is the serial input data pin and `SOD` is the serial output data pin. They are controlled through `RIM` and `SIM`, not through normal parallel `IN` and `OUT` port transfers. Serial transfer moves one bit under software control; normal I/O ports move an 8-bit byte through the data bus.
 
 #### [till46 page 007](images/HandWrittenNotes/till46/page-007.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-007.jpg"><img src="images/HandWrittenNotes/till46/page-007.jpg" alt="till46 page 007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8085 interrupt vector address calculation and interrupt priority. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For vector questions, derive the address instead of memorizing the table blindly. A restart interrupt uses `RST n -> n x 8`, so `RST 5.5`, `RST 6.5`, and `RST 7.5` map to `002CH`, `0034H`, and `003CH`. Priority and masking then decide whether that vector is actually accepted.
 
 #### [till46 page 008](images/HandWrittenNotes/till46/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-008.jpg"><img src="images/HandWrittenNotes/till46/page-008.jpg" alt="till46 page 008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory mapped I/O and I/O mapped I/O overview. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory-mapped I/O and I/O-mapped I/O differ in address space and control signaling. Memory-mapped I/O uses ordinary 16-bit memory addresses and memory-style read/write cycles. I/O-mapped I/O uses `IN` and `OUT` with an 8-bit port address and I/O control cycles. The data bus still carries the byte; the difference is how external decoding selects memory versus a device.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The practical exam distinction is address width and instruction choice. Memory-mapped I/O can use memory instructions and the full 16-bit address bus; I/O-mapped I/O uses the `IN/OUT` instruction format and an 8-bit port number. The external decoder and `IO/M` status decide which device responds.
 
 #### [till46 page 009](images/HandWrittenNotes/till46/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-009.jpg"><img src="images/HandWrittenNotes/till46/page-009.jpg" alt="till46 page 009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `ALE`, machine cycle, `T`-state, and multiplexed bus timing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `ALE` exists because the lower address and data share `AD0-AD7`. During the first T-state of a bus cycle the low address is valid on those pins, so an external latch captures it when `ALE` pulses. After that, the same pins can become the bidirectional data bus. Without the latch, memory decoding would lose `A0-A7` before the read or write finished.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
-
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
 #### [till46 page 010](images/HandWrittenNotes/till46/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-010.jpg"><img src="images/HandWrittenNotes/till46/page-010.jpg" alt="till46 page 010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction cycle versus machine cycle and status line decoding. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `IO/M`, `S1`, and `S0` tell external hardware what type of machine cycle is occurring. That status decoding is how the system distinguishes opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, halt, and bus idle behavior. `/RD` and `/WR` then provide the actual read/write strobes, so status lines describe the cycle and control lines perform the transfer.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
 #### [till46 page 011](images/HandWrittenNotes/till46/page-011.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-011.jpg"><img src="images/HandWrittenNotes/till46/page-011.jpg" alt="till46 page 011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Machine cycles, `T`-states, opcode fetch, memory read, and `ADD B` timing idea. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Opcode fetch is not just any memory read. The `PC` is placed on the address bus, `ALE` latches the low address, `/RD` enables memory output, and the opcode enters the instruction register. The CPU then decodes that byte to know whether more bytes, a memory access, an I/O cycle, a stack operation, or only internal execution is required.
 
 #### [till46 page 012](images/HandWrittenNotes/till46/page-012.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-012.jpg"><img src="images/HandWrittenNotes/till46/page-012.jpg" alt="till46 page 012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Word, instruction, object code, address bus, data bus, and opcode idea. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Main reading:** Treat this page as a complete revision unit rather than a label. Identify the terms written on it, connect any arrows or tables, and rewrite the example in your own steps so the page becomes usable during problem solving.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+When object code is placed in memory, `PC` steps through bytes, not mnemonics. If the opcode says the instruction has operand bytes, the following memory locations are consumed as data/address bytes. This is why a trace must increment `PC` by instruction length before deciding the next instruction address.
 
 #### [till46 page 013](images/HandWrittenNotes/till46/page-013.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-013.jpg"><img src="images/HandWrittenNotes/till46/page-013.jpg" alt="till46 page 013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Opcode fetch timing diagram and `MVI B,05H` cycle sequence. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+Opcode fetch is not just any memory read. The `PC` is placed on the address bus, `ALE` latches the low address, `/RD` enables memory output, and the opcode enters the instruction register. The CPU then decodes that byte to know whether more bytes, a memory access, an I/O cycle, a stack operation, or only internal execution is required.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`MVI B,05H` is a clean timing example because the first byte is the opcode and the second byte is immediate data. The CPU fetches the opcode from the address in `PC`, increments `PC`, then performs a memory read for `05H` and loads it into `B`. The data byte is not executed as an instruction; it is consumed as the operand selected by the opcode.
 
 #### [till46 page 014](images/HandWrittenNotes/till46/page-014.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-014.jpg"><img src="images/HandWrittenNotes/till46/page-014.jpg" alt="till46 page 014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MVI B,05H`, immediate data byte, memory placement, and I/O read. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `MVI B,05H` is a clean timing example because the first byte is the opcode and the second byte is immediate data. The CPU fetches the opcode from the address in `PC`, increments `PC`, then performs a memory read for `05H` and loads it into `B`. The data byte is not executed as an instruction; it is consumed as the operand selected by the opcode.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
 #### [till46 page 015](images/HandWrittenNotes/till46/page-015.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-015.jpg"><img src="images/HandWrittenNotes/till46/page-015.jpg" alt="till46 page 015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction set organization and addressing modes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
 #### [till46 page 016](images/HandWrittenNotes/till46/page-016.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-016.jpg"><img src="images/HandWrittenNotes/till46/page-016.jpg" alt="till46 page 016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory interfacing, chip select, and address decoding. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory interfacing is mostly address decoding. A `4K x 8` chip has 4096 byte locations, so it needs 12 low-order address lines because `2^12 = 4096`. Higher address lines decide which chip or block is enabled. Full decoding uses enough high address bits to make one unique range; partial decoding can make the same chip respond at mirrored address ranges.
 
-**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For chip-select problems, write the address range in binary and mark which high-order bits are constant. Those constant high bits feed the decoder. The low bits go into the chip as internal address inputs, so changing them selects a location inside the chip rather than selecting a different chip.
 
 #### [till46 page 017](images/HandWrittenNotes/till46/page-017.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-017.jpg"><img src="images/HandWrittenNotes/till46/page-017.jpg" alt="till46 page 017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about ROM interfacing, address decoder, and address range examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory interfacing is mostly address decoding. A `4K x 8` chip has 4096 byte locations, so it needs 12 low-order address lines because `2^12 = 4096`. Higher address lines decide which chip or block is enabled. Full decoding uses enough high address bits to make one unique range; partial decoding can make the same chip respond at mirrored address ranges.
 
-**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A ROM interface example is solved by separating capacity from placement. Capacity gives the number of low address lines. Placement gives the high address pattern. The decoder asserts chip select only when the high address bits match that pattern and the processor performs a memory read cycle.
 
 #### [till46 page 018](images/HandWrittenNotes/till46/page-018.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-018.jpg"><img src="images/HandWrittenNotes/till46/page-018.jpg" alt="till46 page 018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory mapped versus I/O mapped I/O, port width, and `IN/OUT`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory-mapped I/O and I/O-mapped I/O differ in address space and control signaling. Memory-mapped I/O uses ordinary 16-bit memory addresses and memory-style read/write cycles. I/O-mapped I/O uses `IN` and `OUT` with an 8-bit port address and I/O control cycles. The data bus still carries the byte; the difference is how external decoding selects memory versus a device.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+In I/O-mapped transfer, the accumulator is usually the data endpoint: `IN port` loads `A`, and `OUT port` sends `A`. In memory-mapped transfer, ordinary memory instructions can target a device address, but that also consumes part of the memory address space.
 
 #### [till46 page 019](images/HandWrittenNotes/till46/page-019.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-019.jpg"><img src="images/HandWrittenNotes/till46/page-019.jpg" alt="till46 page 019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `4K x 8`, address-line count, capacity, and highest-address calculation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory interfacing is mostly address decoding. A `4K x 8` chip has 4096 byte locations, so it needs 12 low-order address lines because `2^12 = 4096`. Higher address lines decide which chip or block is enabled. Full decoding uses enough high address bits to make one unique range; partial decoding can make the same chip respond at mirrored address ranges.
 
-**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Highest-address questions use `last = base + size - 1`. For `4K`, the size is `1000H`, not decimal 4000. If the starting address is aligned, the low 12 bits run from `000H` to `FFFH` while the decoded high bits remain fixed.
 
 #### [till46 page 020](images/HandWrittenNotes/till46/page-020.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-020.jpg"><img src="images/HandWrittenNotes/till46/page-020.jpg" alt="till46 page 020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Address decoding logic and chip-select generation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory interfacing is mostly address decoding. A `4K x 8` chip has 4096 byte locations, so it needs 12 low-order address lines because `2^12 = 4096`. Higher address lines decide which chip or block is enabled. Full decoding uses enough high address bits to make one unique range; partial decoding can make the same chip respond at mirrored address ranges.
 
-**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Partial decoding is a common hidden issue. If not all high-order lines are decoded, multiple address ranges can select the same chip. Full decoding avoids this aliasing by using enough high bits to make exactly one intended address block active.
 
 #### [till46 page 021](images/HandWrittenNotes/till46/page-021.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-021.jpg"><img src="images/HandWrittenNotes/till46/page-021.jpg" alt="till46 page 021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDA/STA`, instruction cycle, machine cycle, and T-state relation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
-
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
 #### [till46 page 022](images/HandWrittenNotes/till46/page-022.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-022.jpg"><img src="images/HandWrittenNotes/till46/page-022.jpg" alt="till46 page 022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction-set classification by length, operation, and addressing mode. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Classification by length, operation, and addressing mode is useful because it predicts bus activity. A data-transfer instruction may be one byte if register-only, two bytes if immediate/port-based, or three bytes if a 16-bit address is embedded in the instruction.
 
 #### [till46 page 023](images/HandWrittenNotes/till46/page-023.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-023.jpg"><img src="images/HandWrittenNotes/till46/page-023.jpg" alt="till46 page 023 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Register notation, memory symbol `M`, flags, and addressing symbols. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 register set mixes 8-bit storage and 16-bit addressing. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit registers, but `BC`, `DE`, and `HL` can be used as 16-bit pairs. `HL` has the special memory role: `M` means the memory byte addressed by `HL`. `PC` and `SP` are 16-bit because program bytes and stack bytes live in the 64 KB memory space.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
 #### [till46 page 024](images/HandWrittenNotes/till46/page-024.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-024.jpg"><img src="images/HandWrittenNotes/till46/page-024.jpg" alt="till46 page 024 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Control-signal generation and one-byte instruction examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Control-signal generation is the bridge between the decoded instruction and the outside bus. After opcode fetch, the control unit chooses whether to assert memory read, memory write, I/O read, I/O write, interrupt acknowledge, or no external transfer. That is why a one-byte instruction can still take multiple T-states: the CPU must fetch and decode the opcode even when no explicit operand byte follows.
 
 ### `till47.pdf`
 
@@ -451,329 +355,219 @@ What to be careful about: do not reduce this page to one sentence. The useful re
 
 <a href="images/HandWrittenNotes/till47/page-001.jpg"><img src="images/HandWrittenNotes/till47/page-001.jpg" alt="till47 page 001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction byte length, addressing modes, `MVI`, `LDA`, and `JMP`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+Data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 #### [till47 page 002](images/HandWrittenNotes/till47/page-002.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-002.jpg"><img src="images/HandWrittenNotes/till47/page-002.jpg" alt="till47 page 002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Implicit, memory, and register addressing plus flag layout. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Keep flag layout separate from addressing mode. Addressing mode tells where the operand comes from; flags tell what happened after an ALU-style result. A data-transfer instruction may use an addressing mode without changing flags, so a later conditional branch may still be testing older flag values.
 
 #### [till47 page 003](images/HandWrittenNotes/till47/page-003.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-003.jpg"><img src="images/HandWrittenNotes/till47/page-003.jpg" alt="till47 page 003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 #### [till47 page 004](images/HandWrittenNotes/till47/page-004.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-004.jpg"><img src="images/HandWrittenNotes/till47/page-004.jpg" alt="till47 page 004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MVI M,data`, `LXI H`, and register-indirect memory access. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for `MVI M,data`, `M` is not a separate register. It means `[HL]`, the memory byte at the address currently stored in the `HL` pair. Therefore `LXI H,addr16` must come first when the target memory address is not already in `HL`; `LXI` loads the pointer, and `MVI M,data` writes the immediate byte through that pointer. The instruction bytes and data/address bytes must be separated when tracing: `LXI H,2050H` fetches opcode, low byte `50H`, high byte `20H`; then `MVI M,32H` fetches its opcode and data byte `32H`, and writes `32H` into memory location `2050H`.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+The timing follows the bus cycles. `LXI H,addr16` is opcode fetch 4T + low-byte memory read 3T + high-byte memory read 3T = 10T. `MVI M,data` is opcode fetch 4T + immediate-byte memory read 3T + memory write to `[HL]` 3T = 10T. `MVI B,data` lacks that final external memory write, so it is shorter even though the mnemonic family is the same.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LXI rp,data16` loads a 16-bit register pair using the two bytes after the opcode. The low byte is fetched first and loaded into the lower register of the pair; the high byte is fetched next and loaded into the higher register. For `LXI H,2050H`, the final state is `H=20H`, `L=50H`, so `M` now refers to memory address `2050H`.
 
 #### [till47 page 005](images/HandWrittenNotes/till47/page-005.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-005.jpg"><img src="images/HandWrittenNotes/till47/page-005.jpg" alt="till47 page 005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about One-, two-, and three-byte instructions with `LDA`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+Data-transfer instructions do not all cost the same in hardware. Register-to-register movement happens inside the CPU after opcode fetch. Direct memory instructions such as `LDA` and `STA` must fetch two address bytes and then perform a memory read or write. `LHLD` and `SHLD` transfer two memory bytes because `HL` is 16 bits while memory is byte-wide.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Direct addressing and register-indirect addressing differ in where the effective address comes from. `LDA 2050H` contains the address bytes in the instruction. `MOV A,M`, `MOV M,R`, or `MVI M,data` does not contain the final memory address; the address is already in `HL`. Changing `HL` changes the accessed memory byte without changing the opcode.
 
 #### [till47 page 006](images/HandWrittenNotes/till47/page-006.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-006.jpg"><img src="images/HandWrittenNotes/till47/page-006.jpg" alt="till47 page 006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `STAX`, and register-pair indirect addressing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LDAX` and `STAX` use register-pair indirect addressing through `BC` or `DE`; `MOV A,M` and `MOV M,A` use `HL` through the symbol `M`. The effective address is not stored in the instruction bytes. The opcode selects which pair supplies the address, and the bus performs a memory read or write at that 16-bit address.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LDAX` and `STAX` are restricted in the 8085: they use `BC` or `DE` as the pointer, not `HL`. If the handwritten example changes `B/C` or `D/E` before the instruction, the effective memory address changes even though the instruction mnemonic is unchanged.
 
 #### [till47 page 007](images/HandWrittenNotes/till47/page-007.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-007.jpg"><img src="images/HandWrittenNotes/till47/page-007.jpg" alt="till47 page 007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LHLD`, `SHLD`, and low-byte/high-byte order. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LHLD addr` and `SHLD addr` are direct 16-bit memory transfers involving `HL`. The address bytes are part of the instruction, low byte first. `LHLD 2050H` loads `L` from `2050H` and `H` from `2051H`; `SHLD 2050H` stores `L` at `2050H` and `H` at `2051H`. The low-address/low-register pairing is the key detail.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The timing comes from the extra bus transfers. `LHLD` and `SHLD` fetch the opcode and two address bytes, then perform two data memory reads or writes. That gives five machine cycles and commonly 16 T-states: `4T + 3T + 3T + 3T + 3T`.
 
 #### [till47 page 008](images/HandWrittenNotes/till47/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-008.jpg"><img src="images/HandWrittenNotes/till47/page-008.jpg" alt="till47 page 008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `XCHG`, and memory/register-pair tracing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LDAX` and `STAX` use register-pair indirect addressing through `BC` or `DE`; `MOV A,M` and `MOV M,A` use `HL` through the symbol `M`. The effective address is not stored in the instruction bytes. The opcode selects which pair supplies the address, and the bus performs a memory read or write at that 16-bit address.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
 #### [till47 page 009](images/HandWrittenNotes/till47/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-009.jpg"><img src="images/HandWrittenNotes/till47/page-009.jpg" alt="till47 page 009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LXI H`, `SHLD`, register-pair memory storage. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `LXI rp,data16` loads a 16-bit register pair using the two bytes after the opcode. The low byte is fetched first and loaded into the lower register of the pair; the high byte is fetched next and loaded into the higher register. For `LXI H,2050H`, the final state is `H=20H`, `L=50H`, so `M` now refers to memory address `2050H`.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`LHLD addr` and `SHLD addr` are direct 16-bit memory transfers involving `HL`. The address bytes are part of the instruction, low byte first. `LHLD 2050H` loads `L` from `2050H` and `H` from `2051H`; `SHLD 2050H` stores `L` at `2050H` and `H` at `2051H`. The low-address/low-register pairing is the key detail.
 
 #### [till47 page 010](images/HandWrittenNotes/till47/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-010.jpg"><img src="images/HandWrittenNotes/till47/page-010.jpg" alt="till47 page 010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XCHG`, `DAD`, and register-pair trace practice. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till47 page 011](images/HandWrittenNotes/till47/page-011.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-011.jpg"><img src="images/HandWrittenNotes/till47/page-011.jpg" alt="till47 page 011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SUB`, `SBB`, borrow, carry, and signed result. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till47 page 012](images/HandWrittenNotes/till47/page-012.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-012.jpg"><img src="images/HandWrittenNotes/till47/page-012.jpg" alt="till47 page 012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SUI`, two's-complement subtraction, carry, sign, and auxiliary carry. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`CMA` complements every accumulator bit and does not mean two's-complement negation by itself. `STC` sets carry, and `CMC` complements carry. These instructions are small but important because later rotate, subtract-with-borrow, or conditional branch instructions can depend on the carry value they leave behind.
 
 #### [till47 page 013](images/HandWrittenNotes/till47/page-013.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-013.jpg"><img src="images/HandWrittenNotes/till47/page-013.jpg" alt="till47 page 013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INR`, `DCR`, `INX`, and `DCX`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `INR` and `DCR` change an 8-bit register or memory byte, while `INX` and `DCX` change a 16-bit register pair. `INR/DCR` update most arithmetic flags but do not update carry, which is a frequent exam trap. `INX/DCX` are 16-bit pointer updates and do not set the normal arithmetic flags.
 
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till47 page 014](images/HandWrittenNotes/till47/page-014.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-014.jpg"><img src="images/HandWrittenNotes/till47/page-014.jpg" alt="till47 page 014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `DAA`, BCD correction, and auxiliary carry. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`DAA` is not a normal binary addition. It corrects the accumulator after BCD addition by adding `06H` to the lower nibble when needed and `60H` to the upper nibble when needed. The decision depends on nibble values and `AC/CY`. Use it only after an addition intended to represent packed BCD digits.
 
 #### [till47 page 015](images/HandWrittenNotes/till47/page-015.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-015.jpg"><img src="images/HandWrittenNotes/till47/page-015.jpg" alt="till47 page 015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Arithmetic comparison, borrow, sign, and zero flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till47 page 016](images/HandWrittenNotes/till47/page-016.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-016.jpg"><img src="images/HandWrittenNotes/till47/page-016.jpg" alt="till47 page 016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INR M`, memory increment, and flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `INR` and `DCR` change an 8-bit register or memory byte, while `INX` and `DCX` change a 16-bit register pair. `INR/DCR` update most arithmetic flags but do not update carry, which is a frequent exam trap. `INX/DCX` are 16-bit pointer updates and do not set the normal arithmetic flags.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till47 page 017](images/HandWrittenNotes/till47/page-017.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-017.jpg"><img src="images/HandWrittenNotes/till47/page-017.jpg" alt="till47 page 017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `DAA`, `XRA`, `DAD`, and program trace. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+`DAA` is not a normal binary addition. It corrects the accumulator after BCD addition by adding `06H` to the lower nibble when needed and `60H` to the upper nibble when needed. The decision depends on nibble values and `AC/CY`. Use it only after an addition intended to represent packed BCD digits.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
+Logical instructions operate bit by bit. `ANA` clears a bit unless both inputs have 1, `ORA` sets a bit if either input has 1, and `XRA` sets a bit only when the inputs differ. `XRA A` is a standard way to clear the accumulator to `00H`; it also updates flags, so later conditional jumps may depend on that clear operation.
 
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till47 page 018](images/HandWrittenNotes/till47/page-018.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-018.jpg"><img src="images/HandWrittenNotes/till47/page-018.jpg" alt="till47 page 018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Logical instructions and complement behavior. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: logical instructions operate bit by bit. `ANA` clears a bit unless both inputs have 1, `ORA` sets a bit if either input has 1, and `XRA` sets a bit only when the inputs differ. `XRA A` is a standard way to clear the accumulator to `00H`; it also updates flags, so later conditional jumps may depend on that clear operation.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`CMA` complements every accumulator bit and does not mean two's-complement negation by itself. `STC` sets carry, and `CMC` complements carry. These instructions are small but important because later rotate, subtract-with-borrow, or conditional branch instructions can depend on the carry value they leave behind.
 
 #### [till47 page 019](images/HandWrittenNotes/till47/page-019.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-019.jpg"><img src="images/HandWrittenNotes/till47/page-019.jpg" alt="till47 page 019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `ORA`, `ANA`, memory operands, and logical flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: logical instructions operate bit by bit. `ANA` clears a bit unless both inputs have 1, `ORA` sets a bit if either input has 1, and `XRA` sets a bit only when the inputs differ. `XRA A` is a standard way to clear the accumulator to `00H`; it also updates flags, so later conditional jumps may depend on that clear operation.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Memory operands add a bus read before the logical operation. For example, `ORA M` first reads the byte at `[HL]`, then ORs it with `A`. The result goes back to `A`, and the flags describe the logical result, not the address or the memory byte by itself.
 
 #### [till47 page 020](images/HandWrittenNotes/till47/page-020.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-020.jpg"><img src="images/HandWrittenNotes/till47/page-020.jpg" alt="till47 page 020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XRA`, `XRI`, and `CMA`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: logical instructions operate bit by bit. `ANA` clears a bit unless both inputs have 1, `ORA` sets a bit if either input has 1, and `XRA` sets a bit only when the inputs differ. `XRA A` is a standard way to clear the accumulator to `00H`; it also updates flags, so later conditional jumps may depend on that clear operation.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`CMA` complements every accumulator bit and does not mean two's-complement negation by itself. `STC` sets carry, and `CMC` complements carry. These instructions are small but important because later rotate, subtract-with-borrow, or conditional branch instructions can depend on the carry value they leave behind.
 
 #### [till47 page 021](images/HandWrittenNotes/till47/page-021.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-021.jpg"><img src="images/HandWrittenNotes/till47/page-021.jpg" alt="till47 page 021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `CMP`, `STC`, `CMC`, and rotate carry behavior. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+`CMA` complements every accumulator bit and does not mean two's-complement negation by itself. `STC` sets carry, and `CMC` complements carry. These instructions are small but important because later rotate, subtract-with-borrow, or conditional branch instructions can depend on the carry value they leave behind.
 
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
 #### [till47 page 022](images/HandWrittenNotes/till47/page-022.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-022.jpg"><img src="images/HandWrittenNotes/till47/page-022.jpg" alt="till47 page 022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `RRC`, `RAL`, and accumulator/carry rotation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
 #### [till47 page 023](images/HandWrittenNotes/till47/page-023.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-023.jpg"><img src="images/HandWrittenNotes/till47/page-023.jpg" alt="till47 page 023 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Branch instructions and conditional jump table. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For condition-code questions, translate the mnemonic into a flag test: zero/non-zero checks `Z`, carry/no-carry checks `CY`, plus/minus checks `S`, and parity checks `P`. The branch is only meaningful if a previous instruction has updated the relevant flag.
 
 #### [till47 page 024](images/HandWrittenNotes/till47/page-024.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-024.jpg"><img src="images/HandWrittenNotes/till47/page-024.jpg" alt="till47 page 024 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Rotate/branch practice and carry tracing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 ### `till73.pdf`
 
@@ -781,353 +575,227 @@ What to be careful about: do not reduce this page to one sentence. The useful re
 
 <a href="images/HandWrittenNotes/till73/page-001.jpg"><img src="images/HandWrittenNotes/till73/page-001.jpg" alt="till73 page 001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Subroutine, conditional/unconditional `CALL`, and repeated code. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 #### [till73 page 002](images/HandWrittenNotes/till73/page-002.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-002.jpg"><img src="images/HandWrittenNotes/till73/page-002.jpg" alt="till73 page 002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Conditional calls, conditional returns, flags, and stack use. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
 #### [till73 page 003](images/HandWrittenNotes/till73/page-003.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-003.jpg"><img src="images/HandWrittenNotes/till73/page-003.jpg" alt="till73 page 003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Conditional return/call, subroutine return, and flag conditions. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 #### [till73 page 004](images/HandWrittenNotes/till73/page-004.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-004.jpg"><img src="images/HandWrittenNotes/till73/page-004.jpg" alt="till73 page 004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Program trace with `CALL`, register updates, and flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till73 page 005](images/HandWrittenNotes/till73/page-005.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-005.jpg"><img src="images/HandWrittenNotes/till73/page-005.jpg" alt="till73 page 005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `CALL`, `RET`, stack pointer, PSW, and push/pop purpose. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
 #### [till73 page 006](images/HandWrittenNotes/till73/page-006.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-006.jpg"><img src="images/HandWrittenNotes/till73/page-006.jpg" alt="till73 page 006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `PUSH`, `POP`, `XTHL`, `SPHL`, and stack/register exchange. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`XTHL` exchanges `L` and `H` with the two bytes at the top of the stack, while `SPHL` copies `HL` into `SP`. They are not arithmetic instructions. Their value is that they let software manipulate stack-resident 16-bit values, temporary addresses, or return-address-like data without ordinary byte-by-byte loads.
 
 #### [till73 page 007](images/HandWrittenNotes/till73/page-007.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-007.jpg"><img src="images/HandWrittenNotes/till73/page-007.jpg" alt="till73 page 007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `CALL 1006H`, return address, `POP H`, and `SP` tracing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
 #### [till73 page 008](images/HandWrittenNotes/till73/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-008.jpg"><img src="images/HandWrittenNotes/till73/page-008.jpg" alt="till73 page 008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Stack trace with `PUSH`, `POP`, `DAD`, and register contents. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
+The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till73 page 009](images/HandWrittenNotes/till73/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-009.jpg"><img src="images/HandWrittenNotes/till73/page-009.jpg" alt="till73 page 009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `IN`, `OUT`, signed input loop, `RAL`, and carry test. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-**Delay calculation:** For delay-loop pages, count the repeated path and the final exit path separately. The conditional jump usually has one timing when taken and another when not taken, so the last iteration cannot blindly use the same total as the previous iterations. First compute one loop body, then multiply by the number of repetitions, then add entry or exit instructions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`IN` and `OUT` move bytes through the accumulator but do not by themselves create signed arithmetic meaning. If the program uses `RAL` and then tests carry, the sign bit or selected bit is being moved into `CY` deliberately. The branch decision is therefore based on the rotated bit, not on a fresh comparison instruction.
 
 #### [till73 page 010](images/HandWrittenNotes/till73/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-010.jpg"><img src="images/HandWrittenNotes/till73/page-010.jpg" alt="till73 page 010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `HLT`, `NOP`, `DI`, `EI`, and `SIM`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`NOP`, `HLT`, `DI`, `EI`, and `SIM` are control-oriented instructions. `NOP` only consumes time, `HLT` stops execution until interrupt/reset, `DI/EI` change interrupt enable state, and `SIM` uses accumulator bits as control fields. Their operands are implied by CPU control logic rather than fetched as ordinary data bytes.
 
 #### [till73 page 011](images/HandWrittenNotes/till73/page-011.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-011.jpg"><img src="images/HandWrittenNotes/till73/page-011.jpg" alt="till73 page 011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `RIM` bit fields, interrupt pending bits, and serial input. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8085 serial I/O is bit-oriented. `SID` is the serial input data pin and `SOD` is the serial output data pin. They are controlled through `RIM` and `SIM`, not through normal parallel `IN` and `OUT` port transfers. Serial transfer moves one bit under software control; normal I/O ports move an 8-bit byte through the data bus.
 
 #### [till73 page 012](images/HandWrittenNotes/till73/page-012.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-012.jpg"><img src="images/HandWrittenNotes/till73/page-012.jpg" alt="till73 page 012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SIM` mask bits, `SOD`, `SDE`, and interrupt masks. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8085 serial I/O is bit-oriented. `SID` is the serial input data pin and `SOD` is the serial output data pin. They are controlled through `RIM` and `SIM`, not through normal parallel `IN` and `OUT` port transfers. Serial transfer moves one bit under software control; normal I/O ports move an 8-bit byte through the data bus.
 
 #### [till73 page 013](images/HandWrittenNotes/till73/page-013.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-013.jpg"><img src="images/HandWrittenNotes/till73/page-013.jpg" alt="till73 page 013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INR M`, binary result, and carry/auxiliary-carry reasoning. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `INR` and `DCR` change an 8-bit register or memory byte, while `INX` and `DCX` change a 16-bit register pair. `INR/DCR` update most arithmetic flags but do not update carry, which is a frequent exam trap. `INX/DCX` are 16-bit pointer updates and do not set the normal arithmetic flags.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
 #### [till73 page 014](images/HandWrittenNotes/till73/page-014.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-014.jpg"><img src="images/HandWrittenNotes/till73/page-014.jpg" alt="till73 page 014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Program trace with result, sign, zero, parity, and carry. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+When a page asks for final `S`, `Z`, `P`, `CY`, or `AC`, compute the actual 8-bit result first. Then derive flags from that result and the carry path. Do not update carry after `INR/DCR`, and do not assume data-transfer instructions refresh flags.
 
 #### [till73 page 015](images/HandWrittenNotes/till73/page-015.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-015.jpg"><img src="images/HandWrittenNotes/till73/page-015.jpg" alt="till73 page 015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory program practice, `CMA`, `INR`, and complement behavior. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `INR` and `DCR` change an 8-bit register or memory byte, while `INX` and `DCX` change a 16-bit register pair. `INR/DCR` update most arithmetic flags but do not update carry, which is a frequent exam trap. `INX/DCX` are 16-bit pointer updates and do not set the normal arithmetic flags.
 
-**Increment and BCD detail:** Increment/decrement instructions look simple but differ in flag behavior and operand size. `INR/DCR` act on an 8-bit register or memory byte and affect normal status flags except carry, while `INX/DCX` act on register pairs and are not ordinary 8-bit ALU flag examples. `DAA` is special because it corrects the accumulator after BCD addition using lower-nibble and carry conditions.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`CMA` complements every accumulator bit and does not mean two's-complement negation by itself. `STC` sets carry, and `CMC` complements carry. These instructions are small but important because later rotate, subtract-with-borrow, or conditional branch instructions can depend on the carry value they leave behind.
 
 #### [till73 page 016](images/HandWrittenNotes/till73/page-016.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-016.jpg"><img src="images/HandWrittenNotes/till73/page-016.jpg" alt="till73 page 016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Stack/program trace and memory contents. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till73 page 017](images/HandWrittenNotes/till73/page-017.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-017.jpg"><img src="images/HandWrittenNotes/till73/page-017.jpg" alt="till73 page 017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Rotate instructions `RLC`, `RRC`, `RAL`, and `RAR`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For rotate traces, write the old accumulator as bits `b7 ... b0` and write old `CY` separately. `RAL/RAR` depend on old carry, so two traces with the same accumulator can differ if the incoming carry differs. `RLC/RRC` do not use old carry in the same way.
 
 #### [till73 page 018](images/HandWrittenNotes/till73/page-018.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-018.jpg"><img src="images/HandWrittenNotes/till73/page-018.jpg" alt="till73 page 018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XCHG`, `DAD`, register pairs, `PC`, `SP`, and instruction cycles. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
 #### [till73 page 019](images/HandWrittenNotes/till73/page-019.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-019.jpg"><img src="images/HandWrittenNotes/till73/page-019.jpg" alt="till73 page 019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Rotate trace and interrupt-related register examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: rotate instructions are best traced as eight accumulator bits plus a separate carry. `RLC` moves bit 7 into bit 0 and into `CY`; `RRC` moves bit 0 into bit 7 and into `CY`. `RAL` and `RAR` rotate through carry, so the old carry becomes part of the new accumulator and the outgoing accumulator bit becomes the new carry.
 
-**Rotate discipline:** For rotate pages, draw the accumulator bits and the carry bit before each step. `RLC/RRC` rotate within the accumulator and copy the outgoing bit to carry, while `RAL/RAR` rotate through carry, so the old carry participates in the new accumulator value. Most wrong answers come from ignoring the initial carry.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [till73 page 020](images/HandWrittenNotes/till73/page-020.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-020.jpg"><img src="images/HandWrittenNotes/till73/page-020.jpg" alt="till73 page 020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Delay loop and total T-state calculation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-**Delay calculation:** For delay-loop pages, count the repeated path and the final exit path separately. The conditional jump usually has one timing when taken and another when not taken, so the last iteration cannot blindly use the same total as the previous iterations. First compute one loop body, then multiply by the number of repetitions, then add entry or exit instructions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Delay-loop timing is derived, not guessed. Count setup instructions once, count the loop body for taken iterations, then count the final iteration separately because the conditional branch is not taken at the end. Convert the final T-state total into time using `delay = T-states x clock period`, where `clock period = 1 / clock frequency`.
 
 #### [till73 page 021](images/HandWrittenNotes/till73/page-021.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-021.jpg"><img src="images/HandWrittenNotes/till73/page-021.jpg" alt="till73 page 021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Flags, interrupts, instruction timing, and direct addressing recap. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [till73 page 022](images/HandWrittenNotes/till73/page-022.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-022.jpg"><img src="images/HandWrittenNotes/till73/page-022.jpg" alt="till73 page 022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory block/address calculation and `DAD`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: memory interfacing is mostly address decoding. A `4K x 8` chip has 4096 byte locations, so it needs 12 low-order address lines because `2^12 = 4096`. Higher address lines decide which chip or block is enabled. Full decoding uses enough high address bits to make one unique range; partial decoding can make the same chip respond at mirrored address ranges.
 
-**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
 #### [till73 page 023](images/HandWrittenNotes/till73/page-023.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-023.jpg"><img src="images/HandWrittenNotes/till73/page-023.jpg" alt="till73 page 023 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `DAD`, `CMP`, `RET`, flag register, and vector/non-vectored interrupt notes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL` and stores the 16-bit result in `HL`, with carry out recorded in `CY`. When tracing these, combine each pair as a 16-bit number first, then split the result back into high and low registers.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
+`CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 #### [till73 page 024](images/HandWrittenNotes/till73/page-024.jpg)
 
 <a href="images/HandWrittenNotes/till73/page-024.jpg"><img src="images/HandWrittenNotes/till73/page-024.jpg" alt="till73 page 024 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XRA`, `SUI`, `ANA`, final accumulator, and flags. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+Logical instructions operate bit by bit. `ANA` clears a bit unless both inputs have 1, `ORA` sets a bit if either input has 1, and `XRA` sets a bit only when the inputs differ. `XRA A` is a standard way to clear the accumulator to `00H`; it also updates flags, so later conditional jumps may depend on that clear operation.
 
-**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 ### `85completed.pdf`
 
@@ -1135,303 +803,209 @@ What to be careful about: do not reduce this page to one sentence. The useful re
 
 <a href="images/HandWrittenNotes/85completed/page-001.jpg"><img src="images/HandWrittenNotes/85completed/page-001.jpg" alt="85completed page 001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Loop/register trace, `ADD`, `MOV`, borrow/carry, and accumulator result. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the ALU is where arithmetic and logical results are physically produced, but the useful output is not only the 8-bit result. The accumulator usually supplies one operand and receives the result, while the flag flip-flops record properties of that result. Carry is generated from bit 7, auxiliary carry from bit 3 to bit 4, zero from an all-zero result, sign from bit 7, and parity from the number of 1 bits. That is why exam traces must update flags from the actual binary result, not from the instruction name alone.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
+Flags are a compressed record of the last flag-affecting result. `S` copies bit 7, `Z` reports zero, `P` reports even parity, `AC` reports carry from bit 3 to bit 4, and `CY` reports carry out of bit 7. In subtraction, `CY` is interpreted as borrow. A common trace error is testing a flag after an instruction that did not update it.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+8085 subtraction is performed through two's-complement addition internally. `SUB r` computes `A - r`; `SBB r` computes `A - r - CY`; `SUI data` subtracts an immediate byte. After subtraction, `CY=1` means a borrow was required. `CMP r` performs the same internal subtraction only for flags and leaves the accumulator unchanged.
 
-**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
-
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
 #### [85completed page 002](images/HandWrittenNotes/85completed/page-002.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-002.jpg"><img src="images/HandWrittenNotes/85completed/page-002.jpg" alt="85completed page 002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Delay loop T-state calculation and loop iteration count. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-**Delay calculation:** For delay-loop pages, count the repeated path and the final exit path separately. The conditional jump usually has one timing when taken and another when not taken, so the last iteration cannot blindly use the same total as the previous iterations. First compute one loop body, then multiply by the number of repetitions, then add entry or exit instructions.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Delay-loop timing is derived, not guessed. Count setup instructions once, count the loop body for taken iterations, then count the final iteration separately because the conditional branch is not taken at the end. Convert the final T-state total into time using `delay = T-states x clock period`, where `clock period = 1 / clock frequency`.
 
 #### [85completed page 003](images/HandWrittenNotes/85completed/page-003.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-003.jpg"><img src="images/HandWrittenNotes/85completed/page-003.jpg" alt="85completed page 003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Conditional output, flags, `CALL`, return address, and stack. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+`CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
 #### [85completed page 004](images/HandWrittenNotes/85completed/page-004.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-004.jpg"><img src="images/HandWrittenNotes/85completed/page-004.jpg" alt="85completed page 004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt purpose, ISR idea, subroutine comparison, and priority. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
+`CALL` is both a control-transfer instruction and a stack operation. The CPU fetches the target address, pushes the return address on the stack, and loads `PC` with the target. `RET` pops the saved address back into `PC`. The return address is the address of the next instruction after the call, not the call instruction's own address.
 
-**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
 #### [85completed page 005](images/HandWrittenNotes/85completed/page-005.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-005.jpg"><img src="images/HandWrittenNotes/85completed/page-005.jpg" alt="85completed page 005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Software/hardware interrupts, vectors, and `RST` address examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Software interrupts execute a restart-like instruction, while hardware interrupts arrive through pins and priority logic. In both cases, the useful technical question is where control goes next and whether the return address or processor state must be preserved before the ISR runs.
 
 #### [85completed page 006](images/HandWrittenNotes/85completed/page-006.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-006.jpg"><img src="images/HandWrittenNotes/85completed/page-006.jpg" alt="85completed page 006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Maskable/non-maskable interrupts, `TRAP`, `RST 7.5/6.5/5.5`, and `INTR`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Flag meaning:** For the 8086 flag page, separate status flags from control flags. Status flags describe the result of arithmetic or logic, while `TF`, `IF`, and `DF` control processor behavior: single-step trapping, interrupt enabling, and string direction. That separation is the main reason the flag register is not just an arithmetic result register.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Maskable interrupts can be disabled or masked; non-maskable `TRAP` cannot be ignored by the normal interrupt-enable mechanism. `RST 7.5` is edge-sensitive and latched, while `RST 6.5` and `RST 5.5` are level-sensitive. That difference matters when deciding whether a request remains pending.
 
 #### [85completed page 007](images/HandWrittenNotes/85completed/page-007.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-007.jpg"><img src="images/HandWrittenNotes/85completed/page-007.jpg" alt="85completed page 007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `INTR`, triggering, priority, ISR, and interrupt classes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+`INTR` is non-vectored, so the external device or interrupt controller must provide the instruction during interrupt acknowledge. This is why `INTA` exists: it gives external hardware a controlled point to place the restart or call instruction on the data bus.
 
 #### [85completed page 008](images/HandWrittenNotes/85completed/page-008.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-008.jpg"><img src="images/HandWrittenNotes/85completed/page-008.jpg" alt="85completed page 008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt vector table, `EI`, pending interrupts, and maskable vectoring. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Pending interrupt questions are state questions. `EI` enables maskable recognition after the instruction boundary, mask bits can still block individual restart lines, and priority decides which accepted request is serviced first. A pending request is not the same as an immediately executed request.
 
 #### [85completed page 009](images/HandWrittenNotes/85completed/page-009.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-009.jpg"><img src="images/HandWrittenNotes/85completed/page-009.jpg" alt="85completed page 009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `SIM` mask byte and `RIM` interrupt-mask status. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For `SIM/RIM`, always decode the accumulator bit-by-bit. A mask bit, a pending bit, and the global interrupt-enable state are different facts. Mixing those fields is the usual reason students get interrupt-status questions wrong.
 
 #### [85completed page 010](images/HandWrittenNotes/85completed/page-010.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-010.jpg"><img src="images/HandWrittenNotes/85completed/page-010.jpg" alt="85completed page 010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Interrupt masking, priority, and vectored/non-vectored recap. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [85completed page 011](images/HandWrittenNotes/85completed/page-011.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-011.jpg"><img src="images/HandWrittenNotes/85completed/page-011.jpg" alt="85completed page 011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Programmed I/O, I/O ports, and data-transfer modes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: programmed I/O means the CPU explicitly executes instructions to move each byte between an I/O port and a register, usually the accumulator. The port address selects the external device, and the control signals decide whether the transfer is input or output. This is simple hardware but consumes CPU time because the processor must poll or execute transfer instructions for every data movement.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Memory-mapped I/O and I/O-mapped I/O differ in address space and control signaling. Memory-mapped I/O uses ordinary 16-bit memory addresses and memory-style read/write cycles. I/O-mapped I/O uses `IN` and `OUT` with an 8-bit port address and I/O control cycles. The data bus still carries the byte; the difference is how external decoding selects memory versus a device.
 
 #### [85completed page 012](images/HandWrittenNotes/85completed/page-012.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-012.jpg"><img src="images/HandWrittenNotes/85completed/page-012.jpg" alt="85completed page 012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Synchronous/asynchronous transfer, strobe, handshaking, and timing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: a T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-**Transfer method:** The transfer-mode comparison is about timing agreement between sender and receiver. Synchronous transfer assumes timing is known in advance, strobe transfer adds a control pulse to mark valid data, and handshaking adds feedback so both sides know when data is ready and accepted. Handshaking is slower than blind transfer, but safer for devices that do not run at the CPU speed.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Synchronous transfer assumes timing agreement; asynchronous transfer needs extra signals because the device and CPU are not guaranteed to be ready at the same moment. Strobe transfer uses a signal to mark valid data. Handshaking adds request/acknowledge style feedback, so the sender knows the receiver actually accepted the byte. The extra signals reduce timing assumptions but increase interface complexity.
 
 #### [85completed page 013](images/HandWrittenNotes/85completed/page-013.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-013.jpg"><img src="images/HandWrittenNotes/85completed/page-013.jpg" alt="85completed page 013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about DMA basics, `HOLD/HLDA`, bus control, and DMA controller role. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: DMA transfers data without the CPU executing every byte transfer. A DMA controller requests the bus with `HOLD`; the 8085 responds with `HLDA` after it can release the bus. During DMA, the controller supplies addresses and read/write control for memory or I/O. The CPU is temporarily not the bus master, which is why DMA improves block-transfer efficiency.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The HOLD/HLDA sequence is a bus-arbitration protocol. The DMA controller requests bus control, the CPU finishes a safe point in its current bus use, asserts `HLDA`, and tri-states the bus lines. Only then can the DMA controller drive addresses and read/write controls.
 
 #### [85completed page 014](images/HandWrittenNotes/85completed/page-014.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-014.jpg"><img src="images/HandWrittenNotes/85completed/page-014.jpg" alt="85completed page 014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about DMA modes: burst, cycle stealing, and transfer-rate reasoning. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: DMA modes are tradeoffs between CPU pause time and transfer speed. Burst mode holds the bus for a block and is fastest for the device but stalls the CPU longer. Cycle stealing takes one bus cycle at a time, reducing CPU disruption but lowering peak transfer rate. Demand or transparent styles vary bus ownership based on device need or CPU idle periods.
 
-**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+DMA transfers data without the CPU executing every byte transfer. A DMA controller requests the bus with `HOLD`; the 8085 responds with `HLDA` after it can release the bus. During DMA, the controller supplies addresses and read/write control for memory or I/O. The CPU is temporarily not the bus master, which is why DMA improves block-transfer efficiency.
 
 #### [85completed page 015](images/HandWrittenNotes/85completed/page-015.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-015.jpg"><img src="images/HandWrittenNotes/85completed/page-015.jpg" alt="85completed page 015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8255 programmable peripheral interface and port grouping. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+For 8255 questions, separate the physical ports from the programmed mode. Ports A and B are 8-bit ports, Port C can be split into control/handshake bits, and the control word selects mode and direction. The chip is programmable because software configures that behavior instead of rewiring the interface.
 
 #### [85completed page 016](images/HandWrittenNotes/85completed/page-016.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-016.jpg"><img src="images/HandWrittenNotes/85completed/page-016.jpg" alt="85completed page 016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8253 timer, 8257 DMA controller, and support-chip overview. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: DMA transfers data without the CPU executing every byte transfer. A DMA controller requests the bus with `HOLD`; the 8085 responds with `HLDA` after it can release the bus. During DMA, the controller supplies addresses and read/write control for memory or I/O. The CPU is temporarily not the bus master, which is why DMA improves block-transfer efficiency.
 
-**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
-
-**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [85completed page 017](images/HandWrittenNotes/85completed/page-017.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-017.jpg"><img src="images/HandWrittenNotes/85completed/page-017.jpg" alt="85completed page 017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8259, 8257, 8272, 8275, 8279, and peripheral-controller purposes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
-**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
-
-**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Choose the support chip by the hardware problem: many interrupt sources suggest `8259`, block data transfer suggests `8257`, periodic timing suggests `8253`, and keyboard/display interfacing suggests `8279`. The CPU still runs the program, but these chips remove repetitive external-control work.
 
 #### [85completed page 018](images/HandWrittenNotes/85completed/page-018.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-018.jpg"><img src="images/HandWrittenNotes/85completed/page-018.jpg" alt="85completed page 018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction-set/addressing/interrupt recap used to connect support chips back to 8085 programming. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [85completed page 019](images/HandWrittenNotes/85completed/page-019.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-019.jpg"><img src="images/HandWrittenNotes/85completed/page-019.jpg" alt="85completed page 019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `RIM`, interrupt pending bits, mask bits, and PSW/flag recap. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
-**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+`SIM` and `RIM` treat the accumulator as a packed control/status byte. For `SIM`, bits control interrupt masks, mask-set enable, `RST 7.5` reset, serial data enable, and serial output data. For `RIM`, bits report mask status, interrupt enable, pending interrupt requests, and serial input data. Label each bit before interpreting the byte.
 
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
 
-**SIM/RIM format:** `SIM` and `RIM` are best understood as accumulator-byte formats. `SIM` writes control information such as masks and serial output, while `RIM` reads interrupt mask, pending status, interrupt enable, and serial input information. The important habit is to label each bit position before interpreting the byte.
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
 
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [85completed page 020](images/HandWrittenNotes/85completed/page-020.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-020.jpg"><img src="images/HandWrittenNotes/85completed/page-020.jpg" alt="85completed page 020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction format, register notation, machine cycles, and addressing modes recap. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8085 register set mixes 8-bit storage and 16-bit addressing. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit registers, but `BC`, `DE`, and `HL` can be used as 16-bit pairs. `HL` has the special memory role: `M` means the memory byte addressed by `HL`. `PC` and `SP` are 16-bit because program bytes and stack bytes live in the 64 KB memory space.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+Separate opcode bytes from operand bytes. The opcode selects the operation; following bytes may be immediate data, a port number, a low address byte, or a high address byte. One-byte instructions encode everything in the opcode. Two-byte instructions usually add one data or port byte. Three-byte instructions usually add a 16-bit address or 16-bit immediate value, stored low byte first in memory.
 
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+A T-state is one processor clock state. Instruction timing is the number of T-states multiplied by the clock period. The counts are not arbitrary: every external memory or I/O access needs a bus cycle. Opcode fetch has address output, `ALE`, memory read control, data capture, and decode work, so it is longer than a plain memory read. Extra operand bytes, memory operands, stack transfers, I/O transfers, and slow memory wait states all add timing cost.
 
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+A machine cycle is one external bus operation: opcode fetch, memory read, memory write, I/O read, I/O write, interrupt acknowledge, and so on. An instruction cycle is the whole instruction and can contain several machine cycles. This is why instruction length, addressing mode, and T-state count are connected: every extra byte or external operand has to be fetched, read, or written on the bus.
+
+Addressing mode means where the operand comes from. Immediate addressing puts the operand in the instruction stream. Register addressing uses an internal register. Direct addressing stores the 16-bit memory address inside the instruction. Register-indirect addressing uses a register pair as a pointer. Implied addressing builds the operand into the instruction definition, such as accumulator, carry, or stack behavior.
+
+8085 interrupts combine priority, masking, and vectoring. `TRAP` is highest priority and non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts with fixed restart addresses: `RST n` maps to `n x 8`, so `RST 7.5` starts at `003CH`, `RST 6.5` at `0034H`, and `RST 5.5` at `002CH`. `INTR` is maskable and non-vectored, so external hardware must supply the instruction during acknowledge.
+
+Support chips offload repeated interface work from the CPU. `8255` provides programmable parallel I/O ports, `8253` provides programmable timing/counting, `8257` manages DMA channels, and `8259` prioritizes and vectors interrupt requests. Devices such as `8272`, `8275`, and `8279` specialize further for floppy, display, keyboard, or display-control tasks.
 
 #### [85completed page 021](images/HandWrittenNotes/85completed/page-021.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-021.jpg"><img src="images/HandWrittenNotes/85completed/page-021.jpg" alt="85completed page 021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 bus interface unit, execution unit, prefetch queue, and registers. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 architecture separates bus work from execution work. The Bus Interface Unit forms addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using registers, ALU, and flags. This overlap improves bus use when the prefetch queue is not empty.
 
-**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The prefetch queue is the key difference from a simple 8085-style fetch/execute picture. The BIU can fetch instruction bytes while the EU executes previous bytes, but branches or jumps can flush that queue because the next bytes are no longer from the old sequential path.
 
 #### [85completed page 022](images/HandWrittenNotes/85completed/page-022.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-022.jpg"><img src="images/HandWrittenNotes/85completed/page-022.jpg" alt="85completed page 022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 architecture sketch, BIU, EU, queue, and internal buses. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 architecture separates bus work from execution work. The Bus Interface Unit forms addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using registers, ALU, and flags. This overlap improves bus use when the prefetch queue is not empty.
 
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+In 8086 architecture sketches, always trace an address through segment register plus offset before thinking about the external bus. The internal EU may compute an effective offset, but the BIU forms the physical 20-bit address and performs the actual memory or I/O cycle.
 
 ### `86tilllnow.pdf`
 
@@ -1439,184 +1013,96 @@ What to be careful about: do not reduce this page to one sentence. The useful re
 
 <a href="images/HandWrittenNotes/86tilllnow/page-001.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" alt="86tilllnow page 001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 pin diagram, AD bus, 16-bit data bus, and min/max mode idea. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 multiplexes `AD0-AD15` as address/data lines and `A16-A19/S3-S6` as high-address/status lines to fit a 20-bit address bus and 16-bit data bus into a 40-pin package. As with the 8085, external latching is required because the same pins carry different information during different parts of a bus cycle.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Minimum mode is meant for simpler single-processor systems where the 8086 itself supplies bus-control signals. Maximum mode is for systems with external bus-control logic, coprocessors, or multiprocessor-style coordination. The selected mode changes the meaning of several pins, so pin diagrams must be read together with the mode.
 
 #### [86tilllnow page 002](images/HandWrittenNotes/86tilllnow/page-002.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-002.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" alt="86tilllnow page 002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Minimum-mode and maximum-mode signal meanings. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: minimum mode is meant for simpler single-processor systems where the 8086 itself supplies bus-control signals. Maximum mode is for systems with external bus-control logic, coprocessors, or multiprocessor-style coordination. The selected mode changes the meaning of several pins, so pin diagrams must be read together with the mode.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8086 multiplexes `AD0-AD15` as address/data lines and `A16-A19/S3-S6` as high-address/status lines to fit a 20-bit address bus and 16-bit data bus into a 40-pin package. As with the 8085, external latching is required because the same pins carry different information during different parts of a bus cycle.
 
 #### [86tilllnow page 003](images/HandWrittenNotes/86tilllnow/page-003.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-003.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-003.jpg" alt="86tilllnow page 003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and multiplexed 8086 signals. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 multiplexes `AD0-AD15` as address/data lines and `A16-A19/S3-S6` as high-address/status lines to fit a 20-bit address bus and 16-bit data bus into a 40-pin package. As with the 8085, external latching is required because the same pins carry different information during different parts of a bus cycle.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
-
-**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Minimum mode is meant for simpler single-processor systems where the 8086 itself supplies bus-control signals. Maximum mode is for systems with external bus-control logic, coprocessors, or multiprocessor-style coordination. The selected mode changes the meaning of several pins, so pin diagrams must be read together with the mode.
 
 #### [86tilllnow page 004](images/HandWrittenNotes/86tilllnow/page-004.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-004.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" alt="86tilllnow page 004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 minimum/maximum mode, control signals, and EU/BIU split. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: minimum mode is meant for simpler single-processor systems where the 8086 itself supplies bus-control signals. Maximum mode is for systems with external bus-control logic, coprocessors, or multiprocessor-style coordination. The selected mode changes the meaning of several pins, so pin diagrams must be read together with the mode.
 
-**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
+The 8086 multiplexes `AD0-AD15` as address/data lines and `A16-A19/S3-S6` as high-address/status lines to fit a 20-bit address bus and 16-bit data bus into a 40-pin package. As with the 8085, external latching is required because the same pins carry different information during different parts of a bus cycle.
 
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+The 8086 architecture separates bus work from execution work. The Bus Interface Unit forms addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using registers, ALU, and flags. This overlap improves bus use when the prefetch queue is not empty.
 
 #### [86tilllnow page 005](images/HandWrittenNotes/86tilllnow/page-005.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-005.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" alt="86tilllnow page 005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 ALU, flags, bus interface, queue, and address path sketch. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 architecture separates bus work from execution work. The Bus Interface Unit forms addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using registers, ALU, and flags. This overlap improves bus use when the prefetch queue is not empty.
 
-**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
-
-**8086 status flags:** When the page asks you to interpret 8086 flags, use the 8086 names and operand size. `ZF`, `SF`, `PF`, `CF`, `AF`, and `OF` describe the result, while `TF`, `IF`, and `DF` control execution behavior. The safest habit is to compute the result first, then decide which status flags changed, and only then interpret control flags separately.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 flags include status flags and control flags. `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF` describe arithmetic/logical results. `TF` enables single-step trap behavior, `IF` controls maskable interrupt recognition, and `DF` controls string-instruction direction. Do not map the 8086 flag register directly onto the 8085 flag register; overflow, trap, interrupt, and direction behavior are important additions.
 
 #### [86tilllnow page 006](images/HandWrittenNotes/86tilllnow/page-006.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-006.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" alt="86tilllnow page 006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about BIU/EU, segment registers, instruction queue, and memory segmentation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: the 8086 architecture separates bus work from execution work. The Bus Interface Unit forms addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using registers, ALU, and flags. This overlap improves bus use when the prefetch queue is not empty.
 
-**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 physical addresses are formed from `segment:offset`. The segment value is shifted left four bits and the 16-bit offset is added: `physical = segment x 10H + offset`. This produces a 20-bit address and allows access to 1 MB even though most visible registers are 16 bits. Different segment:offset pairs can refer to the same physical address.
 
 #### [86tilllnow page 007](images/HandWrittenNotes/86tilllnow/page-007.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-007.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" alt="86tilllnow page 007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 flag register, trap/interrupt/direction flags, and stack addressing notes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 flags include status flags and control flags. `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF` describe arithmetic/logical results. `TF` enables single-step trap behavior, `IF` controls maskable interrupt recognition, and `DF` controls string-instruction direction. Do not map the 8086 flag register directly onto the 8085 flag register; overflow, trap, interrupt, and direction behavior are important additions.
 
-**Flag meaning:** For the 8086 flag page, separate status flags from control flags. Status flags describe the result of arithmetic or logic, while `TF`, `IF`, and `DF` control processor behavior: single-step trapping, interrupt enabling, and string direction. That separation is the main reason the flag register is not just an arithmetic result register.
-
-**8086 status flags:** When the page asks you to interpret 8086 flags, use the 8086 names and operand size. `ZF`, `SF`, `PF`, `CF`, `AF`, and `OF` describe the result, while `TF`, `IF`, and `DF` control execution behavior. The safest habit is to compute the result first, then decide which status flags changed, and only then interpret control flags separately.
-
-**Stack tracking:** Always write `SP` before and after every stack operation. `PUSH` and `CALL` store bytes by moving the stack downward, while `POP` and `RET` read bytes and move `SP` upward. Keep high byte, low byte, register-pair names, and actual memory addresses separate so the stack diagram does not become ambiguous.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 stack references normally use the `SS` segment with `SP` or `BP` as the offset source. A push reduces `SP` before storing a word, and a pop reads the word before increasing `SP`. This is still stack-in-memory behavior, but the 8086 explanation must include segmentation because the physical stack address is formed from `SS:SP` or `SS:BP`.
 
 #### [86tilllnow page 008](images/HandWrittenNotes/86tilllnow/page-008.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-008.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" alt="86tilllnow page 008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 addressing modes, segment offset, physical address, and direct addressing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 physical addresses are formed from `segment:offset`. The segment value is shifted left four bits and the 16-bit offset is added: `physical = segment x 10H + offset`. This produces a 20-bit address and allows access to 1 MB even though most visible registers are 16 bits. Different segment:offset pairs can refer to the same physical address.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-**8086 addressing:** Keep segment and offset separate. Base, index, and displacement form an effective offset, and the segment register supplies the segment base used to form the physical address. This is why the same offset can refer to different physical memory depending on the active segment register.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 #### [86tilllnow page 009](images/HandWrittenNotes/86tilllnow/page-009.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-009.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" alt="86tilllnow page 009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Register, index, base, base-index, and interrupt notes. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
-
-**8086 addressing:** Keep segment and offset separate. Base, index, and displacement form an effective offset, and the segment register supplies the segment base used to form the physical address. This is why the same offset can refer to different physical memory depending on the active segment register.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 interrupts use a vector table rather than the 8085 restart-address pattern. Each interrupt type has a four-byte entry containing offset and segment, so the vector address is `type x 4`. `NMI` is non-maskable, `INTR` is maskable through `IF`, and software `INT n` uses the same vectoring idea. That is why 8086 interrupt tracing must load both `CS` and `IP`, not just a single 16-bit program counter.
 
 #### [86tilllnow page 010](images/HandWrittenNotes/86tilllnow/page-010.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-010.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" alt="86tilllnow page 010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MOV` examples, direct/register addressing, and instruction operands. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for 8086 data-transfer instructions, identify source, destination, operand size, and address form. `MOV` copies between allowed register/memory forms but not arbitrary memory-to-memory forms. `IN` and `OUT` use I/O port addressing. `XLAT` performs a table lookup using `AL` as an index, so the effective table address must be derived before the moved byte is known.
 
-**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
-
-**8086 data movement:** For these 8086 data-transfer notes, separate register-to-register movement, memory operands, I/O port access, and table lookup. `MOV` copies between allowed registers or memory operands, `IN` and `OUT` use I/O port addressing, and `XLAT` uses a table-style lookup based on the accumulator and base address. The important point is still the same: identify the source, destination, and addressing form before deciding what value moves.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 #### [86tilllnow page 011](images/HandWrittenNotes/86tilllnow/page-011.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-011.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" alt="86tilllnow page 011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XLAT`, `IN`, `OUT`, I/O port addressing, and memory/addressing distinction. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: for 8086 data-transfer instructions, identify source, destination, operand size, and address form. `MOV` copies between allowed register/memory forms but not arbitrary memory-to-memory forms. `IN` and `OUT` use I/O port addressing. `XLAT` performs a table lookup using `AL` as an index, so the effective table address must be derived before the moved byte is known.
 
-**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
-
-**8086 data movement:** For these 8086 data-transfer notes, separate register-to-register movement, memory operands, I/O port access, and table lookup. `MOV` copies between allowed registers or memory operands, `IN` and `OUT` use I/O port addressing, and `XLAT` uses a table-style lookup based on the accumulator and base address. The important point is still the same: identify the source, destination, and addressing form before deciding what value moves.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+8086 addressing modes form an effective offset from registers, base registers, index registers, and displacement. That offset is then combined with a segment base. Code fetch normally uses `CS:IP`, stack access uses `SS`, many data accesses use `DS`, and some string or extra-segment operations use `ES`.
 
 #### [86tilllnow page 012](images/HandWrittenNotes/86tilllnow/page-012.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-012.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" alt="86tilllnow page 012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Multiple branching and 8086 versus 8085 bus/address comparison. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
+Technical explanation: 8086 branch instructions modify instruction flow by changing `IP` and sometimes `CS`. Short and near branches stay in the current code segment; far transfers also change `CS`. Conditional branches test flags such as `ZF`, `CF`, `SF`, and `OF`, so signed and unsigned comparisons use different branch conditions even if the previous comparison instruction was the same.
 
-**Arithmetic trace:** For subtraction and comparison, work in 8-bit arithmetic instead of only decimal intuition. A borrow sets carry, two's-complement form represents negative intermediate results, and `CMP` updates flags without storing a new value in the accumulator. This lets the same written work explain both the final result and the conditional jump decision.
-
-**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
-
-How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
-
-What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
+Compared with the 8085, the 8086 has a wider external data bus, a 20-bit address space, segmentation, a prefetch queue, richer addressing modes, and a more complex flag model. That is why an 8086 trace often begins by forming `segment:offset`, while an 8085 trace usually begins with a direct 16-bit address or a register-pair pointer.
