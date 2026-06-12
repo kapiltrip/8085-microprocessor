@@ -25,87 +25,111 @@ Day 8 covers the May 31 afternoon screenshots. The session moves from CPU-contro
 
 ## Handwritten Notes Linked To Day 8
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
 
 ### [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-011.jpg"><img src="images/HandWrittenNotes/85completed/page-011.jpg" alt="85completed p011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Programmed I/O, I/O ports, and data-transfer modes. Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Programmed I/O, I/O ports, and data-transfer modes. Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p012](images/HandWrittenNotes/85completed/page-012.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-012.jpg"><img src="images/HandWrittenNotes/85completed/page-012.jpg" alt="85completed p012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Synchronous/asynchronous transfer, strobe, handshaking, and timing. Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Synchronous/asynchronous transfer, strobe, handshaking, and timing. Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For transfer-mode pages, compare how timing is agreed. Synchronous transfer assumes a fixed timing relation, strobe transfer adds a timing pulse, and handshaking adds feedback so both sides know when data is ready and accepted.
+**Transfer method:** The transfer-mode comparison is about timing agreement between sender and receiver. Synchronous transfer assumes timing is known in advance, strobe transfer adds a control pulse to mark valid data, and handshaking adds feedback so both sides know when data is ready and accepted. Handshaking is slower than blind transfer, but safer for devices that do not run at the CPU speed.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p013](images/HandWrittenNotes/85completed/page-013.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-013.jpg"><img src="images/HandWrittenNotes/85completed/page-013.jpg" alt="85completed p013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about DMA basics, `HOLD/HLDA`, bus control, and DMA controller role. Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about DMA basics, `HOLD/HLDA`, bus control, and DMA controller role. Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p014](images/HandWrittenNotes/85completed/page-014.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-014.jpg"><img src="images/HandWrittenNotes/85completed/page-014.jpg" alt="85completed p014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about DMA modes: burst, cycle stealing, and transfer-rate reasoning. Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about DMA modes: burst, cycle stealing, and transfer-rate reasoning. Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte.
+**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p015](images/HandWrittenNotes/85completed/page-015.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-015.jpg"><img src="images/HandWrittenNotes/85completed/page-015.jpg" alt="85completed p015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8255 programmable peripheral interface and port grouping. Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8255 programmable peripheral interface and port grouping. Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p016](images/HandWrittenNotes/85completed/page-016.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-016.jpg"><img src="images/HandWrittenNotes/85completed/page-016.jpg" alt="85completed p016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8253 timer, 8257 DMA controller, and support-chip overview. Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8253 timer, 8257 DMA controller, and support-chip overview. Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p017](images/HandWrittenNotes/85completed/page-017.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-017.jpg"><img src="images/HandWrittenNotes/85completed/page-017.jpg" alt="85completed p017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8259, 8257, 8272, 8275, 8279, and peripheral-controller purposes. Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8259, 8257, 8272, 8275, 8279, and peripheral-controller purposes. Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+**DMA meaning:** DMA is about temporary bus ownership. The CPU initializes the transfer, but the DMA controller requests the bus, waits for acknowledgement, generates addresses/control signals, moves data between I/O and memory, and then returns the bus. Burst mode favors fast block transfer, while cycle stealing reduces long CPU blocking by taking smaller bus opportunities.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Support-chip role:** These pages show why a microprocessor system needs helper chips. The CPU should not directly perform every low-level I/O, timing, DMA, interrupt, disk, display, or keyboard task in software. A support chip exposes registers, status bits, and control words so the CPU can configure behavior at a higher level.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-018.jpg"><img src="images/HandWrittenNotes/85completed/page-018.jpg" alt="85completed p018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction-set/addressing/interrupt recap used to connect support chips back to 8085 programming. Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction-set/addressing/interrupt recap used to connect support chips back to 8085 programming. Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ## 1. Programmed I/O and Handshaking
 

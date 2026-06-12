@@ -16,87 +16,133 @@ Day 9 is the transition from 8085 to 8086. The biggest change is not only that t
 
 ## Handwritten Notes Linked To Day 9
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
 
 ### [85completed p021](images/HandWrittenNotes/85completed/page-021.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-021.jpg"><img src="images/HandWrittenNotes/85completed/page-021.jpg" alt="85completed p021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 bus interface unit, execution unit, prefetch queue, and registers. Use with the BIU/EU screenshots. It introduces 8086 architecture, queue, ALU, registers, and segment registers. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8086 bus interface unit, execution unit, prefetch queue, and registers. Use with the BIU/EU screenshots. It introduces 8086 architecture, queue, ALU, registers, and segment registers. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
+
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p022](images/HandWrittenNotes/85completed/page-022.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-022.jpg"><img src="images/HandWrittenNotes/85completed/page-022.jpg" alt="85completed p022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 architecture sketch, BIU, EU, queue, and internal buses. Use with the block diagram. It sketches internal buses, queue, BIU, EU, and physical address generation. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8086 architecture sketch, BIU, EU, queue, and internal buses. Use with the block diagram. It sketches internal buses, queue, BIU, EU, and physical address generation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**8086 addressing:** Keep segment and offset separate. Base, index, and displacement form an effective offset, and the segment register supplies the segment base used to form the physical address. This is why the same offset can refer to different physical memory depending on the active segment register.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p001](images/HandWrittenNotes/86tilllnow/page-001.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-001.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" alt="86tilllnow p001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 pin diagram, AD bus, 16-bit data bus, and min/max mode idea. Use with the pin configuration. It compares 8086 with 8085 and identifies multiplexed address/data pins. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8086 pin diagram, AD bus, 16-bit data bus, and min/max mode idea. Use with the pin configuration. It compares 8086 with 8085 and identifies multiplexed address/data pins. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. The multiplexed-bus point is that the same physical pins carry low address first and data later, so `ALE` marks the moment when the low address must be captured externally. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
+
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p002](images/HandWrittenNotes/86tilllnow/page-002.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-002.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" alt="86tilllnow p002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Minimum-mode and maximum-mode signal meanings. Use with min/max mode signals. It lists the control signals that change meaning with `MN/MX`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Minimum-mode and maximum-mode signal meanings. Use with min/max mode signals. It lists the control signals that change meaning with `MN/MX`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p003](images/HandWrittenNotes/86tilllnow/page-003.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-003.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-003.jpg" alt="86tilllnow p003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and multiplexed 8086 signals. Use with multiplexed 8086 pins. It covers `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and bus status signals. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and multiplexed 8086 signals. Use with multiplexed 8086 pins. It covers `AD0-AD15`, `A16-A19/S3-S6`, `NMI`, `INTR`, and bus status signals. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. The multiplexed-bus point is that the same physical pins carry low address first and data later, so `ALE` marks the moment when the low address must be captured externally. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
+
+**Interrupt logic:** For interrupt pages, keep four questions separate: which source requested service, whether the request can be masked, where the CPU jumps, and how the interrupted program returns. Vectored interrupts already imply the service address, while non-vectored handling needs extra information or an externally supplied instruction. Priority matters only when more than one request is active.
+
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p004](images/HandWrittenNotes/86tilllnow/page-004.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-004.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-004.jpg" alt="86tilllnow p004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 minimum/maximum mode, control signals, and EU/BIU split. Use with min/max mode and the EU/BIU split. It connects signal mode to system design. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8086 minimum/maximum mode, control signals, and EU/BIU split. Use with min/max mode and the EU/BIU split. It connects signal mode to system design. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+**Mode and pin meaning:** Minimum mode and maximum mode change how bus control is generated. In minimum mode the processor provides the main control signals directly, while in maximum mode external bus-control logic supports multiprocessor or coprocessor-style systems. The handwritten signal list should therefore be read as system-design information, not only as pin names.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p005](images/HandWrittenNotes/86tilllnow/page-005.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-005.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" alt="86tilllnow p005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about 8086 ALU, flags, bus interface, queue, and address path sketch. Use with internal architecture. It shows ALU, flags, bus interface, and queue support. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about 8086 ALU, flags, bus interface, queue, and address path sketch. Use with internal architecture. It shows ALU, flags, bus interface, and queue support. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For 8086 flags, separate status flags from control flags. Status flags describe the arithmetic or logical result, while `TF`, `IF`, and `DF` control single-step tracing, interrupt response, and string direction. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Core idea:** The page is describing the internal data path of the processor. The accumulator is the main working register, the ALU performs the operation, and the result is not only stored as data but also summarized through flags. Read this as a flow: operand enters, ALU operates, accumulator receives the result, and the flag register records the condition of that result.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**8086 status flags:** When the page asks you to interpret 8086 flags, use the 8086 names and operand size. `ZF`, `SF`, `PF`, `CF`, `AF`, and `OF` describe the result, while `TF`, `IF`, and `DF` control execution behavior. The safest habit is to compute the result first, then decide which status flags changed, and only then interpret control flags separately.
+
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [86tilllnow p006](images/HandWrittenNotes/86tilllnow/page-006.jpg)
 
 <a href="images/HandWrittenNotes/86tilllnow/page-006.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" alt="86tilllnow p006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about BIU/EU, segment registers, instruction queue, and memory segmentation. Use with BIU/EU and segmentation. It summarizes the queue, segment registers, and physical-address calculation. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about BIU/EU, segment registers, instruction queue, and memory segmentation. Use with BIU/EU and segmentation. It summarizes the queue, segment registers, and physical-address calculation. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**8086 architecture:** In 8086 pages, separate the Bus Interface Unit from the Execution Unit. The BIU fetches instruction bytes, manages the queue, and forms physical addresses using segmentation, while the EU decodes and executes instructions using registers, ALU, and flags. This split is the key upgrade from thinking of the processor as one single block.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ## 1. Why 8086 Feels Different From 8085
 

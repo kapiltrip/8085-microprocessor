@@ -26,185 +26,249 @@ Day 2 moves from "what the 8085 is" into "how it communicates with memory and I/
 
 ## Handwritten Notes Linked To Day 2
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
 
 ### [till46 p008](images/HandWrittenNotes/till46/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-008.jpg"><img src="images/HandWrittenNotes/till46/page-008.jpg" alt="till46 p008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory mapped I/O and I/O mapped I/O overview. Pairs with memory mapped versus I/O mapped I/O. Focus on whether the device is selected through the memory address space or the I/O port space. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Memory mapped I/O and I/O mapped I/O overview. Pairs with memory mapped versus I/O mapped I/O. Focus on whether the device is selected through the memory address space or the I/O port space. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p009](images/HandWrittenNotes/till46/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-009.jpg"><img src="images/HandWrittenNotes/till46/page-009.jpg" alt="till46 p009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `ALE`, machine cycle, `T`-state, and multiplexed bus timing. Use with `ALE` and timing diagrams. It links `T`-state, machine cycle, and low-address latching. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `ALE`, machine cycle, `T`-state, and multiplexed bus timing. Use with `ALE` and timing diagrams. It links `T`-state, machine cycle, and low-address latching. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. The multiplexed-bus point is that the same physical pins carry low address first and data later, so `ALE` marks the moment when the low address must be captured externally. For timing, keep the hierarchy clear: one instruction cycle contains one or more machine cycles, and each machine cycle contains several `T`-states. Most timing mistakes happen when these three levels are mixed.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Bus timing:** The multiplexed-bus idea is that the same physical pins are reused at different moments. In the 8085, `AD0-AD7` first carry the low-order address and then carry data, so `ALE` tells the external latch when to capture the address. In 8086 pages, the same principle expands to wider address/data and address/status sharing.
+
+**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p010](images/HandWrittenNotes/till46/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-010.jpg"><img src="images/HandWrittenNotes/till46/page-010.jpg" alt="till46 p010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction cycle versus machine cycle and status line decoding. Use with the machine-cycle status table. It separates instruction cycle, machine cycle, and T-state so timing questions do not blur them. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction cycle versus machine cycle and status line decoding. Use with the machine-cycle status table. It separates instruction cycle, machine cycle, and T-state so timing questions do not blur them. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For timing, keep the hierarchy clear: one instruction cycle contains one or more machine cycles, and each machine cycle contains several `T`-states. Most timing mistakes happen when these three levels are mixed.
+**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p011](images/HandWrittenNotes/till46/page-011.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-011.jpg"><img src="images/HandWrittenNotes/till46/page-011.jpg" alt="till46 p011 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Machine cycles, `T`-states, opcode fetch, memory read, and `ADD B` timing idea. Use with opcode fetch and `ADD B`. The page shows how a complete instruction is built from one or more bus cycles. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Machine cycles, `T`-states, opcode fetch, memory read, and `ADD B` timing idea. Use with opcode fetch and `ADD B`. The page shows how a complete instruction is built from one or more bus cycles. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For timing, keep the hierarchy clear: one instruction cycle contains one or more machine cycles, and each machine cycle contains several `T`-states. Most timing mistakes happen when these three levels are mixed.
+**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p012](images/HandWrittenNotes/till46/page-012.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-012.jpg"><img src="images/HandWrittenNotes/till46/page-012.jpg" alt="till46 p012 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Word, instruction, object code, address bus, data bus, and opcode idea. Use with instruction-set symbols. It records word, instruction, opcode, address bus, and data bus meanings. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Word, instruction, object code, address bus, data bus, and opcode idea. Use with instruction-set symbols. It records word, instruction, opcode, address bus, and data bus meanings. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Main reading:** Treat this page as a complete revision unit rather than a label. Identify the terms written on it, connect any arrows or tables, and rewrite the example in your own steps so the page becomes usable during problem solving.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p013](images/HandWrittenNotes/till46/page-013.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-013.jpg"><img src="images/HandWrittenNotes/till46/page-013.jpg" alt="till46 p013 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Opcode fetch timing diagram and `MVI B,05H` cycle sequence. Use with the opcode-fetch timing diagram. Follow `ALE`, `/RD`, address lines, and data lines in order. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Opcode fetch timing diagram and `MVI B,05H` cycle sequence. Use with the opcode-fetch timing diagram. Follow `ALE`, `/RD`, address lines, and data lines in order. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For timing, keep the hierarchy clear: one instruction cycle contains one or more machine cycles, and each machine cycle contains several `T`-states. Most timing mistakes happen when these three levels are mixed. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
+
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p014](images/HandWrittenNotes/till46/page-014.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-014.jpg"><img src="images/HandWrittenNotes/till46/page-014.jpg" alt="till46 p014 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MVI B,05H`, immediate data byte, memory placement, and I/O read. Use with `MVI B,05H`. It reinforces that the second byte is immediate data, not an address. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `MVI B,05H`, immediate data byte, memory placement, and I/O read. Use with `MVI B,05H`. It reinforces that the second byte is immediate data, not an address. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p015](images/HandWrittenNotes/till46/page-015.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-015.jpg"><img src="images/HandWrittenNotes/till46/page-015.jpg" alt="till46 p015 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction set organization and addressing modes. Use with instruction classification. This page is the handwritten map of addressing modes and instruction categories. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction set organization and addressing modes. Use with instruction classification. This page is the handwritten map of addressing modes and instruction categories. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p016](images/HandWrittenNotes/till46/page-016.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-016.jpg"><img src="images/HandWrittenNotes/till46/page-016.jpg" alt="till46 p016 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory interfacing, chip select, and address decoding. Use with address decoding and chip select. The key rule is that low lines select a location inside a chip while high lines select the chip. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Memory interfacing, chip select, and address decoding. Use with address decoding and chip select. The key rule is that low lines select a location inside a chip while high lines select the chip. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For memory interfacing, split the address lines into two roles: lower lines select a byte inside the chip, while higher lines feed the decoder or chip-select logic.
+**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p017](images/HandWrittenNotes/till46/page-017.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-017.jpg"><img src="images/HandWrittenNotes/till46/page-017.jpg" alt="till46 p017 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about ROM interfacing, address decoder, and address range examples. Use with ROM interfacing. Track address decoder output, ROM data output, and why only the selected chip may drive the data bus. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about ROM interfacing, address decoder, and address range examples. Use with ROM interfacing. Track address decoder output, ROM data output, and why only the selected chip may drive the data bus. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For memory interfacing, split the address lines into two roles: lower lines select a byte inside the chip, while higher lines feed the decoder or chip-select logic.
+**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p018](images/HandWrittenNotes/till46/page-018.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-018.jpg"><img src="images/HandWrittenNotes/till46/page-018.jpg" alt="till46 p018 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Memory mapped versus I/O mapped I/O, port width, and `IN/OUT`. Use with memory mapped/I/O mapped I/O. Pay attention to 16-bit memory addresses versus 8-bit port addresses. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Memory mapped versus I/O mapped I/O, port width, and `IN/OUT`. Use with memory mapped/I/O mapped I/O. Pay attention to 16-bit memory addresses versus 8-bit port addresses. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p019](images/HandWrittenNotes/till46/page-019.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-019.jpg"><img src="images/HandWrittenNotes/till46/page-019.jpg" alt="till46 p019 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `4K x 8`, address-line count, capacity, and highest-address calculation. Use with memory-capacity questions. Convert `4K x 8` to 4096 byte locations and 12 address lines. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `4K x 8`, address-line count, capacity, and highest-address calculation. Use with memory-capacity questions. Convert `4K x 8` to 4096 byte locations and 12 address lines. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For memory interfacing, split the address lines into two roles: lower lines select a byte inside the chip, while higher lines feed the decoder or chip-select logic.
+**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p020](images/HandWrittenNotes/till46/page-020.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-020.jpg"><img src="images/HandWrittenNotes/till46/page-020.jpg" alt="till46 p020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Address decoding logic and chip-select generation. Use with decoder logic. It shows how address bits combine into a chip-select signal. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Address decoding logic and chip-select generation. Use with decoder logic. It shows how address bits combine into a chip-select signal. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For memory interfacing, split the address lines into two roles: lower lines select a byte inside the chip, while higher lines feed the decoder or chip-select logic.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Memory selection:** For memory pages, divide the address lines into two jobs. Lower address lines select a location inside the chip, while higher address lines are decoded to generate chip select. This explains why capacity calculations, highest-address questions, and ROM/RAM interfacing all depend on counting address lines carefully.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p021](images/HandWrittenNotes/till46/page-021.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-021.jpg"><img src="images/HandWrittenNotes/till46/page-021.jpg" alt="till46 p021 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDA/STA`, instruction cycle, machine cycle, and T-state relation. Use with `LDA/STA` and machine-cycle counting. It connects instruction length to bus operations. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `LDA/STA`, instruction cycle, machine cycle, and T-state relation. Use with `LDA/STA` and machine-cycle counting. It connects instruction length to bus operations. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For timing, keep the hierarchy clear: one instruction cycle contains one or more machine cycles, and each machine cycle contains several `T`-states. Most timing mistakes happen when these three levels are mixed. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Timing hierarchy:** Keep three levels separate: an instruction cycle is the complete execution of one instruction, a machine cycle is one bus operation inside that instruction, and a `T`-state is one clock period inside a machine cycle. When the page shows opcode fetch, memory read, memory write, I/O read, or I/O write, it is showing how the processor announces and performs one bus operation at a time.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p022](images/HandWrittenNotes/till46/page-022.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-022.jpg"><img src="images/HandWrittenNotes/till46/page-022.jpg" alt="till46 p022 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction-set classification by length, operation, and addressing mode. Use as the handwritten classification sheet: data transfer, arithmetic, logical, branch, stack/I/O/machine control. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction-set classification by length, operation, and addressing mode. Use as the handwritten classification sheet: data transfer, arithmetic, logical, branch, stack/I/O/machine control. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For logical instructions, think bit by bit. `ANA`, `ORA`, and `XRA` form the new accumulator value from corresponding bits; `CMA` flips bits without being an arithmetic subtraction.
+**I/O view:** The page is separating device selection from actual data transfer. A port number or memory address selects the external interface, while control signals and the data bus perform the read or write. In I/O-mapped I/O, `IN` and `OUT` use port addresses; in memory-mapped I/O, normal memory-reference instructions access the device as if it were a memory location.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+**Bit-level reading:** Logical pages should be traced bit by bit. `ANA`, `ORA`, and `XRA` combine corresponding bits of the accumulator and operand, while `CMA` flips every accumulator bit without doing subtraction. Whenever the page asks for flags, derive them from the final bit pattern rather than from the name of the instruction alone.
+
+**Control flow:** Branch, call, and return pages are about the program counter. A conditional jump/call/return tests flags that were already set by previous instructions; it does not calculate the condition itself. `CALL` also stores a return address on the stack, while `RET` restores control by taking that address back from the stack.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p023](images/HandWrittenNotes/till46/page-023.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-023.jpg"><img src="images/HandWrittenNotes/till46/page-023.jpg" alt="till46 p023 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Register notation, memory symbol `M`, flags, and addressing symbols. Use with symbol notation. It records `A`, `B`, `C`, `D`, `E`, `H`, `L`, `M`, flags, register pairs, and memory symbols. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Register notation, memory symbol `M`, flags, and addressing symbols. Use with symbol notation. It records `A`, `B`, `C`, `D`, `E`, `H`, `L`, `M`, flags, register pairs, and memory symbols. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow.
+**Register reading:** Keep ordinary data registers separate from control registers. `B`, `C`, `D`, `E`, `H`, and `L` are 8-bit working registers, but pairs such as `BC`, `DE`, and `HL` are treated as 16-bit values in many instructions. `PC` points to the next instruction, while `SP` points into the stack, so changing either one changes program flow or stack behavior rather than just data.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till46 p024](images/HandWrittenNotes/till46/page-024.jpg)
 
 <a href="images/HandWrittenNotes/till46/page-024.jpg"><img src="images/HandWrittenNotes/till46/page-024.jpg" alt="till46 p024 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Control-signal generation and one-byte instruction examples. Use with one-byte instructions and control-signal generation. The important point is that implied operands need no extra data/address byte. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Control-signal generation and one-byte instruction examples. Use with one-byte instructions and control-signal generation. The important point is that implied operands need no extra data/address byte. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Signal grouping:** Read the pin and signal pages by function, not by pin number. Some pins carry address/data, some control the current bus operation, some report status, some handle interrupts, some support DMA through `HOLD/HLDA`, and some handle serial I/O. Grouping them this way makes the pin diagram easier to reconstruct from memory.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [85completed p020](images/HandWrittenNotes/85completed/page-020.jpg)
 
 <a href="images/HandWrittenNotes/85completed/page-020.jpg"><img src="images/HandWrittenNotes/85completed/page-020.jpg" alt="85completed p020 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction format, register notation, machine cycles, and addressing modes recap. Use as a later recap of instruction format, machine cycles, and addressing modes after you finish Day 2 once. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction format, register notation, machine cycles, and addressing modes recap. Use as a later recap of instruction format, machine cycles, and addressing modes after you finish Day 2 once. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ## 1. Machine Cycle Status and Control Signals
 

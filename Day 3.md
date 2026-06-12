@@ -15,107 +15,135 @@ Day 3 focuses on how the 8085 moves data between registers and memory, how `HL` 
 
 ## Handwritten Notes Linked To Day 3
 
-Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the deeper explanation below it.
 
 ### [till47 p001](images/HandWrittenNotes/till47/page-001.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-001.jpg"><img src="images/HandWrittenNotes/till47/page-001.jpg" alt="till47 p001 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Instruction byte length, addressing modes, `MVI`, `LDA`, and `JMP`. Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Instruction byte length, addressing modes, `MVI`, `LDA`, and `JMP`. Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p002](images/HandWrittenNotes/till47/page-002.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-002.jpg"><img src="images/HandWrittenNotes/till47/page-002.jpg" alt="till47 p002 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about Implicit, memory, and register addressing plus flag layout. Use with register and memory addressing. It connects `M`, register operands, and flag layout. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about Implicit, memory, and register addressing plus flag layout. Use with register and memory addressing. It connects `M`, register operands, and flag layout. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+**Flag reasoning:** Do not revise flags as isolated definitions. First compute the 8-bit result, then ask whether the result is zero, whether bit 7 is set, whether parity is even, whether there was a carry from bit 3 to bit 4, and whether there was a carry or borrow out of the byte. This is especially important because in subtraction the carry flag represents borrow.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p003](images/HandWrittenNotes/till47/page-003.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-003.jpg"><img src="images/HandWrittenNotes/till47/page-003.jpg" alt="till47 p003 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Addressing-mode test:** Every addressing-mode page can be solved by asking one question: where is the operand? It may be inside the instruction itself, inside a register, at the memory address written in the instruction, or at a memory address stored in a register pair. Once the operand source is clear, instruction length and machine-cycle count become much easier to justify.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p004](images/HandWrittenNotes/till47/page-004.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-004.jpg"><img src="images/HandWrittenNotes/till47/page-004.jpg" alt="till47 p004 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `MVI M,data`, `LXI H`, and register-indirect memory access. Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `MVI M,data`, `LXI H`, and register-indirect memory access. Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p005](images/HandWrittenNotes/till47/page-005.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-005.jpg"><img src="images/HandWrittenNotes/till47/page-005.jpg" alt="till47 p005 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about One-, two-, and three-byte instructions with `LDA`. Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about One-, two-, and three-byte instructions with `LDA`. Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p006](images/HandWrittenNotes/till47/page-006.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-006.jpg"><img src="images/HandWrittenNotes/till47/page-006.jpg" alt="till47 p006 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `STAX`, and register-pair indirect addressing. Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `LDAX`, `STAX`, and register-pair indirect addressing. Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p007](images/HandWrittenNotes/till47/page-007.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-007.jpg"><img src="images/HandWrittenNotes/till47/page-007.jpg" alt="till47 p007 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LHLD`, `SHLD`, and low-byte/high-byte order. Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `LHLD`, `SHLD`, and low-byte/high-byte order. Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p008](images/HandWrittenNotes/till47/page-008.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-008.jpg"><img src="images/HandWrittenNotes/till47/page-008.jpg" alt="till47 p008 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LDAX`, `XCHG`, and memory/register-pair tracing. Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `LDAX`, `XCHG`, and memory/register-pair tracing. Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`. For trace pages, do not jump from the first instruction to the final answer. Make a row for each instruction and update only the registers, memory bytes, flags, or stack locations that the instruction actually changes.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
+
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p009](images/HandWrittenNotes/till47/page-009.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-009.jpg"><img src="images/HandWrittenNotes/till47/page-009.jpg" alt="till47 p009 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `LXI H`, `SHLD`, register-pair memory storage. Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `LXI H`, `SHLD`, register-pair memory storage. Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+**Data movement:** For data-transfer instructions, separate the value being moved from the address used to reach it. `MVI` places immediate data, `MOV` transfers between registers or memory through `M`, `LDA/STA` use a direct 16-bit address, and `LHLD/SHLD` move the `HL` pair through consecutive memory locations. That distinction prevents confusing data bytes with address bytes.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ### [till47 p010](images/HandWrittenNotes/till47/page-010.jpg)
 
 <a href="images/HandWrittenNotes/till47/page-010.jpg"><img src="images/HandWrittenNotes/till47/page-010.jpg" alt="till47 p010 handwritten note" width="960"></a>
 
-Explanation: This page is mainly about `XCHG`, `DAD`, and register-pair trace practice. Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+Explanation: This page is mainly about `XCHG`, `DAD`, and register-pair trace practice. Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. Read the handwritten page as the primary source first: look at the headings, boxed terms, arrows, tables, and worked values before reading the explanation. The explanation below is meant to unpack the same page, not replace it.
 
-For trace pages, do not jump from the first instruction to the final answer. Make a row for each instruction and update only the registers, memory bytes, flags, or stack locations that the instruction actually changes.
+**Trace method:** For trace pages, make a row for every instruction. Update only the register, memory byte, flag, stack location, or program counter value that the instruction actually changes. This slower row-by-row method is the shortest reliable way to avoid losing track of `HL`, `SP`, carry, or memory contents.
 
-For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+How to connect it while revising: start from the exact topic named on the page, then connect it to the closest screenshot or day section. If the page contains a diagram, explain each label in the diagram. If it contains a program or numerical working, trace each instruction or calculation in order and write the changed register, flag, memory byte, address, or signal beside that step.
+
+What to be careful about: do not reduce this page to one sentence. The useful revision value is in the relationships: which signal selects the operation, which register stores the value, which flag records the result, which address is being accessed, and which step happens next. When you can say those relationships aloud, the handwritten page has been understood deeply enough for exam questions.
 
 ## 1. `MVI M,data`: Immediate Data to Memory Through `HL`
 
