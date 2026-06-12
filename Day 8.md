@@ -25,24 +25,95 @@ Day 8 covers the May 31 afternoon screenshots. The session moves from CPU-contro
 
 ## Handwritten Notes Linked To Day 8
 
-| Page | Handwritten note | How to revise it with the screenshots |
-| --- | --- | --- |
-| [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg) | <img src="images/HandWrittenNotes/85completed/page-011.jpg" width="420"> | Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. |
-| [85completed p012](images/HandWrittenNotes/85completed/page-012.jpg) | <img src="images/HandWrittenNotes/85completed/page-012.jpg" width="420"> | Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. |
-| [85completed p013](images/HandWrittenNotes/85completed/page-013.jpg) | <img src="images/HandWrittenNotes/85completed/page-013.jpg" width="420"> | Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. |
-| [85completed p014](images/HandWrittenNotes/85completed/page-014.jpg) | <img src="images/HandWrittenNotes/85completed/page-014.jpg" width="420"> | Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. |
-| [85completed p015](images/HandWrittenNotes/85completed/page-015.jpg) | <img src="images/HandWrittenNotes/85completed/page-015.jpg" width="420"> | Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. |
-| [85completed p016](images/HandWrittenNotes/85completed/page-016.jpg) | <img src="images/HandWrittenNotes/85completed/page-016.jpg" width="420"> | Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. |
-| [85completed p017](images/HandWrittenNotes/85completed/page-017.jpg) | <img src="images/HandWrittenNotes/85completed/page-017.jpg" width="420"> | Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. |
-| [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg) | <img src="images/HandWrittenNotes/85completed/page-018.jpg" width="420"> | Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. |
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+
+### [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-011.jpg"><img src="images/HandWrittenNotes/85completed/page-011.jpg" alt="85completed p011 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Programmed I/O, I/O ports, and data-transfer modes. Use with programmed I/O. It separates I/O ports, port address, and data-transfer control. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p012](images/HandWrittenNotes/85completed/page-012.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-012.jpg"><img src="images/HandWrittenNotes/85completed/page-012.jpg" alt="85completed p012 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Synchronous/asynchronous transfer, strobe, handshaking, and timing. Use with handshaking. It compares synchronous, asynchronous, strobe, and handshaking transfer. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For transfer-mode pages, compare how timing is agreed. Synchronous transfer assumes a fixed timing relation, strobe transfer adds a timing pulse, and handshaking adds feedback so both sides know when data is ready and accepted.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p013](images/HandWrittenNotes/85completed/page-013.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-013.jpg"><img src="images/HandWrittenNotes/85completed/page-013.jpg" alt="85completed p013 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about DMA basics, `HOLD/HLDA`, bus control, and DMA controller role. Use with DMA overview. It shows `HOLD`, `HLDA`, DMA controller, and bus-control handover. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p014](images/HandWrittenNotes/85completed/page-014.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-014.jpg"><img src="images/HandWrittenNotes/85completed/page-014.jpg" alt="85completed p014 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about DMA modes: burst, cycle stealing, and transfer-rate reasoning. Use with burst and cycle stealing. It records when the CPU is blocked and when bus cycles are shared. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p015](images/HandWrittenNotes/85completed/page-015.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-015.jpg"><img src="images/HandWrittenNotes/85completed/page-015.jpg" alt="85completed p015 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8255 programmable peripheral interface and port grouping. Use with 8255. It shows ports, groups, mode control, and why programmable I/O chips are useful. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p016](images/HandWrittenNotes/85completed/page-016.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-016.jpg"><img src="images/HandWrittenNotes/85completed/page-016.jpg" alt="85completed p016 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8253 timer, 8257 DMA controller, and support-chip overview. Use with 8253 and 8257. It links timer/counter functions and DMA-controller channels. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p017](images/HandWrittenNotes/85completed/page-017.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-017.jpg"><img src="images/HandWrittenNotes/85completed/page-017.jpg" alt="85completed p017 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8259, 8257, 8272, 8275, 8279, and peripheral-controller purposes. Use with the support-chip list. It maps 8259, 8272, 8275, 8279, and other controllers to their system jobs. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte. For support chips, connect each chip to the CPU problem it solves: parallel I/O, timing, DMA, interrupt expansion, disk control, CRT display, or keyboard/display scanning.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg)
+
+<a href="images/HandWrittenNotes/85completed/page-018.jpg"><img src="images/HandWrittenNotes/85completed/page-018.jpg" alt="85completed p018 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Instruction-set/addressing/interrupt recap used to connect support chips back to 8085 programming. Use as a recap page. It connects addressing, interrupts, and instruction types back to peripheral interfacing. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
 
 ## 1. Programmed I/O and Handshaking
 
 ![I/O data transfer handshaking sequence](images/Day%208/day-8-io-data-transfer-handshaking-sequence.png)
 
-<img src="images/HandWrittenNotes/85completed/page-011.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-011.jpg" width="960">
 
-<img src="images/HandWrittenNotes/85completed/page-012.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-012.jpg" width="960">
 
 In simple programmed I/O, the CPU controls the transfer directly. The program checks whether a device is ready, then reads or writes data using instructions such as `IN` and `OUT`. This is easy to understand, but it wastes CPU time when a device is slow.
 
@@ -90,7 +161,7 @@ The screenshot's port-number question depends on this rule: I/O mapped devices a
 
 ![DMA HOLD/HLDA transfer steps](images/Day%208/day-8-dma-hold-hlda-transfer-steps.png)
 
-<img src="images/HandWrittenNotes/85completed/page-013.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-013.jpg" width="960">
 
 DMA means **Direct Memory Access**. It lets a controller move data between an I/O device and memory without the CPU executing one instruction per byte.
 
@@ -124,7 +195,7 @@ The key hardware idea is bus ownership. During DMA, the CPU is not the bus maste
 
 ![Cycle stealing DMA efficiency note](images/Day%208/day-8-cycle-stealing-dma-efficiency-note.png)
 
-<img src="images/HandWrittenNotes/85completed/page-014.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-014.jpg" width="960">
 
 DMA mode decides how aggressively the controller uses the bus.
 
@@ -143,7 +214,7 @@ The note about efficiency means: if the CPU is not using the bus during some int
 
 ![Intel 8255 programmable peripheral interface](images/Day%208/day-8-intel-8255-programmable-peripheral-interface.png)
 
-<img src="images/HandWrittenNotes/85completed/page-015.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-015.jpg" width="960">
 
 The 8155 and 8255 are peripheral interface chips. They let the processor connect to external devices through programmable ports instead of building all control logic from discrete gates.
 
@@ -165,7 +236,7 @@ The 8155 combines RAM, I/O, and timer functions. It is useful in small systems b
 
 ![Intel 8253 operating modes](images/Day%208/day-8-intel-8253-operating-modes.png)
 
-<img src="images/HandWrittenNotes/85completed/page-016.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-016.jpg" width="960">
 
 The 8253 is a programmable timer/counter. It has multiple counters that can be loaded with count values and programmed into different modes.
 
@@ -202,7 +273,7 @@ So the 8257 is the hardware that makes the Day 8 DMA diagrams practical.
 
 ![Intel 8259 PIC features](images/Day%208/day-8-intel-8259-pic-features.png)
 
-<img src="images/HandWrittenNotes/85completed/page-017.jpg" width="720">
+<img src="images/HandWrittenNotes/85completed/page-017.jpg" width="960">
 
 The 8085 has only a limited number of interrupt input pins. The 8259 expands interrupt handling by accepting multiple interrupt request inputs and presenting a controlled interrupt request to the CPU.
 

@@ -15,20 +15,107 @@ Day 3 focuses on how the 8085 moves data between registers and memory, how `HL` 
 
 ## Handwritten Notes Linked To Day 3
 
-These pages are the handwritten layer for data transfer and register-pair tracing. The main revision target is to stop treating `M` as a register: `M` always means **memory at the address currently stored in `HL`**.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
 
-| Page | Handwritten note | How to revise it with the screenshots |
-| --- | --- | --- |
-| [till47 p001](images/HandWrittenNotes/till47/page-001.jpg) | <img src="images/HandWrittenNotes/till47/page-001.jpg" width="420"> | Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. |
-| [till47 p002](images/HandWrittenNotes/till47/page-002.jpg) | <img src="images/HandWrittenNotes/till47/page-002.jpg" width="420"> | Use with register and memory addressing. It connects `M`, register operands, and flag layout. |
-| [till47 p003](images/HandWrittenNotes/till47/page-003.jpg) | <img src="images/HandWrittenNotes/till47/page-003.jpg" width="420"> | Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. |
-| [till47 p004](images/HandWrittenNotes/till47/page-004.jpg) | <img src="images/HandWrittenNotes/till47/page-004.jpg" width="420"> | Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. |
-| [till47 p005](images/HandWrittenNotes/till47/page-005.jpg) | <img src="images/HandWrittenNotes/till47/page-005.jpg" width="420"> | Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. |
-| [till47 p006](images/HandWrittenNotes/till47/page-006.jpg) | <img src="images/HandWrittenNotes/till47/page-006.jpg" width="420"> | Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. |
-| [till47 p007](images/HandWrittenNotes/till47/page-007.jpg) | <img src="images/HandWrittenNotes/till47/page-007.jpg" width="420"> | Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. |
-| [till47 p008](images/HandWrittenNotes/till47/page-008.jpg) | <img src="images/HandWrittenNotes/till47/page-008.jpg" width="420"> | Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. |
-| [till47 p009](images/HandWrittenNotes/till47/page-009.jpg) | <img src="images/HandWrittenNotes/till47/page-009.jpg" width="420"> | Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. |
-| [till47 p010](images/HandWrittenNotes/till47/page-010.jpg) | <img src="images/HandWrittenNotes/till47/page-010.jpg" width="420"> | Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. |
+### [till47 p001](images/HandWrittenNotes/till47/page-001.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-001.jpg"><img src="images/HandWrittenNotes/till47/page-001.jpg" alt="till47 p001 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Instruction byte length, addressing modes, `MVI`, `LDA`, and `JMP`. Use with the addressing-mode recap. It compares immediate, direct, register, and implicit examples. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p002](images/HandWrittenNotes/till47/page-002.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-002.jpg"><img src="images/HandWrittenNotes/till47/page-002.jpg" alt="till47 p002 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Implicit, memory, and register addressing plus flag layout. Use with register and memory addressing. It connects `M`, register operands, and flag layout. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p003](images/HandWrittenNotes/till47/page-003.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-003.jpg"><img src="images/HandWrittenNotes/till47/page-003.jpg" alt="till47 p003 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. Use with `MOV A,M`, `MOV M,R`, `LDA`, and `STA`. The key distinction is register indirect versus direct addressing. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p004](images/HandWrittenNotes/till47/page-004.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-004.jpg"><img src="images/HandWrittenNotes/till47/page-004.jpg" alt="till47 p004 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `MVI M,data`, `LXI H`, and register-indirect memory access. Use with `MVI M,data`. First load `HL`; only then does `M` point to the desired memory location. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p005](images/HandWrittenNotes/till47/page-005.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-005.jpg"><img src="images/HandWrittenNotes/till47/page-005.jpg" alt="till47 p005 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about One-, two-, and three-byte instructions with `LDA`. Use with instruction length. It shows why `LDA` is three bytes while simple register operations can be one byte. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p006](images/HandWrittenNotes/till47/page-006.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-006.jpg"><img src="images/HandWrittenNotes/till47/page-006.jpg" alt="till47 p006 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `LDAX`, `STAX`, and register-pair indirect addressing. Use with `LDAX` and `STAX`. These are register-pair indirect instructions using `BC` or `DE`, not `HL`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p007](images/HandWrittenNotes/till47/page-007.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-007.jpg"><img src="images/HandWrittenNotes/till47/page-007.jpg" alt="till47 p007 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `LHLD`, `SHLD`, and low-byte/high-byte order. Use with `LHLD` and `SHLD`. Remember low address stores/loads the low byte first. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p008](images/HandWrittenNotes/till47/page-008.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-008.jpg"><img src="images/HandWrittenNotes/till47/page-008.jpg" alt="till47 p008 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `LDAX`, `XCHG`, and memory/register-pair tracing. Use with `XCHG` and `LDAX`. Track whether the instruction moves data, an address, or a register-pair value. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`. For trace pages, do not jump from the first instruction to the final answer. Make a row for each instruction and update only the registers, memory bytes, flags, or stack locations that the instruction actually changes.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p009](images/HandWrittenNotes/till47/page-009.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-009.jpg"><img src="images/HandWrittenNotes/till47/page-009.jpg" alt="till47 p009 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `LXI H`, `SHLD`, register-pair memory storage. Use with `SHLD`. It reinforces memory layout for `HL`: `L` at lower address, `H` at next address. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till47 p010](images/HandWrittenNotes/till47/page-010.jpg)
+
+<a href="images/HandWrittenNotes/till47/page-010.jpg"><img src="images/HandWrittenNotes/till47/page-010.jpg" alt="till47 p010 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `XCHG`, `DAD`, and register-pair trace practice. Use with register-pair program tracing. Make a table for `A`, `B`, `C`, `D`, `E`, `H`, `L`, `BC`, `DE`, and `HL`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For trace pages, do not jump from the first instruction to the final answer. Make a row for each instruction and update only the registers, memory bytes, flags, or stack locations that the instruction actually changes.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
 
 ## 1. `MVI M,data`: Immediate Data to Memory Through `HL`
 

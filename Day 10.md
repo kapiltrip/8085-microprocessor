@@ -28,14 +28,67 @@ Day 10 continues the 8086 introduction from Day 9. The screenshots move from arc
 
 ## Handwritten Notes Linked To Day 10
 
-| Page | Handwritten note | How to revise it with the screenshots |
-| --- | --- | --- |
-| [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="420"> | Use with the flag screenshots. It records the flag register layout and control flags such as `TF`, `IF`, and `DF`. |
-| [86tilllnow p008](images/HandWrittenNotes/86tilllnow/page-008.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="420"> | Use with addressing modes. It connects segment:offset, physical address, direct addressing, and displacement. |
-| [86tilllnow p009](images/HandWrittenNotes/86tilllnow/page-009.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="420"> | Use with register/index/base addressing and interrupt notes. |
-| [86tilllnow p010](images/HandWrittenNotes/86tilllnow/page-010.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="420"> | Use with `MOV` examples and direct/register addressing examples. |
-| [86tilllnow p011](images/HandWrittenNotes/86tilllnow/page-011.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="420"> | Use with `XLAT`, `IN`, `OUT`, port addressing, and memory-versus-I/O distinction. |
-| [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg) | <img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="420"> | Use with branch instructions and the 8085 versus 8086 comparison. |
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
+
+### [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-007.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" alt="86tilllnow p007 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8086 flag register, trap/interrupt/direction flags, and stack addressing notes. Use with the flag screenshots. It records the flag register layout and control flags such as `TF`, `IF`, and `DF`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For 8086 flags, separate status flags from control flags. Status flags describe the arithmetic or logical result, while `TF`, `IF`, and `DF` control single-step tracing, interrupt response, and string direction. For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [86tilllnow p008](images/HandWrittenNotes/86tilllnow/page-008.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-008.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" alt="86tilllnow p008 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8086 addressing modes, segment offset, physical address, and direct addressing. Use with addressing modes. It connects segment:offset, physical address, direct addressing, and displacement. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions. For 8086 addressing, keep segment and offset distinct. The effective address is formed from base/index/displacement choices, then combined with a segment base to reach the physical address.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [86tilllnow p009](images/HandWrittenNotes/86tilllnow/page-009.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-009.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" alt="86tilllnow p009 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Register, index, base, base-index, and interrupt notes. Use with register/index/base addressing and interrupt notes. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR. For 8086 addressing, keep segment and offset distinct. The effective address is formed from base/index/displacement choices, then combined with a segment base to reach the physical address.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [86tilllnow p010](images/HandWrittenNotes/86tilllnow/page-010.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-010.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" alt="86tilllnow p010 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `MOV` examples, direct/register addressing, and instruction operands. Use with `MOV` examples and direct/register addressing examples. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For addressing modes, ask one question every time: where does the operand come from? It may be inside the instruction byte stream, inside a register, at a direct memory address, or at the memory address held by a register pair. For data-transfer instructions, separate the opcode bytes from the data/address bytes. Also keep direct memory access different from register-pair indirect access through `M`, `BC`, or `DE`.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [86tilllnow p011](images/HandWrittenNotes/86tilllnow/page-011.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-011.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" alt="86tilllnow p011 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `XLAT`, `IN`, `OUT`, I/O port addressing, and memory/addressing distinction. Use with `XLAT`, `IN`, `OUT`, port addressing, and memory-versus-I/O distinction. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For 8086 addressing, keep segment and offset distinct. The effective address is formed from base/index/displacement choices, then combined with a segment base to reach the physical address.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg)
+
+<a href="images/HandWrittenNotes/86tilllnow/page-012.jpg"><img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" alt="86tilllnow p012 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Multiple branching and 8086 versus 8085 bus/address comparison. Use with branch instructions and the 8085 versus 8086 comparison. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself. For 8086 pages, separate the external bus interface from instruction execution. The BIU handles fetching, address generation, segmentation, and the queue, while the EU decodes and executes instructions.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
 
 ## 1. 8086 Flag Register and Single-Step Mode
 
@@ -43,7 +96,7 @@ Day 10 continues the 8086 introduction from Day 9. The screenshots move from arc
 
 ![Direction flag and interrupt flag](images/Day%2010/Screenshot%202026-06-10%20113801.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-007.jpg" width="960">
 
 The screenshot asks which 8086 flag bit is used to put the processor in single-step mode. The answer is:
 
@@ -77,9 +130,9 @@ The 8086 flag register contains status flags and control flags.
 
 ![Addressing mode examples close-up](images/Day%2010/Screenshot%202026-06-10%20115108.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-008.jpg" width="960">
 
-<img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-010.jpg" width="960">
 
 An addressing mode tells the processor where the operand is.
 
@@ -134,7 +187,7 @@ The difference:
 
 ## 3. Other 8086 Addressing Ideas
 
-<img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-009.jpg" width="960">
 
 The handwritten notes expand beyond direct/register addressing into common 8086 effective-address forms:
 
@@ -233,7 +286,7 @@ The vector table does not store the ISR code itself. It stores the address of th
 
 ![OUT instruction](images/Day%2010/Screenshot%202026-06-10%20125135.png)
 
-<img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-011.jpg" width="960">
 
 8086 is not accumulator-centered in the same way as 8085. Many instructions can use several general-purpose registers.
 
@@ -405,7 +458,7 @@ before string instructions.
 
 ## 12. 8085 to 8086 Comparison
 
-<img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="720">
+<img src="images/HandWrittenNotes/86tilllnow/page-012.jpg" width="960">
 
 | Feature | 8085 | 8086 |
 | --- | --- | --- |

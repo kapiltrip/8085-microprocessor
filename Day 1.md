@@ -30,17 +30,77 @@ This file explains every major term shown in the Day 1 screenshots: microprocess
 
 ## Handwritten Notes Linked To Day 1
 
-These handwritten pages are the revision layer for the Day 1 screenshots. They are strongest for remembering the **inside of the 8085**: ALU, accumulator, flags, register groups, pin groups, status/control lines, multiplexed bus, and the first interrupt-vector idea.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
 
-| Page | Handwritten note | How to revise it with the screenshots |
-| --- | --- | --- |
-| [till46 p001](images/HandWrittenNotes/till46/page-001.jpg) | <img src="images/HandWrittenNotes/till46/page-001.jpg" width="420"> | Use with the CPU/ALU screenshots. This page turns the ALU explanation into flag logic: result goes through the accumulator, and the status result appears in `S`, `Z`, `AC`, `P`, and `CY`. |
-| [till46 p002](images/HandWrittenNotes/till46/page-002.jpg) | <img src="images/HandWrittenNotes/till46/page-002.jpg" width="420"> | Use with the internal-register discussion. It connects accumulator, general-purpose registers, `PC`, `SP`, instruction register, and timing/control into one CPU model. |
-| [till46 p003](images/HandWrittenNotes/till46/page-003.jpg) | <img src="images/HandWrittenNotes/till46/page-003.jpg" width="420"> | Use with the key-points screenshot. This page is the quick specification sheet: 8-bit data bus, 16-bit addressing, tri-state bus, serial I/O, and interrupt support. |
-| [till46 p004](images/HandWrittenNotes/till46/page-004.jpg) | <img src="images/HandWrittenNotes/till46/page-004.jpg" width="420"> | Use with the pin-configuration screenshots. The page groups power, clock, reset, DMA, interrupt, address, and data pins so the 40-pin diagram becomes easier to memorize. |
-| [till46 p005](images/HandWrittenNotes/till46/page-005.jpg) | <img src="images/HandWrittenNotes/till46/page-005.jpg" width="420"> | Use with the machine-cycle status table. The important link is that `IO/M`, `S1`, and `S0` identify the bus cycle while `/RD`, `/WR`, and `/INTA` perform the control action. |
-| [till46 p006](images/HandWrittenNotes/till46/page-006.jpg) | <img src="images/HandWrittenNotes/till46/page-006.jpg" width="420"> | Use with the multiplexed-bus and `ALE` screenshots. It shows why `AD0-AD7` need a latch and also records the serial pins and interrupt pins in one place. |
-| [till46 p007](images/HandWrittenNotes/till46/page-007.jpg) | <img src="images/HandWrittenNotes/till46/page-007.jpg" width="420"> | Use as a bridge into Day 7. It introduces the fixed interrupt vector calculation such as `RST 7.5 -> 7.5 x 8 = 003CH`. |
+### [till46 p001](images/HandWrittenNotes/till46/page-001.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-001.jpg"><img src="images/HandWrittenNotes/till46/page-001.jpg" alt="till46 p001 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about ALU, accumulator, flags, byte/nibble, carry and auxiliary carry. Use with the CPU/ALU screenshots. This page turns the ALU explanation into flag logic: result goes through the accumulator, and the status result appears in `S`, `Z`, `AC`, `P`, and `CY`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p002](images/HandWrittenNotes/till46/page-002.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-002.jpg"><img src="images/HandWrittenNotes/till46/page-002.jpg" alt="till46 p002 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Accumulator, temporary registers, general-purpose registers, PC, SP, instruction register, timing/control. Use with the internal-register discussion. It connects accumulator, general-purpose registers, `PC`, `SP`, instruction register, and timing/control into one CPU model. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p003](images/HandWrittenNotes/till46/page-003.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-003.jpg"><img src="images/HandWrittenNotes/till46/page-003.jpg" alt="till46 p003 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8085 features: 8-bit data, 16-bit addressing, tri-state bus, interrupts, serial I/O. Use with the key-points screenshot. This page is the quick specification sheet: 8-bit data bus, 16-bit addressing, tri-state bus, serial I/O, and interrupt support. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p004](images/HandWrittenNotes/till46/page-004.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-004.jpg"><img src="images/HandWrittenNotes/till46/page-004.jpg" alt="till46 p004 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Pin diagram, clock, reset, `HOLD/HLDA`, `READY`, interrupts, address/data pins. Use with the pin-configuration screenshots. The page groups power, clock, reset, DMA, interrupt, address, and data pins so the 40-pin diagram becomes easier to memorize. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR. For DMA, the central idea is bus ownership. The CPU sets up the transfer, but the DMA controller temporarily becomes bus master so data can move between I/O and memory without one CPU instruction per byte.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p005](images/HandWrittenNotes/till46/page-005.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-005.jpg"><img src="images/HandWrittenNotes/till46/page-005.jpg" alt="till46 p005 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `IO/M`, `S1`, `S0`, `ALE`, `/RD`, `/WR`, and status/control table. Use with the machine-cycle status table. The important link is that `IO/M`, `S1`, and `S0` identify the bus cycle while `/RD`, `/WR`, and `/INTA` perform the control action. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. For I/O, keep selection and transfer separate: the address or port number selects the device interface, while the control signal and data bus perform the read or write.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p006](images/HandWrittenNotes/till46/page-006.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-006.jpg"><img src="images/HandWrittenNotes/till46/page-006.jpg" alt="till46 p006 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Multiplexed address/data bus, latch, `SID/SOD`, and interrupt pin grouping. Use with the multiplexed-bus and `ALE` screenshots. It shows why `AD0-AD7` need a latch and also records the serial pins and interrupt pins in one place. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. The multiplexed-bus point is that the same physical pins carry low address first and data later, so `ALE` marks the moment when the low address must be captured externally. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till46 p007](images/HandWrittenNotes/till46/page-007.jpg)
+
+<a href="images/HandWrittenNotes/till46/page-007.jpg"><img src="images/HandWrittenNotes/till46/page-007.jpg" alt="till46 p007 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about 8085 interrupt vector address calculation and interrupt priority. Use as a bridge into Day 7. It introduces the fixed interrupt vector calculation such as `RST 7.5 -> 7.5 x 8 = 003CH`. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
 
 ## 1. Meaning of "Microprocessor"
 
