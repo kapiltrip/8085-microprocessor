@@ -19,22 +19,127 @@ Day 4 is about control flow and stack-based execution. Earlier days explained ho
 
 ## Handwritten Notes Linked To Day 4
 
-These handwritten pages connect the screenshots to actual control-flow tracing. Read them in this order: branch condition, call/return, stack byte order, then `SIM/RIM` bit fields.
+Each handwritten page is shown first as a large full-page image. Click the image or page title to open the high-resolution extracted page, then read the explanation below it.
 
-| Page | Handwritten note | How to revise it with the screenshots |
-| --- | --- | --- |
-| [till73 p001](images/HandWrittenNotes/till73/page-001.jpg) | <img src="images/HandWrittenNotes/till73/page-001.jpg" width="420"> | Use with subroutine motivation. Repeated code becomes a callable routine; `CALL` transfers control and stores the return path. |
-| [till73 p002](images/HandWrittenNotes/till73/page-002.jpg) | <img src="images/HandWrittenNotes/till73/page-002.jpg" width="420"> | Use with conditional call/return. The condition is always decided from existing flags, not from the `CALL` instruction itself. |
-| [till73 p003](images/HandWrittenNotes/till73/page-003.jpg) | <img src="images/HandWrittenNotes/till73/page-003.jpg" width="420"> | Use with branch tables. It groups carry, zero, sign, and parity conditions for calls and returns. |
-| [till73 p004](images/HandWrittenNotes/till73/page-004.jpg) | <img src="images/HandWrittenNotes/till73/page-004.jpg" width="420"> | Use with program tracing. Update registers and flags one instruction at a time before deciding whether a branch is taken. |
-| [till73 p005](images/HandWrittenNotes/till73/page-005.jpg) | <img src="images/HandWrittenNotes/till73/page-005.jpg" width="420"> | Use with `CALL` and stack screenshots. The return address is pushed before `PC` is loaded with the subroutine address. |
-| [till73 p006](images/HandWrittenNotes/till73/page-006.jpg) | <img src="images/HandWrittenNotes/till73/page-006.jpg" width="420"> | Use with `PUSH`, `POP`, `XTHL`, and `SPHL`. These are all stack/register-transfer ideas, not ALU operations. |
-| [till73 p007](images/HandWrittenNotes/till73/page-007.jpg) | <img src="images/HandWrittenNotes/till73/page-007.jpg" width="420"> | Use with the `CALL 1006H` and `POP H` question. Track `SP`, low byte, and high byte separately. |
-| [till73 p008](images/HandWrittenNotes/till73/page-008.jpg) | <img src="images/HandWrittenNotes/till73/page-008.jpg" width="420"> | Use with stack trace practice. Draw the stack vertically; pushes move downward and pops move upward. |
-| [till73 p009](images/HandWrittenNotes/till73/page-009.jpg) | <img src="images/HandWrittenNotes/till73/page-009.jpg" width="420"> | Use with the signed input loop. `RAL` moves the old sign bit into carry, and `JNC` repeats while that bit is zero. |
-| [till73 p010](images/HandWrittenNotes/till73/page-010.jpg) | <img src="images/HandWrittenNotes/till73/page-010.jpg" width="420"> | Use with `NOP`, `DI`, `EI`, and `SIM`. These are one-byte implied instructions with control effects. |
-| [till73 p011](images/HandWrittenNotes/till73/page-011.jpg) | <img src="images/HandWrittenNotes/till73/page-011.jpg" width="420"> | Use with `RIM`. This page is the status-byte view: pending interrupt bits, mask bits, interrupt enable, and serial input. |
-| [till73 p012](images/HandWrittenNotes/till73/page-012.jpg) | <img src="images/HandWrittenNotes/till73/page-012.jpg" width="420"> | Use with `SIM`. This page is the control-byte view: mask set enable, interrupt masks, reset `RST 7.5`, and serial output. |
+### [till73 p001](images/HandWrittenNotes/till73/page-001.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-001.jpg"><img src="images/HandWrittenNotes/till73/page-001.jpg" alt="till73 p001 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Subroutine, conditional/unconditional `CALL`, and repeated code. Use with subroutine motivation. Repeated code becomes a callable routine; `CALL` transfers control and stores the return path. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p002](images/HandWrittenNotes/till73/page-002.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-002.jpg"><img src="images/HandWrittenNotes/till73/page-002.jpg" alt="till73 p002 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Conditional calls, conditional returns, flags, and stack use. Use with conditional call/return. The condition is always decided from existing flags, not from the `CALL` instruction itself. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself. For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p003](images/HandWrittenNotes/till73/page-003.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-003.jpg"><img src="images/HandWrittenNotes/till73/page-003.jpg" alt="till73 p003 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Conditional return/call, subroutine return, and flag conditions. Use with branch tables. It groups carry, zero, sign, and parity conditions for calls and returns. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p004](images/HandWrittenNotes/till73/page-004.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-004.jpg"><img src="images/HandWrittenNotes/till73/page-004.jpg" alt="till73 p004 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Program trace with `CALL`, register updates, and flags. Use with program tracing. Update registers and flags one instruction at a time before deciding whether a branch is taken. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p005](images/HandWrittenNotes/till73/page-005.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-005.jpg"><img src="images/HandWrittenNotes/till73/page-005.jpg" alt="till73 p005 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `CALL`, `RET`, stack pointer, PSW, and push/pop purpose. Use with `CALL` and stack screenshots. The return address is pushed before `PC` is loaded with the subroutine address. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself. For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p006](images/HandWrittenNotes/till73/page-006.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-006.jpg"><img src="images/HandWrittenNotes/till73/page-006.jpg" alt="till73 p006 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `PUSH`, `POP`, `XTHL`, `SPHL`, and stack/register exchange. Use with `PUSH`, `POP`, `XTHL`, and `SPHL`. These are all stack/register-transfer ideas, not ALU operations. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+The CPU-side idea is to separate the data path from the status path: the accumulator holds the working or result byte, while the flags describe that result for the next instruction or branch. For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p007](images/HandWrittenNotes/till73/page-007.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-007.jpg"><img src="images/HandWrittenNotes/till73/page-007.jpg" alt="till73 p007 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `CALL 1006H`, return address, `POP H`, and `SP` tracing. Use with the `CALL 1006H` and `POP H` question. Track `SP`, low byte, and high byte separately. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For register pages, keep 8-bit registers and 16-bit register pairs separate. `B-C`, `D-E`, and `H-L` can be used together as address or data pairs, while `PC` and `SP` have special control roles. For branch, call, and return pages, the condition is decided from flags already set by earlier work. The control-transfer instruction tests those flags; it does not create the arithmetic result itself. For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p008](images/HandWrittenNotes/till73/page-008.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-008.jpg"><img src="images/HandWrittenNotes/till73/page-008.jpg" alt="till73 p008 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about Stack trace with `PUSH`, `POP`, `DAD`, and register contents. Use with stack trace practice. Draw the stack vertically; pushes move downward and pops move upward. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For stack questions, write `SP` before and after every operation. `PUSH` and `CALL` move the stack downward before storing bytes; `POP` and `RET` read bytes and then move `SP` upward. For trace pages, do not jump from the first instruction to the final answer. Make a row for each instruction and update only the registers, memory bytes, flags, or stack locations that the instruction actually changes.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p009](images/HandWrittenNotes/till73/page-009.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-009.jpg"><img src="images/HandWrittenNotes/till73/page-009.jpg" alt="till73 p009 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `IN`, `OUT`, signed input loop, `RAL`, and carry test. Use with the signed input loop. `RAL` moves the old sign bit into carry, and `JNC` repeats while that bit is zero. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For flags, do not memorize only the names. Recompute the result, then decide `S`, `Z`, `AC`, `P`, and `CY` from that result; in subtraction, `CY` must be read as borrow. For rotates, draw the accumulator bits and the carry bit before each step. The important distinction is whether the rotation is circular inside the accumulator or passes through `CY`. For delay loops, count the repeated path and the final exit path separately. The last iteration usually has a different branch timing because the conditional jump is not taken.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p010](images/HandWrittenNotes/till73/page-010.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-010.jpg"><img src="images/HandWrittenNotes/till73/page-010.jpg" alt="till73 p010 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `HLT`, `NOP`, `DI`, `EI`, and `SIM`. Use with `NOP`, `DI`, `EI`, and `SIM`. These are one-byte implied instructions with control effects. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+`SIM` and `RIM` should be read as accumulator-byte formats. One controls masks/serial output, and the other reads interrupt-mask, pending, enable, and serial-input status.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p011](images/HandWrittenNotes/till73/page-011.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-011.jpg"><img src="images/HandWrittenNotes/till73/page-011.jpg" alt="till73 p011 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `RIM` bit fields, interrupt pending bits, and serial input. Use with `RIM`. This page is the status-byte view: pending interrupt bits, mask bits, interrupt enable, and serial input. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+`SIM` and `RIM` should be read as accumulator-byte formats. One controls masks/serial output, and the other reads interrupt-mask, pending, enable, and serial-input status. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
+
+### [till73 p012](images/HandWrittenNotes/till73/page-012.jpg)
+
+<a href="images/HandWrittenNotes/till73/page-012.jpg"><img src="images/HandWrittenNotes/till73/page-012.jpg" alt="till73 p012 handwritten note" width="960"></a>
+
+Explanation: This page is mainly about `SIM` mask bits, `SOD`, `SDE`, and interrupt masks. Use with `SIM`. This page is the control-byte view: mask set enable, interrupt masks, reset `RST 7.5`, and serial output. Read the handwritten page first as the source page: identify the named instructions, signals, registers, or diagrams, then follow the example in the same order it is written.
+
+For signal pages, group each pin by job: address/data transfer, control, status, clock/reset, interrupt, DMA, or serial I/O. This makes the pin diagram readable instead of a list to memorize blindly. `SIM` and `RIM` should be read as accumulator-byte formats. One controls masks/serial output, and the other reads interrupt-mask, pending, enable, and serial-input status. For interrupts, keep four separate ideas: who requested service, whether it can be masked, where the CPU jumps, and how the interrupted program returns after the ISR.
+
+For revision, turn the page into a small working checklist instead of a single memory line. Write the important names from the page, state what each one controls or changes, and then trace the example values step by step. This keeps the explanation tied to the handwritten content while still making the idea usable for exam questions and program traces.
 
 ## 1. Conditional Jump Instructions
 
