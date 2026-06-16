@@ -1,19 +1,19 @@
-# Day 3: Data Transfer, Register Pairs, and Logical Instructions
+# Day 03: Data Transfer, Register Pairs, and Logical Instructions
 
-Day 3 focuses on how the 8085 moves data between registers and memory, how `HL` acts as a memory pointer, and how logical instructions such as `ORI`, `XRA`, and accumulator operations affect data and flags. This day is important because many later programming problems become simple once you can trace register contents carefully.
+Day 03 focuses on how the 8085 moves data between registers and memory, how `HL` acts as a memory pointer, and how logical instructions such as `ORI`, `XRA`, and accumulator operations affect data and flags. This day is important because many later programming problems become simple once you can trace register contents carefully.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [MVI M,data and indirect addressing](images/Day%203/day-3-mvi-m-data-indirect-addressing.png) | `M` means memory location addressed by `HL`; immediate data is stored there. |
-| 2 | [LHLD direct addressing example](images/Day%203/day-3-lhld-direct-addressing-example.png) | Load `L` and `H` directly from two consecutive memory locations. |
-| 3 | [XCHG register-pair question](images/Day%203/day-3-xchg-register-pair-question.png) | `XCHG` exchanges `HL` and `DE` register pairs. |
-| 4 | [Register-pair program tracing](images/Day%203/day-3-register-pair-program-tracing.png) | Step-by-step tracing of `XRA`, `MOV`, `INX`, `DAD`, and register-pair effects. |
-| 5 | [ORI data immediate with accumulator](images/Day%203/day-3-ori-data-immediate-accumulator.png) | Immediate OR operation: `A <- A OR data`. |
-| 6 | [XRA A clears accumulator](images/Day%203/day-3-xra-a-clear-accumulator-note.png) | XORing a value with itself gives zero; `XRA A` clears `A`. |
+| 1 | [MVI M,data and indirect addressing](images/Day%2003/day-3-mvi-m-data-indirect-addressing.png) | `M` means memory location addressed by `HL`; immediate data is stored there. |
+| 2 | [LHLD direct addressing example](images/Day%2003/day-3-lhld-direct-addressing-example.png) | Load `L` and `H` directly from two consecutive memory locations. |
+| 3 | [XCHG register-pair question](images/Day%2003/day-3-xchg-register-pair-question.png) | `XCHG` exchanges `HL` and `DE` register pairs. |
+| 4 | [Register-pair program tracing](images/Day%2003/day-3-register-pair-program-tracing.png) | Step-by-step tracing of `XRA`, `MOV`, `INX`, `DAD`, and register-pair effects. |
+| 5 | [ORI data immediate with accumulator](images/Day%2003/day-3-ori-data-immediate-accumulator.png) | Immediate OR operation: `A <- A OR data`. |
+| 6 | [XRA A clears accumulator](images/Day%2003/day-3-xra-a-clear-accumulator-note.png) | XORing a value with itself gives zero; `XRA A` clears `A`. |
 
-## Handwritten Notes Linked To Day 3
+## Handwritten Notes Linked To Day 03
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -109,7 +109,7 @@ For program traces, keep a state table. Each row should list only what the curre
 
 ## 1. `MVI M,data`: Immediate Data to Memory Through `HL`
 
-![MVI M,data and indirect addressing](images/Day%203/day-3-mvi-m-data-indirect-addressing.png)
+![MVI M,data and indirect addressing](images/Day%2003/day-3-mvi-m-data-indirect-addressing.png)
 
 `MVI M,data` is one of the most important instructions for understanding 8085 notation.
 
@@ -143,7 +143,7 @@ Common trap: students sometimes write "M = 2400H." That is wrong. `HL = 2400H`; 
 
 ## 2. `LHLD addr`: Load H and L Direct
 
-![LHLD direct addressing example](images/Day%203/day-3-lhld-direct-addressing-example.png)
+![LHLD direct addressing example](images/Day%2003/day-3-lhld-direct-addressing-example.png)
 
 `LHLD addr` loads the `HL` pair from two consecutive memory locations.
 
@@ -185,7 +185,7 @@ Common trap: do not load `H` from the first address. The mnemonic says `LHLD`, b
 
 ## 3. `XCHG`: Exchange `HL` and `DE`
 
-![XCHG register-pair question](images/Day%203/day-3-xchg-register-pair-question.png)
+![XCHG register-pair question](images/Day%2003/day-3-xchg-register-pair-question.png)
 
 `XCHG` exchanges the contents of the `HL` and `DE` register pairs:
 
@@ -220,7 +220,7 @@ Common trap: `XCHG` does not exchange `BC` with anything. It only exchanges `DE`
 
 ## 4. Register-Pair Program Tracing
 
-![Register-pair program tracing](images/Day%203/day-3-register-pair-program-tracing.png)
+![Register-pair program tracing](images/Day%2003/day-3-register-pair-program-tracing.png)
 
 The program-tracing screenshot is testing whether you can track register contents line by line. The reliable method is to make a table and update only the registers touched by each instruction.
 
@@ -250,7 +250,7 @@ Common trap: `DAD` affects the carry flag, but it does not update all arithmetic
 
 ## 5. `ORI data`: Immediate OR With Accumulator
 
-![ORI data immediate with accumulator](images/Day%203/day-3-ori-data-immediate-accumulator.png)
+![ORI data immediate with accumulator](images/Day%2003/day-3-ori-data-immediate-accumulator.png)
 
 `ORI data` performs a bitwise OR between the accumulator and an 8-bit immediate value:
 
@@ -281,7 +281,7 @@ Common trap: OR is not addition. `82H OR 0FH` is `8FH`, not `91H`.
 
 ## 6. `XRA A`: Clearing the Accumulator
 
-![XRA A clears accumulator](images/Day%203/day-3-xra-a-clear-accumulator-note.png)
+![XRA A clears accumulator](images/Day%2003/day-3-xra-a-clear-accumulator-note.png)
 
 `XRA r` performs exclusive-OR between the accumulator and the selected operand:
 

@@ -1,34 +1,34 @@
-# Day 1: Introduction to the 8085 Microprocessor
+# Day 01: Introduction to the 8085 Microprocessor
 
-This file explains every major term shown in the Day 1 screenshots: microprocessor, CPU, ALU, control unit, binary data, microcomputer, microcontroller, 4004/8008 history, PMOS/MOSFET, memory addressing, scale of integration, language levels, compiler/interpreter/assembler, Von Neumann/Harvard architecture, 8085 pins/signals, key 8085 specifications, `ALE`, clocking, interrupts, signal grouping, machine cycles, control/status signals, and serial I/O. The notes are written for 8085 study, so the definitions are connected back to the Intel 8085 wherever useful.
+This file explains every major term shown in the Day 01 screenshots: microprocessor, CPU, ALU, control unit, binary data, microcomputer, microcontroller, 4004/8008 history, PMOS/MOSFET, memory addressing, scale of integration, language levels, compiler/interpreter/assembler, Von Neumann/Harvard architecture, 8085 pins/signals, key 8085 specifications, `ALE`, clocking, interrupts, signal grouping, machine cycles, control/status signals, and serial I/O. The notes are written for 8085 study, so the definitions are connected back to the Intel 8085 wherever useful.
 
 ## Image Links
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [What is a microprocessor?](images/Day%201/day-1-what-is-a-microprocessor.png) | Meaning of microprocessor and processor |
-| 2 | [Microprocessor as a processing device](images/Day%201/day-1-microprocessor-processing-device.png) | Binary numbers, program, and processing |
-| 3 | [CPU, ALU, CU, and microcontroller](images/Day%201/day-1-cpu-alu-control-unit-microcontroller.png) | CPU blocks and control unit |
-| 4 | [Microcomputer vs microprocessor vs microcontroller](images/Day%201/day-1-microcomputer-microprocessor-microcontroller.png) | Difference between related terms |
-| 5 | [History of microprocessors](images/Day%201/day-1-history-intel-4004-8008.png) | Intel 4004 and Intel 8008 |
-| 6 | [Scale of integration](images/Day%201/day-1-scale-of-integration.png) | SSI, MSI, LSI, VLSI, and ULSI |
-| 7 | [Assembly, low-level, and high-level languages](images/Day%201/day-1-assembly-low-high-level-language.png) | Machine-dependent and machine-independent languages |
-| 8 | [Compiler, interpreter, and assembler](images/Day%201/day-1-compiler-interpreter-assembler.png) | Translators from source language to machine language/object code |
-| 9 | [Von Neumann and Harvard architecture](images/Day%201/day-1-von-neumann-harvard-architecture.png) | Program/data storage organization |
-| 10 | [8085 pins and signals overview](images/Day%201/day-1-8085-pins-signals-overview.png) | 40 pins, +5 V supply, clock, and 8080A compatibility |
-| 11 | [8085 pins and signals close-up](images/Day%201/day-1-8085-pins-signals-closeup.png) | Same pins/signals slide in cropped form |
-| 12 | [8085 pin configuration and functional diagram](images/Day%201/day-1-8085-pin-configuration-functional-diagram.png) | Address bus, multiplexed address/data bus, control, interrupt, serial, and DMA signals |
-| 13 | [Key points of 8085 microprocessor](images/Day%201/day-1-8085-key-points.png) | NMOS, 40-pin DIP, 8-bit data bus, 16 address lines, serial I/O, multiplexing, and `ALE` |
-| 14 | [ALE, clock, interrupts, and opcodes](images/Day%201/day-1-8085-ale-clock-interrupts-opcodes.png) | `ALE` timing, multiplexing tradeoff, +5 V, hardware interrupts, clock frequency, and instruction/opcode count |
-| 15 | [Signal groups of 8085 microprocessor](images/Day%201/day-1-8085-signal-groups.png) | Address bus, data bus, control/status, power/frequency, serial I/O, and externally initiated signals |
-| 16 | [Multiplexed address/data bus](images/Day%201/day-1-8085-multiplexed-address-data-bus.png) | `AD0-AD7`, bidirectional 8-bit bus behavior, and time-division multiplexing |
-| 17 | [Control and status signals: RD and WR](images/Day%201/day-1-8085-control-status-signals-rd-wr.png) | Active-low `RD`, `WR`, `IO/M`, `S1`, `S0`, and `ALE` |
-| 18 | [Machine cycle status table](images/Day%201/day-1-8085-machine-cycle-status-table.png) | Status codes for opcode fetch, memory read/write, I/O read/write, interrupt acknowledge, and halt |
-| 19 | [ALE address latch enable](images/Day%201/day-1-8085-ale-address-latch-enable.png) | Positive-going `ALE` pulse and low-address latching |
-| 20 | [Power supply and frequency signals](images/Day%201/day-1-8085-power-frequency-signals.png) | `VCC`, `VSS`, `X1`, `X2`, and internal divide-by-two clocking |
-| 21 | [Serial I/O ports: SID and SOD](images/Day%201/day-1-8085-serial-io-ports-sid-sod.png) | Serial input/output pins and the accumulator `D7` bit path |
+| 1 | [What is a microprocessor?](images/Day%2001/day-1-what-is-a-microprocessor.png) | Meaning of microprocessor and processor |
+| 2 | [Microprocessor as a processing device](images/Day%2001/day-1-microprocessor-processing-device.png) | Binary numbers, program, and processing |
+| 3 | [CPU, ALU, CU, and microcontroller](images/Day%2001/day-1-cpu-alu-control-unit-microcontroller.png) | CPU blocks and control unit |
+| 4 | [Microcomputer vs microprocessor vs microcontroller](images/Day%2001/day-1-microcomputer-microprocessor-microcontroller.png) | Difference between related terms |
+| 5 | [History of microprocessors](images/Day%2001/day-1-history-intel-4004-8008.png) | Intel 4004 and Intel 8008 |
+| 6 | [Scale of integration](images/Day%2001/day-1-scale-of-integration.png) | SSI, MSI, LSI, VLSI, and ULSI |
+| 7 | [Assembly, low-level, and high-level languages](images/Day%2001/day-1-assembly-low-high-level-language.png) | Machine-dependent and machine-independent languages |
+| 8 | [Compiler, interpreter, and assembler](images/Day%2001/day-1-compiler-interpreter-assembler.png) | Translators from source language to machine language/object code |
+| 9 | [Von Neumann and Harvard architecture](images/Day%2001/day-1-von-neumann-harvard-architecture.png) | Program/data storage organization |
+| 10 | [8085 pins and signals overview](images/Day%2001/day-1-8085-pins-signals-overview.png) | 40 pins, +5 V supply, clock, and 8080A compatibility |
+| 11 | [8085 pins and signals close-up](images/Day%2001/day-1-8085-pins-signals-closeup.png) | Same pins/signals slide in cropped form |
+| 12 | [8085 pin configuration and functional diagram](images/Day%2001/day-1-8085-pin-configuration-functional-diagram.png) | Address bus, multiplexed address/data bus, control, interrupt, serial, and DMA signals |
+| 13 | [Key points of 8085 microprocessor](images/Day%2001/day-1-8085-key-points.png) | NMOS, 40-pin DIP, 8-bit data bus, 16 address lines, serial I/O, multiplexing, and `ALE` |
+| 14 | [ALE, clock, interrupts, and opcodes](images/Day%2001/day-1-8085-ale-clock-interrupts-opcodes.png) | `ALE` timing, multiplexing tradeoff, +5 V, hardware interrupts, clock frequency, and instruction/opcode count |
+| 15 | [Signal groups of 8085 microprocessor](images/Day%2001/day-1-8085-signal-groups.png) | Address bus, data bus, control/status, power/frequency, serial I/O, and externally initiated signals |
+| 16 | [Multiplexed address/data bus](images/Day%2001/day-1-8085-multiplexed-address-data-bus.png) | `AD0-AD7`, bidirectional 8-bit bus behavior, and time-division multiplexing |
+| 17 | [Control and status signals: RD and WR](images/Day%2001/day-1-8085-control-status-signals-rd-wr.png) | Active-low `RD`, `WR`, `IO/M`, `S1`, `S0`, and `ALE` |
+| 18 | [Machine cycle status table](images/Day%2001/day-1-8085-machine-cycle-status-table.png) | Status codes for opcode fetch, memory read/write, I/O read/write, interrupt acknowledge, and halt |
+| 19 | [ALE address latch enable](images/Day%2001/day-1-8085-ale-address-latch-enable.png) | Positive-going `ALE` pulse and low-address latching |
+| 20 | [Power supply and frequency signals](images/Day%2001/day-1-8085-power-frequency-signals.png) | `VCC`, `VSS`, `X1`, `X2`, and internal divide-by-two clocking |
+| 21 | [Serial I/O ports: SID and SOD](images/Day%2001/day-1-8085-serial-io-ports-sid-sod.png) | Serial input/output pins and the accumulator `D7` bit path |
 
-## Handwritten Notes Linked To Day 1
+## Handwritten Notes Linked To Day 01
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -106,7 +106,7 @@ For vector questions, derive the address instead of memorizing the table blindly
 
 ## 1. Meaning of "Microprocessor"
 
-![What is a microprocessor?](images/Day%201/day-1-what-is-a-microprocessor.png)
+![What is a microprocessor?](images/Day%2001/day-1-what-is-a-microprocessor.png)
 
 A **microprocessor** is a computer processor implemented on an integrated circuit. In simple exam language, it is the **CPU on a chip**. It contains the circuitry needed to perform arithmetic, logic, control, and instruction execution. IBM describes a microprocessor as a CPU's required arithmetic, logic, and control units combined into one clock-driven, register-based device; Intel's MCS-80/85 manual describes the 8085A as an 8-bit general-purpose microprocessor that can access up to 64 KB of memory. [S1] [S2]
 
@@ -129,7 +129,7 @@ For the **8085**, the word "microprocessor" specifically means:
 
 ## 2. Meaning of "Processor" and "Processing"
 
-![Microprocessor as a processing device](images/Day%201/day-1-microprocessor-processing-device.png)
+![Microprocessor as a processing device](images/Day%2001/day-1-microprocessor-processing-device.png)
 
 A **processor** is a device that performs operations on data. In a microprocessor, these operations are controlled by a stored program. Intel explains the instruction cycle as a repeated sequence: the processor fetches an instruction, decodes it, performs the required operation, and then fetches the next instruction. [S3]
 
@@ -203,7 +203,7 @@ This small program shows the stored-program idea: the hardware is fixed, but the
 
 ## 5. CPU Meaning
 
-![CPU ALU CU microcontroller](images/Day%201/day-1-cpu-alu-control-unit-microcontroller.png)
+![CPU ALU CU microcontroller](images/Day%2001/day-1-cpu-alu-control-unit-microcontroller.png)
 
 The **CPU**, or central processing unit, is the main instruction-executing part of a computer. IBM describes the CPU as the primary functional component of a computer and explains that CPU work follows an instruction cycle of fetch, decode, and execute. [S2]
 
@@ -321,7 +321,7 @@ Intel's manual explicitly lists these five 8085A condition flags and explains wh
 
 ## 9. Microprocessor vs Microcomputer vs Microcontroller
 
-![Microcomputer vs microprocessor vs microcontroller](images/Day%201/day-1-microcomputer-microprocessor-microcontroller.png)
+![Microcomputer vs microprocessor vs microcontroller](images/Day%2001/day-1-microcomputer-microprocessor-microcontroller.png)
 
 These three words are related but not the same.
 
@@ -385,7 +385,7 @@ Intel explains that the 8085 uses a multiplexed data bus: the low-order address 
 
 ## 12. History: Intel 4004 and Intel 8008
 
-![History of microprocessors](images/Day%201/day-1-history-intel-4004-8008.png)
+![History of microprocessors](images/Day%2001/day-1-history-intel-4004-8008.png)
 
 The slide mentions early microprocessor history.
 
@@ -429,7 +429,7 @@ The 8085 came later and is much more convenient for learning complete microproce
 
 ## 13. Scale of Integration: SSI, MSI, LSI, VLSI, ULSI
 
-![Scale of integration](images/Day%201/day-1-scale-of-integration.png)
+![Scale of integration](images/Day%2001/day-1-scale-of-integration.png)
 
 **Scale of integration** means how many logic components or gates are integrated on one chip. NASA's reference publication defines complexity by the number of gates on the chip and gives approximate categories: SSI, MSI, LSI, and VLSI. [S14]
 
@@ -465,7 +465,7 @@ The 8085 is a good example of higher integration than the 8080 generation becaus
 
 ## 15. Assembly, Low-Level, and High-Level Language
 
-![Assembly, low-level, and high-level languages](images/Day%201/day-1-assembly-low-high-level-language.png)
+![Assembly, low-level, and high-level languages](images/Day%2001/day-1-assembly-low-high-level-language.png)
 
 This screenshot introduces programming-language levels. A **programming language** is a way for humans to write instructions that can eventually control a computer. Since the CPU finally executes machine instructions, human-written programs must either already be close to machine code or must be translated into a lower-level form.
 
@@ -506,7 +506,7 @@ High-level does not mean "better for everything." It means more abstract. Low-le
 
 ## 16. Compiler, Interpreter, and Assembler
 
-![Compiler, interpreter, and assembler](images/Day%201/day-1-compiler-interpreter-assembler.png)
+![Compiler, interpreter, and assembler](images/Day%2001/day-1-compiler-interpreter-assembler.png)
 
 These three are **language translators**. Their job is to bridge the gap between human-readable code and machine-executable code.
 
@@ -553,7 +553,7 @@ The assembler converts this readable instruction into opcode/data bytes that the
 
 ## 17. Microprocessor Architecture: Von Neumann and Harvard
 
-![Von Neumann and Harvard architecture](images/Day%201/day-1-von-neumann-harvard-architecture.png)
+![Von Neumann and Harvard architecture](images/Day%2001/day-1-von-neumann-harvard-architecture.png)
 
 **Architecture** means the logical design of a computer system: how the CPU, memory, buses, instructions, and data movement are organized. The screenshot focuses on memory organization for program and data.
 
@@ -583,11 +583,11 @@ Harvard: separate program memory and data memory.
 
 ## 18. 8085 Microprocessor Pins and Signals
 
-![8085 pins and signals overview](images/Day%201/day-1-8085-pins-signals-overview.png)
+![8085 pins and signals overview](images/Day%2001/day-1-8085-pins-signals-overview.png)
 
-![8085 pins and signals close-up](images/Day%201/day-1-8085-pins-signals-closeup.png)
+![8085 pins and signals close-up](images/Day%2001/day-1-8085-pins-signals-closeup.png)
 
-![8085 pin configuration and functional diagram](images/Day%201/day-1-8085-pin-configuration-functional-diagram.png)
+![8085 pin configuration and functional diagram](images/Day%2001/day-1-8085-pin-configuration-functional-diagram.png)
 
 The 8085A is an 8-bit microprocessor in a 40-pin package. Intel's MCS-80/85 manual describes the 8085A as a complete 8-bit parallel central processor and identifies its single +5 V supply, clock-generation support, bus-control signals, interrupt system, serial I/O pins, and multiplexed address/data bus. [S1] [S8]
 
@@ -626,7 +626,7 @@ The slide says the 8085 instruction set is compatible with the 8080A and include
 
 ## 19. Key Points of 8085 Microprocessor
 
-![Key points of 8085 microprocessor](images/Day%201/day-1-8085-key-points.png)
+![Key points of 8085 microprocessor](images/Day%2001/day-1-8085-key-points.png)
 
 This screenshot compresses several important 8085 facts into one slide. Some of these repeat earlier ideas, but they are worth collecting because they are common exam points.
 
@@ -681,9 +681,9 @@ This is why `ALE` is essential in practical 8085 systems: without latching the l
 
 ## 20. ALE, Clock, Interrupts, Opcodes, and Signal Groups
 
-![ALE clock interrupts and opcodes](images/Day%201/day-1-8085-ale-clock-interrupts-opcodes.png)
+![ALE clock interrupts and opcodes](images/Day%2001/day-1-8085-ale-clock-interrupts-opcodes.png)
 
-![Signal groups of 8085 microprocessor](images/Day%201/day-1-8085-signal-groups.png)
+![Signal groups of 8085 microprocessor](images/Day%2001/day-1-8085-signal-groups.png)
 
 These two slides continue the 8085 pin-and-signal discussion. They are important because they move from "what pins exist" to "how the pins behave during real processor operation."
 
@@ -818,17 +818,17 @@ So the 8085 is not just an 8-bit ALU. It is a bus-oriented system component: mos
 
 ## 21. Detailed 8085 Bus and Signal Operation
 
-![Multiplexed address/data bus](images/Day%201/day-1-8085-multiplexed-address-data-bus.png)
+![Multiplexed address/data bus](images/Day%2001/day-1-8085-multiplexed-address-data-bus.png)
 
-![Control and status signals RD WR](images/Day%201/day-1-8085-control-status-signals-rd-wr.png)
+![Control and status signals RD WR](images/Day%2001/day-1-8085-control-status-signals-rd-wr.png)
 
-![Machine cycle status table](images/Day%201/day-1-8085-machine-cycle-status-table.png)
+![Machine cycle status table](images/Day%2001/day-1-8085-machine-cycle-status-table.png)
 
-![ALE address latch enable](images/Day%201/day-1-8085-ale-address-latch-enable.png)
+![ALE address latch enable](images/Day%2001/day-1-8085-ale-address-latch-enable.png)
 
-![Power supply and frequency signals](images/Day%201/day-1-8085-power-frequency-signals.png)
+![Power supply and frequency signals](images/Day%2001/day-1-8085-power-frequency-signals.png)
 
-![Serial I/O ports SID SOD](images/Day%201/day-1-8085-serial-io-ports-sid-sod.png)
+![Serial I/O ports SID SOD](images/Day%2001/day-1-8085-serial-io-ports-sid-sod.png)
 
 These screenshots zoom in on how the 8085 communicates with the outside world. This is the practical part of microprocessor study: the CPU does not execute programs in isolation. It continuously places addresses on the bus, reads instruction bytes, reads or writes memory, communicates with I/O devices, responds to interrupts, and follows clock timing.
 
@@ -1105,7 +1105,7 @@ HOLD = external device asks for bus ownership
 HLDA = CPU says the bus has been released
 ```
 
-This connects Day 1 pins directly to Day 8 DMA. The signal names are not isolated facts; they define who owns the system bus at a given time.
+This connects Day 01 pins directly to Day 08 DMA. The signal names are not isolated facts; they define who owns the system bus at a given time.
 
 ### Pin-Level Facts To Keep Together
 

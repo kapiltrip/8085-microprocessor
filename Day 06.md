@@ -1,36 +1,238 @@
-# Day 6: Assignment Questions, Timing, Loops, and Register Tracing
+# Day 06: Assignment Questions, Timing, Loops, and Register Tracing
 
-Day 6 covers the May 30 assignment screenshots. The images are mostly exam-style 8085 questions: accumulator rotation, delay loops, T-state counting, register-pair tracing, stack effects, instruction timing, and flag behavior.
+Day 06 covers the May 30 assignment screenshots. The images are mostly exam-style 8085 questions: accumulator rotation, delay loops, T-state counting, register-pair tracing, stack effects, instruction timing, and flag behavior.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [RRC rotate accumulator question](images/Day%206/day-6-rrc-rotate-accumulator-question.png) | Trace `STC`, `MVI`, repeated `RRC`, and final accumulator content. |
-| 2 | [Delay loop T-states program question](images/Day%206/day-6-delay-loop-tstates-program-question.png) | Nested loop timing with instruction T-states. |
-| 3 | [Delay loop T-states working](images/Day%206/day-6-delay-loop-tstates-working.png) | Working for loop iteration and T-state totals. |
-| 4 | [Delay loop time answer](images/Day%206/day-6-delay-loop-time-answer.png) | Convert T-states into delay using clock frequency. |
-| 5 | [XCHG register-pair program question](images/Day%206/day-6-xchg-register-pair-program-question.png) | Trace `MOV` and `XCHG` effects on `BC`, `DE`, and `HL`. |
-| 6 | [Non-maskable interrupt data-line question](images/Day%206/day-6-non-maskable-interrupt-data-line-question.png) | Data-line value during non-maskable interrupt handling. |
-| 7 | [Maximum T-states instruction question](images/Day%206/day-6-maximum-tstates-instruction-question.png) | Compare instruction execution time for `XRI`, `STA`, `CALL`, and `JMP`. |
-| 8 | [Direct addressing instruction question](images/Day%206/day-6-direct-addressing-instruction-question.png) | Identify `STA address` as direct addressing. |
-| 9 | [DAD and XCHG register-pair question](images/Day%206/day-6-dad-xchg-register-pair-question.png) | Trace `LXI`, `DAD`, and `XCHG`. |
-| 10 | [HLT instruction effects question](images/Day%206/day-6-hlt-instruction-effects-question.png) | Effects of `HLT` on program execution and buses. |
-| 11 | [XRA, SUI, ANA flags question](images/Day%206/day-6-xra-sui-ana-flags-question.png) | Logical/arithmetic instructions and flag outcomes. |
-| 12 | [CMA, INR, memory complement question](images/Day%206/day-6-cma-inr-memory-complement-question.png) | One's-complement versus two's-complement behavior in a program. |
-| 13 | [Mask high-order bits question](images/Day%206/day-6-mask-high-order-bits-question.png) | Use `ANI`/`ANA` masking to keep selected nibbles. |
-| 14 | [Mask high-order bits solution](images/Day%206/day-6-mask-high-order-bits-solution.png) | Why masking is done through the accumulator. |
-| 15 | [Stack PUSH/POP register trace question](images/Day%206/day-6-stack-push-pop-register-trace-question.png) | Trace `SP`, memory contents, `PUSH PSW`, `POP PSW`, and `POP H`. |
-| 16 | [CALL/RET stack pointer question](images/Day%206/day-6-call-ret-stack-pointer-question.png) | Correct stack behavior for `CALL` and `RET`. |
-| 17 | [Loop T-states total question](images/Day%206/day-6-loop-tstates-total-question.png) | Count T-states for a short decrement-and-jump loop. |
-| 18 | [Loop T-cycles iteration question](images/Day%206/day-6-loop-tcycles-iteration-question.png) | Loop count and T-cycle calculation for `ORA`, `DCR`, and `JNZ`. |
-| 19 | [Loop T-cycles iteration working](images/Day%206/day-6-loop-tcycles-iteration-working.png) | Working for total T-cycles and number of loop executions. |
-| 20 | [Loop time and machine cycles question](images/Day%206/day-6-loop-time-machine-cycles-question.png) | Convert loop cycles into elapsed time and machine cycles. |
-| 21 | [Loop time and machine cycles solution](images/Day%206/day-6-loop-time-machine-cycles-solution.png) | Final time and machine-cycle calculation. |
-| 22 | [Conditional output port flags question](images/Day%206/day-6-conditional-output-port-flags-question.png) | Trace flags and output in a conditional `JC` program. |
-| 23 | [Instruction clock order question](images/Day%206/day-6-instruction-clock-order-question.png) | Order instructions by clock requirement. |
+| 1 | [RRC rotate accumulator question](images/Day%2006/day-6-rrc-rotate-accumulator-question.png) | Trace `STC`, `MVI`, repeated `RRC`, and final accumulator content. |
+| 2 | [Delay loop T-states program question](images/Day%2006/day-6-delay-loop-tstates-program-question.png) | Nested loop timing with instruction T-states. |
+| 3 | [Delay loop T-states working](images/Day%2006/day-6-delay-loop-tstates-working.png) | Working for loop iteration and T-state totals. |
+| 4 | [Delay loop time answer](images/Day%2006/day-6-delay-loop-time-answer.png) | Convert T-states into delay using clock frequency. |
+| 5 | [XCHG register-pair program question](images/Day%2006/day-6-xchg-register-pair-program-question.png) | Trace `MOV` and `XCHG` effects on `BC`, `DE`, and `HL`. |
+| 6 | [Non-maskable interrupt data-line question](images/Day%2006/day-6-non-maskable-interrupt-data-line-question.png) | Data-line value during non-maskable interrupt handling. |
+| 7 | [Maximum T-states instruction question](images/Day%2006/day-6-maximum-tstates-instruction-question.png) | Compare instruction execution time for `XRI`, `STA`, `CALL`, and `JMP`. |
+| 8 | [Direct addressing instruction question](images/Day%2006/day-6-direct-addressing-instruction-question.png) | Identify `STA address` as direct addressing. |
+| 9 | [DAD and XCHG register-pair question](images/Day%2006/day-6-dad-xchg-register-pair-question.png) | Trace `LXI`, `DAD`, and `XCHG`. |
+| 10 | [HLT instruction effects question](images/Day%2006/day-6-hlt-instruction-effects-question.png) | Effects of `HLT` on program execution and buses. |
+| 11 | [XRA, SUI, ANA flags question](images/Day%2006/day-6-xra-sui-ana-flags-question.png) | Logical/arithmetic instructions and flag outcomes. |
+| 12 | [CMA, INR, memory complement question](images/Day%2006/day-6-cma-inr-memory-complement-question.png) | One's-complement versus two's-complement behavior in a program. |
+| 13 | [Mask high-order bits question](images/Day%2006/day-6-mask-high-order-bits-question.png) | Use `ANI`/`ANA` masking to keep selected nibbles. |
+| 14 | [Mask high-order bits solution](images/Day%2006/day-6-mask-high-order-bits-solution.png) | Why masking is done through the accumulator. |
+| 15 | [Stack PUSH/POP register trace question](images/Day%2006/day-6-stack-push-pop-register-trace-question.png) | Trace `SP`, memory contents, `PUSH PSW`, `POP PSW`, and `POP H`. |
+| 16 | [CALL/RET stack pointer question](images/Day%2006/day-6-call-ret-stack-pointer-question.png) | Correct stack behavior for `CALL` and `RET`. |
+| 17 | [Loop T-states total question](images/Day%2006/day-6-loop-tstates-total-question.png) | Count T-states for a short decrement-and-jump loop. |
+| 18 | [Loop T-cycles iteration question](images/Day%2006/day-6-loop-tcycles-iteration-question.png) | Loop count and T-cycle calculation for `ORA`, `DCR`, and `JNZ`. |
+| 19 | [Loop T-cycles iteration working](images/Day%2006/day-6-loop-tcycles-iteration-working.png) | Working for total T-cycles and number of loop executions. |
+| 20 | [Loop time and machine cycles question](images/Day%2006/day-6-loop-time-machine-cycles-question.png) | Convert loop cycles into elapsed time and machine cycles. |
+| 21 | [Loop time and machine cycles solution](images/Day%2006/day-6-loop-time-machine-cycles-solution.png) | Final time and machine-cycle calculation. |
+| 22 | [Conditional output port flags question](images/Day%2006/day-6-conditional-output-port-flags-question.png) | Trace flags and output in a conditional `JC` program. |
+| 23 | [Instruction clock order question](images/Day%2006/day-6-instruction-clock-order-question.png) | Order instructions by clock requirement. |
 
-## Handwritten Notes Linked To Day 6
+## Page-By-Page Explanation
+
+Each assignment screenshot is embedded below and explained separately. Use this section for the direct page explanation, then use the later deep revision notes for broader patterns.
+
+### Page 1: RRC Rotate Accumulator Question
+
+<a href="images/Day%2006/day-6-rrc-rotate-accumulator-question.png"><img src="images/Day%2006/day-6-rrc-rotate-accumulator-question.png" alt="RRC rotate accumulator question" width="960"></a>
+
+This question tests the difference between `RRC` and rotate-through-carry instructions. `STC` sets carry, but `RRC` does not take the old carry into the accumulator. Instead, `RRC` rotates the accumulator right internally: old bit `D0` goes to both `D7` and `CY`.
+
+For an accumulator value of the form `X0H`, four right rotations move the high nibble into the low nibble position. Since the low nibble was zero, the numeric effect is like dividing the original hex value by `10H`, or 16 decimal. The carry after each rotation is just the bit shifted out during that step.
+
+### Page 2: Delay Loop T-State Program
+
+<a href="images/Day%2006/day-6-delay-loop-tstates-program-question.png"><img src="images/Day%2006/day-6-delay-loop-tstates-program-question.png" alt="Delay loop T-states program question" width="960"></a>
+
+This page gives a nested delay-loop program with instruction T-states written beside each mnemonic. The important method is to separate setup instructions from repeated instructions. Instructions before the loop are counted once; instructions inside `LOOP1` or `LOOP2` are multiplied by the number of times the loop actually executes.
+
+Conditional jumps must be counted carefully. A taken `JNZ` uses the taken timing, but the final pass where the condition fails uses the not-taken timing. Most wrong answers come from multiplying one loop body by the loop count and forgetting the final fall-through case.
+
+### Page 3: Delay Loop T-State Working
+
+<a href="images/Day%2006/day-6-delay-loop-tstates-working.png"><img src="images/Day%2006/day-6-delay-loop-tstates-working.png" alt="Delay loop T-states working" width="960"></a>
+
+This page shows the working for the loop count. The inner loop is based on decrementing `DE` until both `D` and `E` produce the required zero condition. The trace must account for `DCX D`, `MOV A,D`, `ORA E`, and `JNZ LOOP1` on each repeated pass.
+
+The key idea is that `ORA E` is used to test whether `D` and `E` are both zero. `ORA` updates the zero flag from `D OR E`; if either byte is nonzero, `Z = 0` and the loop continues.
+
+### Page 4: Delay Time Answer
+
+<a href="images/Day%2006/day-6-delay-loop-time-answer.png"><img src="images/Day%2006/day-6-delay-loop-time-answer.png" alt="Delay loop time answer" width="960"></a>
+
+After the total T-state count is obtained, the conversion to real time is direct:
+
+```text
+time = total T-states / clock frequency
+```
+
+For a 3.03 MHz 8085 clock, one T-state is about `1 / 3.03 MHz`. The board calculation converts the large T-state total into roughly `100 ms`. Keep the unit conversion explicit because `ms`, `us`, and clock frequency are easy to mix up.
+
+### Page 5: XCHG Register-Pair Program
+
+<a href="images/Day%2006/day-6-xchg-register-pair-program-question.png"><img src="images/Day%2006/day-6-xchg-register-pair-program-question.png" alt="XCHG register-pair program question" width="960"></a>
+
+This program moves the contents of `BC` into `HL`, then uses `XCHG` to exchange `HL` with `DE`, then moves the new `HL` value back into `BC`. The result is that the original contents of `BC` and `DE` are exchanged.
+
+The important rule is that `XCHG` directly swaps only `HL` and `DE`. It does not know about `BC`; the surrounding `MOV` instructions are what bring `BC` into the exchange.
+
+### Page 6: Non-Maskable Interrupt Data-Line Question
+
+<a href="images/Day%2006/day-6-non-maskable-interrupt-data-line-question.png"><img src="images/Day%2006/day-6-non-maskable-interrupt-data-line-question.png" alt="Non-maskable interrupt data-line question" width="960"></a>
+
+This page is about the 8085 non-maskable interrupt, `TRAP`. `TRAP` is internally vectored to address `0024H`; external hardware does not have to place a restart opcode on the data bus the way it does for `INTR`.
+
+So the meaningful fixed value is the service address `0024H`, not an externally supplied data byte. When a question asks about the data lines during a non-maskable interrupt, the safe reasoning is: `TRAP` is vectored internally, while `INTR` is the interrupt that depends on external instruction data during acknowledge.
+
+### Page 7: Maximum T-States Instruction
+
+<a href="images/Day%2006/day-6-maximum-tstates-instruction-question.png"><img src="images/Day%2006/day-6-maximum-tstates-instruction-question.png" alt="Maximum T-states instruction question" width="960"></a>
+
+Among `XRI byte`, `STA address`, `CALL address`, and `JMP address`, `CALL address` requires the most work. It fetches the instruction and target address, then pushes the return address onto the stack before changing program flow.
+
+The general rule is that stack operations and procedure calls tend to take more T-states than simple immediate or direct memory operations because they require extra memory write cycles.
+
+### Page 8: Direct Addressing Instruction
+
+<a href="images/Day%2006/day-6-direct-addressing-instruction-question.png"><img src="images/Day%2006/day-6-direct-addressing-instruction-question.png" alt="Direct addressing instruction question" width="960"></a>
+
+The direct addressing choice is `STA address`. In direct addressing, the full 16-bit memory address is part of the instruction itself.
+
+`MOV A,B` is register addressing, `MVI B,0AH` is immediate addressing, and `MOV C,M` is register-indirect because `M` means the memory location pointed to by `HL`. `STA address` directly names the memory location where the accumulator is stored.
+
+### Page 9: DAD And XCHG Register-Pair Trace
+
+<a href="images/Day%2006/day-6-dad-xchg-register-pair-question.png"><img src="images/Day%2006/day-6-dad-xchg-register-pair-question.png" alt="DAD and XCHG register-pair question" width="960"></a>
+
+The program loads `HL = 2500H` and `DE = 0200H`. `DAD D` adds `DE` to `HL`, so `HL` becomes `2700H`. Then `XCHG` swaps `HL` and `DE`.
+
+Final result: `DE = 2700H` and `HL = 0200H`. The common mistake is to think `DAD D` changes `DE`; it does not. `DAD` always stores the 16-bit sum in `HL`.
+
+### Page 10: HLT Instruction Effects
+
+<a href="images/Day%2006/day-6-hlt-instruction-effects-question.png"><img src="images/Day%2006/day-6-hlt-instruction-effects-question.png" alt="HLT instruction effects question" width="960"></a>
+
+`HLT` stops normal instruction fetching and puts the 8085 into the halt state. The processor is not disconnected from the system bus permanently, and the program counter is not loaded with `0000H`.
+
+The processor remains halted until a valid event such as reset or an interrupt causes execution to continue or restart. For exam questions, remember `HLT` as a controlled processor state, not as power-off behavior.
+
+### Page 11: XRA, SUI, ANA Flags Question
+
+<a href="images/Day%2006/day-6-xra-sui-ana-flags-question.png"><img src="images/Day%2006/day-6-xra-sui-ana-flags-question.png" alt="XRA SUI ANA flags question" width="960"></a>
+
+The trace begins with `XRA A`, which clears the accumulator to `00H` and updates flags. `MVI B,4AH` loads `B` without changing flags. `SUI 4FH` subtracts `4FH` from `A`, producing a two's-complement result and setting carry as borrow.
+
+The final `ANA B` performs bitwise AND between the accumulator and `B`. Since logical instructions overwrite the accumulator and update flags from the logical result, you must compute the final bit pattern, not just the intermediate subtraction result. This is why the final option may be "none of the above" even if one intermediate value appears in the choices.
+
+### Page 12: CMA, INR, And Memory Complement
+
+<a href="images/Day%2006/day-6-cma-inr-memory-complement-question.png"><img src="images/Day%2006/day-6-cma-inr-memory-complement-question.png" alt="CMA INR memory complement question" width="960"></a>
+
+The program loads a byte from `7500H`, complements it with `CMA`, then increments it with `INR A`, and stores it back with `STA 7500H`.
+
+`CMA` alone gives the one's complement. `CMA` followed by `INR A` gives the two's complement. Because the program stores the result back to `7500H`, the memory location, not just the accumulator, finally contains the two's-complement value.
+
+### Page 13: Mask High-Order Bits Question
+
+<a href="images/Day%2006/day-6-mask-high-order-bits-question.png"><img src="images/Day%2006/day-6-mask-high-order-bits-question.png" alt="Mask high-order bits question" width="960"></a>
+
+To mask the high-order bits `D7-D4`, those bits must be cleared while the low nibble `D3-D0` is preserved. The mask for that is `0FH`, or `0000 1111B`.
+
+Because the 8085 `ANA` operation always uses the accumulator as one operand, the value in `C` must first be moved into `A`, ANDed with the mask, and then moved back to `C`.
+
+### Page 14: Mask High-Order Bits Solution
+
+<a href="images/Day%2006/day-6-mask-high-order-bits-solution.png"><img src="images/Day%2006/day-6-mask-high-order-bits-solution.png" alt="Mask high-order bits solution" width="960"></a>
+
+The solution marks the sequences that use `0FH`: either by loading `0FH` into `B` and using `ANA B`, or by using the immediate form `ANI 0FH`.
+
+Both are valid because both compute:
+
+```text
+C <- C AND 0FH
+```
+
+That forces `D7-D4` to zero and preserves `D3-D0`.
+
+### Page 15: Stack PUSH/POP Register Trace
+
+<a href="images/Day%2006/day-6-stack-push-pop-register-trace-question.png"><img src="images/Day%2006/day-6-stack-push-pop-register-trace-question.png" alt="Stack PUSH POP register trace question" width="960"></a>
+
+This page combines register pairs, memory contents, `DAD SP`, and stack operations. Start by setting `SP = 2700H` and `HL = 0002H`. `DAD SP` adds the stack pointer to `HL`, making `HL = 2702H`, so `MOV A,M` reads from address `2702H`.
+
+For the stack part, remember that `PUSH PSW` pushes the accumulator and flag register, while `POP PSW` restores them. `POP H` then takes the next two bytes from the stack into `L` and `H`. The only reliable way to solve it is to draw memory addresses and move `SP` by two for each push or pop.
+
+### Page 16: CALL And RET Stack Pointer Question
+
+<a href="images/Day%2006/day-6-call-ret-stack-pointer-question.png"><img src="images/Day%2006/day-6-call-ret-stack-pointer-question.png" alt="CALL RET stack pointer question" width="960"></a>
+
+`CALL` saves the return address on the stack, where the return address is the address of the instruction after the `CALL`. This lets the subroutine return to the correct point in the main program.
+
+`RET` pops that saved address back into the program counter, so the stack pointer increases by two. If a statement says `RET` increments `SP` by two, that part is correct for a normal 8085 return.
+
+### Page 17: Loop T-States Total
+
+<a href="images/Day%2006/day-6-loop-tstates-total-question.png"><img src="images/Day%2006/day-6-loop-tstates-total-question.png" alt="Loop T-states total question" width="960"></a>
+
+This loop starts by loading a count into `C`, then repeatedly executes `DCR C` and `JNZ 3002H` until `C` becomes zero. `DCR C` runs once per count value.
+
+The jump timing must be split: `JNZ` is taken for all iterations except the final one, and not taken on the final pass. Add `HLT` only once after the loop exits. That taken versus not-taken distinction is the whole point of this question.
+
+### Page 18: Loop T-Cycles Iteration Question
+
+<a href="images/Day%2006/day-6-loop-tcycles-iteration-question.png"><img src="images/Day%2006/day-6-loop-tcycles-iteration-question.png" alt="Loop T-cycles iteration question" width="960"></a>
+
+This program uses `ORA A`, `DCR A`, and a conditional jump to build a loop. `ORA A` is a common 8085 trick: it updates flags from the current accumulator value without changing the value itself.
+
+The loop count depends on the value loaded into `A` and how many times `DCR A` can run before the zero flag is set. As before, taken jumps and the final not-taken jump must be counted separately for T-cycle totals.
+
+### Page 19: Loop T-Cycles Working
+
+<a href="images/Day%2006/day-6-loop-tcycles-iteration-working.png"><img src="images/Day%2006/day-6-loop-tcycles-iteration-working.png" alt="Loop T-cycles iteration working" width="960"></a>
+
+The working page expands the loop formula. The repeated part is counted for the number of taken iterations, and then the final fall-through pass is added once.
+
+The board also tracks how many times the loop executes. Keep this separate from the number of times the branch is taken: if a loop executes `N` times, a normal decrement-until-zero branch is taken `N - 1` times.
+
+### Page 20: Loop Time And Machine Cycles Question
+
+<a href="images/Day%2006/day-6-loop-time-machine-cycles-question.png"><img src="images/Day%2006/day-6-loop-time-machine-cycles-question.png" alt="Loop time and machine cycles question" width="960"></a>
+
+This page asks for elapsed time and total machine cycles after the T-state count has already been reasoned out. Time comes from multiplying T-states by the T-state period.
+
+Machine cycles are not the same as T-states. A machine cycle is a bus operation such as opcode fetch, memory read, memory write, I/O read, or I/O write. One machine cycle contains multiple T-states, so the two totals must be calculated separately.
+
+### Page 21: Loop Time And Machine Cycles Solution
+
+<a href="images/Day%2006/day-6-loop-time-machine-cycles-solution.png"><img src="images/Day%2006/day-6-loop-time-machine-cycles-solution.png" alt="Loop time and machine cycles solution" width="960"></a>
+
+The solution shows the final conversion using the T-state period. With `T = 0.5 us`, a total such as `516` T-states becomes:
+
+```text
+516 x 0.5 us = 258 us
+```
+
+The machine-cycle count is built from the instruction path, not from the time conversion. That is why this problem reports both elapsed time and a separate machine-cycle total.
+
+### Page 22: Conditional Output Port And Flags
+
+<a href="images/Day%2006/day-6-conditional-output-port-flags-question.png"><img src="images/Day%2006/day-6-conditional-output-port-flags-question.png" alt="Conditional output port flags question" width="960"></a>
+
+This program subtracts an immediate value from `A`, then branches with `JC`. Since `JC` tests carry, and carry means borrow after subtraction, the branch depends on whether the subtraction required a borrow.
+
+If the branch is taken, the program reaches the `DISPLAY` path, clears `A` with `XRA A`, outputs through `OUT PORT1`, and halts. If the branch is not taken, it outputs the subtraction result directly. The final flag register must be taken from the last flag-affecting instruction on the path actually executed.
+
+### Page 23: Instruction Clock Order
+
+<a href="images/Day%2006/day-6-instruction-clock-order-question.png"><img src="images/Day%2006/day-6-instruction-clock-order-question.png" alt="Instruction clock order question" width="960"></a>
+
+This page asks for descending order of clock requirement. The rough ranking is: `CALL` is highest because it changes control flow and pushes a return address; `STA` is high because it writes to a direct memory address; `RET` pops the return address; `STAX` stores through a register pair; and `MOV r1,r2` is lowest because it is only an internal register transfer.
+
+The correct way to solve these is to count memory cycles. Register-only instructions are fastest, direct memory and stack instructions are slower, and subroutine control-transfer instructions are usually among the slowest.
+
+## Handwritten Notes Linked To Day 06
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -188,11 +390,11 @@ The 8085 stack grows toward lower memory addresses. On push-like operations, `SP
 
 ## Deep Revision Notes
 
-Day 6 is not a new theory chapter as much as it is a solving chapter. The screenshots ask you to combine concepts from earlier days: instruction length, flags, register pairs, stack order, delay loops, and conditional branch timing. The safest method is to build a small trace table for every question.
+Day 06 is not a new theory chapter as much as it is a solving chapter. The screenshots ask you to combine concepts from earlier days: instruction length, flags, register pairs, stack order, delay loops, and conditional branch timing. The safest method is to build a small trace table for every question.
 
 ### 1. Rotate Questions
 
-Use the rotate screenshots with [till73 p017](images/HandWrittenNotes/till73/page-017.jpg), [till73 p019](images/HandWrittenNotes/till73/page-019.jpg), and [Day 6 image 1](images/Day%206/day-6-rrc-rotate-accumulator-question.png).
+Use the rotate screenshots with [till73 p017](images/HandWrittenNotes/till73/page-017.jpg), [till73 p019](images/HandWrittenNotes/till73/page-019.jpg), and [Day 06 image 1](images/Day%2006/day-6-rrc-rotate-accumulator-question.png).
 
 The four rotate instructions split into two families:
 
@@ -219,7 +421,7 @@ Then convert the final binary value back to hex. If you skip the binary row, it 
 
 ### 2. Delay Loop And T-State Questions
 
-Use [Day 6 images 2-4](images/Day%206/day-6-delay-loop-tstates-program-question.png), [Day 6 images 17-21](images/Day%206/day-6-loop-tstates-total-question.png), [till73 p020](images/HandWrittenNotes/till73/page-020.jpg), and [85completed p002](images/HandWrittenNotes/85completed/page-002.jpg).
+Use [Day 06 images 2-4](images/Day%2006/day-6-delay-loop-tstates-program-question.png), [Day 06 images 17-21](images/Day%2006/day-6-loop-tstates-total-question.png), [till73 p020](images/HandWrittenNotes/till73/page-020.jpg), and [85completed p002](images/HandWrittenNotes/85completed/page-002.jpg).
 
 Timing questions usually need two separate steps:
 
@@ -254,7 +456,7 @@ When nested loops appear, solve from inside outward:
 
 ### 3. Register-Pair Trace Questions
 
-Use [Day 6 images 5 and 9](images/Day%206/day-6-xchg-register-pair-program-question.png), [till73 p018](images/HandWrittenNotes/till73/page-018.jpg), and [85completed p001](images/HandWrittenNotes/85completed/page-001.jpg).
+Use [Day 06 images 5 and 9](images/Day%2006/day-6-xchg-register-pair-program-question.png), [till73 p018](images/HandWrittenNotes/till73/page-018.jpg), and [85completed p001](images/HandWrittenNotes/85completed/page-001.jpg).
 
 For register-pair questions, always track both the pair and the individual registers:
 
@@ -276,7 +478,7 @@ So `DAD B` means `HL <- HL + BC`, not `BC <- BC + HL`. `DAD D` means `HL <- HL +
 
 ### 4. Stack, `CALL`, `RET`, `PUSH`, And `POP`
 
-Use [Day 6 images 15-16](images/Day%206/day-6-stack-push-pop-register-trace-question.png), [till73 p016](images/HandWrittenNotes/till73/page-016.jpg), and [85completed p003](images/HandWrittenNotes/85completed/page-003.jpg).
+Use [Day 06 images 15-16](images/Day%2006/day-6-stack-push-pop-register-trace-question.png), [till73 p016](images/HandWrittenNotes/till73/page-016.jpg), and [85completed p003](images/HandWrittenNotes/85completed/page-003.jpg).
 
 The 8085 stack grows downward. That gives the following mental model:
 
@@ -305,7 +507,7 @@ The reliable stack-trace method:
 
 ### 5. Logical, Masking, And Complement Questions
 
-Use [Day 6 images 11-14](images/Day%206/day-6-xra-sui-ana-flags-question.png), [till73 p015](images/HandWrittenNotes/till73/page-015.jpg), [till73 p024](images/HandWrittenNotes/till73/page-024.jpg), and [till47 p020](images/HandWrittenNotes/till47/page-020.jpg).
+Use [Day 06 images 11-14](images/Day%2006/day-6-xra-sui-ana-flags-question.png), [till73 p015](images/HandWrittenNotes/till73/page-015.jpg), [till73 p024](images/HandWrittenNotes/till73/page-024.jpg), and [till47 p020](images/HandWrittenNotes/till47/page-020.jpg).
 
 Logical instructions should be solved bit by bit:
 
@@ -335,7 +537,7 @@ two's complement = flip all bits, then add 1
 
 ### 6. `HLT`, Direct Addressing, And Instruction Timing
 
-Use [Day 6 images 7-10 and 23](images/Day%206/day-6-maximum-tstates-instruction-question.png), [till73 p021](images/HandWrittenNotes/till73/page-021.jpg), and [till73 p022](images/HandWrittenNotes/till73/page-022.jpg).
+Use [Day 06 images 7-10 and 23](images/Day%2006/day-6-maximum-tstates-instruction-question.png), [till73 p021](images/HandWrittenNotes/till73/page-021.jpg), and [till73 p022](images/HandWrittenNotes/till73/page-022.jpg).
 
 `HLT` stops normal instruction execution after the processor enters the halt state. It does not mean the chip has no clock or power; it means the processor is waiting in a halted state until a valid reset or interrupt-style event changes execution.
 
@@ -359,7 +561,7 @@ That is why stack and call instructions often take more time than simple registe
 
 ## Research Deep Dive: Solving Assignment Traces Like Hardware
 
-Day 6 is mainly about disciplined tracing. The Intel timing tables look large, but most answers come from repeating a small process carefully.
+Day 06 is mainly about disciplined tracing. The Intel timing tables look large, but most answers come from repeating a small process carefully.
 
 ### Trace State, Not Just Instructions
 

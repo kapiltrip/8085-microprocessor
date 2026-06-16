@@ -1,18 +1,18 @@
-# Day 5: Subtraction, Compare, Instruction Storage, and Rotate Operations
+# Day 05: Subtraction, Compare, Instruction Storage, and Rotate Operations
 
-Day 5 is mostly about careful instruction execution. The screenshots cover subtraction with borrow, compare flags, how instruction bytes occupy memory addresses, and bit-level accumulator rotation. These topics are common in 8085 exam questions because one wrong assumption about carry, sign, or instruction length changes the final answer.
+Day 05 is mostly about careful instruction execution. The screenshots cover subtraction with borrow, compare flags, how instruction bytes occupy memory addresses, and bit-level accumulator rotation. These topics are common in 8085 exam questions because one wrong assumption about carry, sign, or instruction length changes the final answer.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [SBB/SUB borrow question 1](images/Day%205/day-5-sbb-subtract-with-borrow-question-1.png) | Subtracting a larger byte from a smaller byte sets carry and sign. |
-| 2 | [SBB/SUB borrow question 2](images/Day%205/day-5-sbb-subtract-with-borrow-question-2.png) | Same subtraction idea, with two's-complement result. |
-| 3 | [CMP B carry and zero flag question](images/Day%205/day-5-cmp-b-carry-zero-flags-question.png) | `CMP` compares by internal subtraction without changing accumulator. |
-| 4 | [Instruction address placement example](images/Day%205/day-5-instruction-address-placement-example.png) | Multi-byte instructions occupy consecutive memory locations. |
-| 5 | [Rotate and ORA accumulator question](images/Day%205/day-5-rotate-ora-accumulator-question.png) | Trace `ORA`, `RRC`, `RAL`, and carry effects on accumulator bits. |
+| 1 | [SBB/SUB borrow question 1](images/Day%2005/day-5-sbb-subtract-with-borrow-question-1.png) | Subtracting a larger byte from a smaller byte sets carry and sign. |
+| 2 | [SBB/SUB borrow question 2](images/Day%2005/day-5-sbb-subtract-with-borrow-question-2.png) | Same subtraction idea, with two's-complement result. |
+| 3 | [CMP B carry and zero flag question](images/Day%2005/day-5-cmp-b-carry-zero-flags-question.png) | `CMP` compares by internal subtraction without changing accumulator. |
+| 4 | [Instruction address placement example](images/Day%2005/day-5-instruction-address-placement-example.png) | Multi-byte instructions occupy consecutive memory locations. |
+| 5 | [Rotate and ORA accumulator question](images/Day%2005/day-5-rotate-ora-accumulator-question.png) | Trace `ORA`, `RRC`, `RAL`, and carry effects on accumulator bits. |
 
-## Handwritten Notes Linked To Day 5
+## Handwritten Notes Linked To Day 05
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -146,7 +146,7 @@ Branch instructions test existing state; they do not create the condition themse
 
 ## 1. Subtraction and Borrow
 
-![SBB/SUB borrow question 1](images/Day%205/day-5-sbb-subtract-with-borrow-question-1.png)
+![SBB/SUB borrow question 1](images/Day%2005/day-5-sbb-subtract-with-borrow-question-1.png)
 
 The question uses:
 
@@ -190,7 +190,7 @@ Why `S = 1`? The result `F1H` has MSB `1`, so the sign flag is set.
 
 ## 2. `SBB`: Subtract With Borrow
 
-![SBB/SUB borrow question 2](images/Day%205/day-5-sbb-subtract-with-borrow-question-2.png)
+![SBB/SUB borrow question 2](images/Day%2005/day-5-sbb-subtract-with-borrow-question-2.png)
 
 `SBB r` means:
 
@@ -229,7 +229,7 @@ Common trap: after subtraction, `CY = 1` means borrow occurred. It does not mean
 
 ## 3. `CMP B`: Compare Accumulator With Register
 
-![CMP B carry and zero flag question](images/Day%205/day-5-cmp-b-carry-zero-flags-question.png)
+![CMP B carry and zero flag question](images/Day%2005/day-5-cmp-b-carry-zero-flags-question.png)
 
 `CMP B` compares the accumulator with register `B` by internally calculating:
 
@@ -270,7 +270,7 @@ Common trap: `CMP` is like subtraction for flags, but unlike `SUB`, it does not 
 
 ## 4. Instruction Bytes in Memory
 
-![Instruction address placement example](images/Day%205/day-5-instruction-address-placement-example.png)
+![Instruction address placement example](images/Day%2005/day-5-instruction-address-placement-example.png)
 
 This screenshot shows how instructions are placed in memory. Each instruction occupies one, two, or three consecutive memory locations.
 
@@ -303,7 +303,7 @@ Common trap: do not write `07H` before `01H` in memory. The register-pair displa
 
 ## 5. `ORA`, `RRC`, and `RAL` Trace
 
-![Rotate and ORA accumulator question](images/Day%205/day-5-rotate-ora-accumulator-question.png)
+![Rotate and ORA accumulator question](images/Day%2005/day-5-rotate-ora-accumulator-question.png)
 
 The program shown is:
 
@@ -364,7 +364,7 @@ Common trap: `RRC` and `RAL` are not the same kind of rotation. `RRC` is circula
 
 ## Research Deep Dive: Flag-Correct Arithmetic
 
-Most Day 5 mistakes come from treating hexadecimal subtraction as ordinary decimal subtraction and then guessing flags. The safer method is to solve at the binary width of the CPU.
+Most Day 05 mistakes come from treating hexadecimal subtraction as ordinary decimal subtraction and then guessing flags. The safer method is to solve at the binary width of the CPU.
 
 ### Carry Means Borrow In Subtraction
 

@@ -1,23 +1,23 @@
-# Day 4: Branching, Stack, Interrupt Control, and Bit-Level I/O
+# Day 04: Branching, Stack, Interrupt Control, and Bit-Level I/O
 
-Day 4 is about control flow and stack-based execution. Earlier days explained how the 8085 fetches and executes ordinary instructions. This day explains how execution changes direction through conditional jumps, `CALL`, `RST`, stack operations, interrupt control, and bit-level serial/interrupt masking through `SIM` and `RIM`.
+Day 04 is about control flow and stack-based execution. Earlier days explained how the 8085 fetches and executes ordinary instructions. This day explains how execution changes direction through conditional jumps, `CALL`, `RST`, stack operations, interrupt control, and bit-level serial/interrupt masking through `SIM` and `RIM`.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [Conditional jump instructions table](images/Day%204/day-4-conditional-jump-instructions-table.png) | Branching based on carry, zero, sign, parity, and other flags. |
-| 2 | [CALL instruction stack note](images/Day%204/day-4-call-instruction-stack-note.png) | `CALL` saves return address on stack and jumps to subroutine. |
-| 3 | [RST n restart instruction](images/Day%204/day-4-rst-n-restart-instruction.png) | `RST n` is a one-byte call to a fixed vector address. |
-| 4 | [Stack pointer operation note](images/Day%204/day-4-stack-pointer-operation-note.png) | Stack operations use extra machine cycles for memory writes/reads. |
-| 5 | [PUSH and POP PSW note](images/Day%204/day-4-push-pop-psw-note.png) | `PUSH PSW` and `POP PSW` save/restore accumulator and flags. |
-| 6 | [Stack pointer and HL question](images/Day%204/day-4-stack-pointer-hl-question.png) | Program tracing before final stack solution. |
-| 7 | [Stack pointer and HL solution](images/Day%204/day-4-stack-pointer-hl-question-solution.png) | Solved effect of `CALL` and `POP H` on `SP` and `HL`. |
-| 8 | [Signed input-port loop question](images/Day%204/day-4-signed-input-port-loop-question.png) | Using `RAL` and `JNC` to test sign bit from an input port. |
-| 9 | [SIM SOD and RST 7.5 mask bits](images/Day%204/day-4-sim-sod-rst75-mask-bits.png) | Accumulator bit fields used by `SIM`. |
-| 10 | [NOP, DI, EI, SIM, RIM common features](images/Day%204/day-4-nop-di-ei-sim-rim-common-features.png) | One-byte implied instructions with no flags affected. |
+| 1 | [Conditional jump instructions table](images/Day%2004/day-4-conditional-jump-instructions-table.png) | Branching based on carry, zero, sign, parity, and other flags. |
+| 2 | [CALL instruction stack note](images/Day%2004/day-4-call-instruction-stack-note.png) | `CALL` saves return address on stack and jumps to subroutine. |
+| 3 | [RST n restart instruction](images/Day%2004/day-4-rst-n-restart-instruction.png) | `RST n` is a one-byte call to a fixed vector address. |
+| 4 | [Stack pointer operation note](images/Day%2004/day-4-stack-pointer-operation-note.png) | Stack operations use extra machine cycles for memory writes/reads. |
+| 5 | [PUSH and POP PSW note](images/Day%2004/day-4-push-pop-psw-note.png) | `PUSH PSW` and `POP PSW` save/restore accumulator and flags. |
+| 6 | [Stack pointer and HL question](images/Day%2004/day-4-stack-pointer-hl-question.png) | Program tracing before final stack solution. |
+| 7 | [Stack pointer and HL solution](images/Day%2004/day-4-stack-pointer-hl-question-solution.png) | Solved effect of `CALL` and `POP H` on `SP` and `HL`. |
+| 8 | [Signed input-port loop question](images/Day%2004/day-4-signed-input-port-loop-question.png) | Using `RAL` and `JNC` to test sign bit from an input port. |
+| 9 | [SIM SOD and RST 7.5 mask bits](images/Day%2004/day-4-sim-sod-rst75-mask-bits.png) | Accumulator bit fields used by `SIM`. |
+| 10 | [NOP, DI, EI, SIM, RIM common features](images/Day%2004/day-4-nop-di-ei-sim-rim-common-features.png) | One-byte implied instructions with no flags affected. |
 
-## Handwritten Notes Linked To Day 4
+## Handwritten Notes Linked To Day 04
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -129,7 +129,7 @@ Technical explanation: `SIM` and `RIM` treat the accumulator as a packed control
 
 ## 1. Conditional Jump Instructions
 
-![Conditional jump instructions table](images/Day%204/day-4-conditional-jump-instructions-table.png)
+![Conditional jump instructions table](images/Day%2004/day-4-conditional-jump-instructions-table.png)
 
 Conditional jumps change the program counter only if a condition is true. The condition is usually based on a flag set by a previous arithmetic or logical instruction.
 
@@ -152,7 +152,7 @@ Common trap: a jump instruction checks the existing flag value. It does not calc
 
 ## 2. `CALL`: Subroutine Entry and Return Address Storage
 
-![CALL instruction stack note](images/Day%204/day-4-call-instruction-stack-note.png)
+![CALL instruction stack note](images/Day%2004/day-4-call-instruction-stack-note.png)
 
 `CALL addr` transfers control to a subroutine, but it also remembers where to return. It does this by pushing the address of the next instruction onto the stack.
 
@@ -178,7 +178,7 @@ Common trap: `CALL` pushes the address after the call instruction, not the addre
 
 ## 3. `RST n`: Restart Instruction
 
-![RST n restart instruction](images/Day%204/day-4-rst-n-restart-instruction.png)
+![RST n restart instruction](images/Day%2004/day-4-rst-n-restart-instruction.png)
 
 `RST n` is a compact one-byte call to a fixed address. The target address is:
 
@@ -207,7 +207,7 @@ Common trap: `RST 5` does not jump to address `0005H`; it jumps to `5 x 8 = 40 d
 
 ## 4. Stack Pointer Operations
 
-![Stack pointer operation note](images/Day%204/day-4-stack-pointer-operation-note.png)
+![Stack pointer operation note](images/Day%2004/day-4-stack-pointer-operation-note.png)
 
 The stack is a memory area used for temporary storage of return addresses, register pairs, and processor status. The stack pointer `SP` holds the address of the top of the stack.
 
@@ -226,7 +226,7 @@ Common trap: the stack pointer changes by 2 for 16-bit stack operations, not by 
 
 ## 5. `PUSH PSW` and `POP PSW`
 
-![PUSH and POP PSW note](images/Day%204/day-4-push-pop-psw-note.png)
+![PUSH and POP PSW note](images/Day%2004/day-4-push-pop-psw-note.png)
 
 `PSW` means **Program Status Word**. In 8085 context, it represents the accumulator plus the flag register:
 
@@ -246,7 +246,7 @@ Common trap: `POP PSW` can change flags because it restores flag bits from memor
 
 ## 6. Stack Tracing Question
 
-![Stack pointer and HL question](images/Day%204/day-4-stack-pointer-hl-question.png)
+![Stack pointer and HL question](images/Day%2004/day-4-stack-pointer-hl-question.png)
 
 The question sequence is:
 
@@ -270,7 +270,7 @@ This kind of question is not about memorizing the answer. It is about tracing `S
 
 ## 7. Stack Tracing Solution
 
-![Stack pointer and HL solution](images/Day%204/day-4-stack-pointer-hl-question-solution.png)
+![Stack pointer and HL solution](images/Day%2004/day-4-stack-pointer-hl-question-solution.png)
 
 The solved slide shows the key result:
 
@@ -287,7 +287,7 @@ Common trap: do not say `HL = 0610H`. The displayed register pair is high byte f
 
 ## 8. Signed Input-Port Loop Using `RAL` and `JNC`
 
-![Signed input-port loop question](images/Day%204/day-4-signed-input-port-loop-question.png)
+![Signed input-port loop question](images/Day%2004/day-4-signed-input-port-loop-question.png)
 
 The program is testing the sign bit of an 8-bit two's-complement input value:
 
@@ -321,7 +321,7 @@ Common trap: `RAL` changes the accumulator, but for this question the important 
 
 ## 9. `SIM`: Serial Output and Interrupt Mask Control
 
-![SIM SOD and RST 7.5 mask bits](images/Day%204/day-4-sim-sod-rst75-mask-bits.png)
+![SIM SOD and RST 7.5 mask bits](images/Day%2004/day-4-sim-sod-rst75-mask-bits.png)
 
 `SIM` means **Set Interrupt Mask**. It uses the accumulator as a control byte. Each bit has a defined meaning:
 
@@ -342,7 +342,7 @@ Common trap: setting `D7` alone does not necessarily output serial data. `SDE` (
 
 ## 10. `NOP`, `DI`, `EI`, `SIM`, and `RIM`
 
-![NOP, DI, EI, SIM, RIM common features](images/Day%204/day-4-nop-di-ei-sim-rim-common-features.png)
+![NOP, DI, EI, SIM, RIM common features](images/Day%2004/day-4-nop-di-ei-sim-rim-common-features.png)
 
 These instructions are one-byte instructions with implied behavior:
 
@@ -360,7 +360,7 @@ Common trap: `DI` and `EI` affect interrupt enable state, not the interrupt hard
 
 ## Research Deep Dive: Stack Discipline and Control Flow
 
-Day 4 is where program flow stops being purely sequential. The CPU must remember where to return after `CALL`, `RST`, interrupts, and stack operations. That is why stack tracing must be exact.
+Day 04 is where program flow stops being purely sequential. The CPU must remember where to return after `CALL`, `RST`, interrupts, and stack operations. That is why stack tracing must be exact.
 
 ### What `CALL` Really Saves
 

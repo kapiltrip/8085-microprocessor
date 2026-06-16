@@ -1,30 +1,30 @@
-# Day 2: Machine Cycles, Timing, Address Decoding, and Instruction Formats
+# Day 02: Machine Cycles, Timing, Address Decoding, and Instruction Formats
 
-Day 2 moves from "what the 8085 is" into "how it communicates with memory and I/O." The main idea is that every instruction is broken into **machine cycles**, and every machine cycle is broken into **T-states**. Once you understand this, timing diagrams, memory interfacing, instruction length, and addressing modes become connected instead of separate topics.
+Day 02 moves from "what the 8085 is" into "how it communicates with memory and I/O." The main idea is that every instruction is broken into **machine cycles**, and every machine cycle is broken into **T-states**. Once you understand this, timing diagrams, memory interfacing, instruction length, and addressing modes become connected instead of separate topics.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [Machine cycle status/control table](images/Day%202/day-2-machine-cycle-status-control-table.png) | `IO/M`, `S1`, `S0`, `/RD`, `/WR`, and `/INTA` identify the current bus cycle. |
-| 2 | [Opcode fetch cycle overview](images/Day%202/day-2-opcode-fetch-cycle-overview.png) | The CPU reads the opcode from memory and decodes the required work. |
-| 3 | [Opcode fetch timing diagram](images/Day%202/day-2-opcode-fetch-timing-diagram.png) | Address, `ALE`, status lines, `/RD`, and data during an opcode fetch. |
-| 4 | [MVI B,05H timing example](images/Day%202/day-2-mvi-b-05h-timing-example.png) | A two-byte instruction needs opcode fetch plus memory read. |
-| 5 | [I/O read timing diagram](images/Day%202/day-2-io-read-timing-diagram.png) | `IN` reads data from an I/O port into the accumulator. |
-| 6 | [Address decoding and chip select](images/Day%202/day-2-address-decoding-chip-select.png) | Decoders convert address lines into memory or I/O chip-select signals. |
-| 7 | [ROM interface with MPU](images/Day%202/day-2-rom-interface-address-decoder.png) | ROM address pins, data pins, chip select, and output enable. |
-| 8 | [Partial address decoding and foldback](images/Day%202/day-2-partial-address-decoding-foldback.png) | Incomplete decoding creates repeated/alias address ranges. |
-| 9 | [Memory mapped vs I/O mapped I/O](images/Day%202/day-2-memory-mapped-vs-io-mapped-io.png) | Two ways to connect peripherals to an 8085 system. |
-| 10 | [Memory chip capacity question](images/Day%202/day-2-memory-chip-capacity-question.png) | `4K x 8` means 4096 byte locations, 12 address lines, 8 data lines. |
-| 11 | [Memory map highest address question](images/Day%202/day-2-memory-map-lowest-address-question.png) | Address range calculation using start address plus size minus one. |
-| 12 | [Instruction set classification](images/Day%202/day-2-instruction-set-classification.png) | Instruction length, addressing modes, and operation groups. |
-| 13 | [Instruction symbols and abbreviations 1](images/Day%202/day-2-instruction-symbols-abbreviations-1.png) | Meaning of common symbols used in instruction descriptions. |
-| 14 | [Instruction symbols and abbreviations 2](images/Day%202/day-2-instruction-symbols-abbreviations-2.png) | Registers, register pairs, memory symbol `M`, port, flags, and operations. |
-| 15 | [One-byte instruction forms](images/Day%202/day-2-one-byte-instruction-forms.png) | Operand information may be encoded in the opcode or implied. |
-| 16 | [Two-byte MVI instruction example](images/Day%202/day-2-two-byte-instruction-mvi-example.png) | Opcode byte plus one immediate data byte. |
-| 17 | [Implicit addressing mode](images/Day%202/day-2-implicit-addressing-mode.png) | Instructions where the operand is understood, often the accumulator. |
+| 1 | [Machine cycle status/control table](images/Day%2002/day-2-machine-cycle-status-control-table.png) | `IO/M`, `S1`, `S0`, `/RD`, `/WR`, and `/INTA` identify the current bus cycle. |
+| 2 | [Opcode fetch cycle overview](images/Day%2002/day-2-opcode-fetch-cycle-overview.png) | The CPU reads the opcode from memory and decodes the required work. |
+| 3 | [Opcode fetch timing diagram](images/Day%2002/day-2-opcode-fetch-timing-diagram.png) | Address, `ALE`, status lines, `/RD`, and data during an opcode fetch. |
+| 4 | [MVI B,05H timing example](images/Day%2002/day-2-mvi-b-05h-timing-example.png) | A two-byte instruction needs opcode fetch plus memory read. |
+| 5 | [I/O read timing diagram](images/Day%2002/day-2-io-read-timing-diagram.png) | `IN` reads data from an I/O port into the accumulator. |
+| 6 | [Address decoding and chip select](images/Day%2002/day-2-address-decoding-chip-select.png) | Decoders convert address lines into memory or I/O chip-select signals. |
+| 7 | [ROM interface with MPU](images/Day%2002/day-2-rom-interface-address-decoder.png) | ROM address pins, data pins, chip select, and output enable. |
+| 8 | [Partial address decoding and foldback](images/Day%2002/day-2-partial-address-decoding-foldback.png) | Incomplete decoding creates repeated/alias address ranges. |
+| 9 | [Memory mapped vs I/O mapped I/O](images/Day%2002/day-2-memory-mapped-vs-io-mapped-io.png) | Two ways to connect peripherals to an 8085 system. |
+| 10 | [Memory chip capacity question](images/Day%2002/day-2-memory-chip-capacity-question.png) | `4K x 8` means 4096 byte locations, 12 address lines, 8 data lines. |
+| 11 | [Memory map highest address question](images/Day%2002/day-2-memory-map-lowest-address-question.png) | Address range calculation using start address plus size minus one. |
+| 12 | [Instruction set classification](images/Day%2002/day-2-instruction-set-classification.png) | Instruction length, addressing modes, and operation groups. |
+| 13 | [Instruction symbols and abbreviations 1](images/Day%2002/day-2-instruction-symbols-abbreviations-1.png) | Meaning of common symbols used in instruction descriptions. |
+| 14 | [Instruction symbols and abbreviations 2](images/Day%2002/day-2-instruction-symbols-abbreviations-2.png) | Registers, register pairs, memory symbol `M`, port, flags, and operations. |
+| 15 | [One-byte instruction forms](images/Day%2002/day-2-one-byte-instruction-forms.png) | Operand information may be encoded in the opcode or implied. |
+| 16 | [Two-byte MVI instruction example](images/Day%2002/day-2-two-byte-instruction-mvi-example.png) | Opcode byte plus one immediate data byte. |
+| 17 | [Implicit addressing mode](images/Day%2002/day-2-implicit-addressing-mode.png) | Instructions where the operand is understood, often the accumulator. |
 
-## Handwritten Notes Linked To Day 2
+## Handwritten Notes Linked To Day 02
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -196,7 +196,7 @@ Support chips offload repeated interface work from the CPU. `8255` provides prog
 
 ## 1. Machine Cycle Status and Control Signals
 
-![Machine cycle status/control table](images/Day%202/day-2-machine-cycle-status-control-table.png)
+![Machine cycle status/control table](images/Day%2002/day-2-machine-cycle-status-control-table.png)
 
 The 8085 does not execute an instruction as one indivisible action. It performs a sequence of bus operations. A bus operation such as opcode fetch, memory read, memory write, I/O read, I/O write, or interrupt acknowledge is called a **machine cycle**. The status and control pins tell external hardware what type of cycle is happening.
 
@@ -216,7 +216,7 @@ The status table is useful for hardware design. A memory chip, I/O chip, or deco
 
 ## 2. Opcode Fetch Cycle
 
-![Opcode fetch cycle overview](images/Day%202/day-2-opcode-fetch-cycle-overview.png)
+![Opcode fetch cycle overview](images/Day%2002/day-2-opcode-fetch-cycle-overview.png)
 
 An **opcode** is the machine-code byte that tells the CPU what instruction to execute. During opcode fetch, the program counter points to the memory location containing the next opcode. The 8085 puts that address on the bus, asserts the memory-read control condition, and reads the opcode byte from memory.
 
@@ -234,7 +234,7 @@ The opcode fetch cycle is special because it is the first cycle of an instructio
 
 ## 3. Opcode Fetch Timing Diagram
 
-![Opcode fetch timing diagram](images/Day%202/day-2-opcode-fetch-timing-diagram.png)
+![Opcode fetch timing diagram](images/Day%2002/day-2-opcode-fetch-timing-diagram.png)
 
 The timing diagram shows why `AD0-AD7` are called a **multiplexed address/data bus**. During `T1`, these pins carry the lower address bits `A0-A7`. After the lower address has been captured by an external latch, the same pins are reused as the data bus.
 
@@ -252,7 +252,7 @@ You should remember the reason for multiplexing: it saves pins. The cost is extr
 
 ## 4. `MVI B,05H` Timing Example
 
-![MVI B,05H timing example](images/Day%202/day-2-mvi-b-05h-timing-example.png)
+![MVI B,05H timing example](images/Day%2002/day-2-mvi-b-05h-timing-example.png)
 
 `MVI B,05H` is a **two-byte instruction**:
 
@@ -273,7 +273,7 @@ Common trap: the immediate byte is not an address. In `MVI B,05H`, `05H` is the 
 
 ## 5. I/O Read Timing
 
-![I/O read timing diagram](images/Day%202/day-2-io-read-timing-diagram.png)
+![I/O read timing diagram](images/Day%2002/day-2-io-read-timing-diagram.png)
 
 In I/O mapped I/O, the instruction `IN port` reads from an 8-bit port address and places the input byte into the accumulator. Intel describes `IN port` as moving the data placed on the 8-bit bidirectional data bus by the specified port into register `A`.
 
@@ -295,7 +295,7 @@ It does not mean "read memory address 0005H." That would be a memory operation, 
 
 ## 6. Address Decoding and Chip Select
 
-![Address decoding and chip select](images/Day%202/day-2-address-decoding-chip-select.png)
+![Address decoding and chip select](images/Day%2002/day-2-address-decoding-chip-select.png)
 
 The 8085 can generate 16-bit addresses, so there are `2^16 = 65,536` possible byte addresses. But an individual memory chip usually covers only a smaller range. Address decoding is the hardware logic that decides which chip should respond to a given address.
 
@@ -318,7 +318,7 @@ For `4K x 8`, that means 12 address lines and 8 data lines.
 
 ## 7. ROM Interfacing
 
-![ROM interface with MPU](images/Day%202/day-2-rom-interface-address-decoder.png)
+![ROM interface with MPU](images/Day%2002/day-2-rom-interface-address-decoder.png)
 
 ROM stores fixed program bytes. In an 8085 system, ROM is usually connected to the address bus and data bus like RAM, except it is read-only in normal operation.
 
@@ -335,7 +335,7 @@ ROM should drive the data bus only during a valid memory read of its address ran
 
 ## 8. Partial Decoding and Foldback
 
-![Partial address decoding and foldback](images/Day%202/day-2-partial-address-decoding-foldback.png)
+![Partial address decoding and foldback](images/Day%2002/day-2-partial-address-decoding-foldback.png)
 
 Partial decoding means the hardware does not check all high-order address bits. The device still works, but it may respond to multiple address ranges. This is called **address aliasing** or **foldback**.
 
@@ -351,7 +351,7 @@ This can be acceptable in very small systems because it reduces hardware. But it
 
 ## 9. Memory Mapped I/O vs I/O Mapped I/O
 
-![Memory mapped vs I/O mapped I/O](images/Day%202/day-2-memory-mapped-vs-io-mapped-io.png)
+![Memory mapped vs I/O mapped I/O](images/Day%2002/day-2-memory-mapped-vs-io-mapped-io.png)
 
 The 8085 supports two common I/O styles:
 
@@ -367,7 +367,7 @@ Important: memory mapped I/O is not "faster by definition" and I/O mapped I/O is
 
 ## 10. Memory Chip Capacity Question
 
-![Memory chip capacity question](images/Day%202/day-2-memory-chip-capacity-question.png)
+![Memory chip capacity question](images/Day%2002/day-2-memory-chip-capacity-question.png)
 
 For a chip marked `4K x 8`:
 
@@ -389,7 +389,7 @@ Common trap: `4K x 8` is not 32 KB. It is 32 kilobits, which equals 4 kilobytes.
 
 ## 11. Memory Address Range Calculation
 
-![Memory map highest address question](images/Day%202/day-2-memory-map-lowest-address-question.png)
+![Memory map highest address question](images/Day%2002/day-2-memory-map-lowest-address-question.png)
 
 If an `8K` RAM has lowest address `1000H`, then:
 
@@ -410,7 +410,7 @@ Correct: 1000H + 2000H - 1 = 2FFFH
 
 ## 12. Instruction Set Classification
 
-![Instruction set classification](images/Day%202/day-2-instruction-set-classification.png)
+![Instruction set classification](images/Day%2002/day-2-instruction-set-classification.png)
 
 The 8085 instruction set can be classified three useful ways:
 
@@ -438,7 +438,7 @@ Length: 3 bytes. Addressing: direct branch address. Operation group: branch.
 
 ## 13. Symbols and Abbreviations
 
-![Instruction symbols and abbreviations 1](images/Day%202/day-2-instruction-symbols-abbreviations-1.png)
+![Instruction symbols and abbreviations 1](images/Day%2002/day-2-instruction-symbols-abbreviations-1.png)
 
 Instruction manuals use compact notation. You should be comfortable reading it.
 
@@ -456,7 +456,7 @@ The biggest trap is `M`. There is no physical register named `M` in the 8085. `M
 
 ## 14. Register Pair and Operation Notation
 
-![Instruction symbols and abbreviations 2](images/Day%202/day-2-instruction-symbols-abbreviations-2.png)
+![Instruction symbols and abbreviations 2](images/Day%2002/day-2-instruction-symbols-abbreviations-2.png)
 
 Some symbols describe actions:
 
@@ -473,7 +473,7 @@ When reading instruction definitions, separate the **container** from the **cont
 
 ## 15. One-Byte Instructions
 
-![One-byte instruction forms](images/Day%202/day-2-one-byte-instruction-forms.png)
+![One-byte instruction forms](images/Day%2002/day-2-one-byte-instruction-forms.png)
 
 A one-byte instruction contains all required information in the opcode itself. There is no extra immediate byte or address byte.
 
@@ -490,7 +490,7 @@ This explains why some instructions seem short even though they do useful work. 
 
 ## 16. Two-Byte `MVI` Instruction
 
-![Two-byte MVI instruction example](images/Day%202/day-2-two-byte-instruction-mvi-example.png)
+![Two-byte MVI instruction example](images/Day%2002/day-2-two-byte-instruction-mvi-example.png)
 
 Two-byte instructions usually contain:
 
@@ -511,7 +511,7 @@ Common trap: if a program starts at `2000H`, the second instruction may not star
 
 ## 17. Implicit Addressing Mode
 
-![Implicit addressing mode](images/Day%202/day-2-implicit-addressing-mode.png)
+![Implicit addressing mode](images/Day%2002/day-2-implicit-addressing-mode.png)
 
 In **implicit** or **implied** addressing, the operand is not written because the instruction definition already determines it.
 
@@ -529,7 +529,7 @@ The exam trick is to ask "where is the operand?" The answer is: it is built into
 
 ## Research Deep Dive: Bus Cycles, Decoding, and Address Aliasing
 
-A useful way to study Day 2 is to separate three layers that often get mixed together:
+A useful way to study Day 02 is to separate three layers that often get mixed together:
 
 | Layer | Question it answers |
 | --- | --- |
