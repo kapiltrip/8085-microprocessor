@@ -16,6 +16,8 @@ This repository is organized as a study-day learning log. Each completed day has
 | Day 8 | 2026-05-31 | Complete | [Day 8.md](Day%208.md) | [images/Day 8](images/Day%208/) | I/O handshaking, DMA transfer modes, `HOLD/HLDA`, and Intel 8155/8255/8253/8257/8259/8272/8275/8279 support chips. |
 | Day 9 | 2026-06-01, 2026-06-10 | Complete | [Day 9.md](Day%209.md) | [images/Day 9](images/Day%209/) | 8086 pin configuration, min/max mode signals, BIU, EU, block diagram, and general-purpose register roles. |
 | Day 10 | 2026-06-10 | Complete | [Day 10.md](Day%2010.md) | [images/Day 10](images/Day%2010/) | 8086 flags, addressing modes, hardware/software interrupts, interrupt vector table, data transfer, arithmetic, logical, branch, loop, flag, string, and repeat instructions. |
+| Day 11 | 2026-06-12 | Complete | [Day 11.md](Day%2011.md) | [images/Day 11](images/Day%2011/) | 8086 `XCHG`, `LEA`, `LES`, and `PUSH` instructions, including effective addresses, far pointers, and stack word rules. |
+| Day 12 | 2026-06-15, 2026-06-16 | Complete | [Day 12.md](Day%2012.md) | [images/Day 12](images/Day%2012/) | 8086 instruction-set deep dive: `MOV`, `XCHG`, `LEA`, `IN`, `ADD/ADC`, `SUB/SBB`, `MUL/IMUL`, `DIV/IDIV`, `INC/DEC`, BCD/ASCII adjust, `OR`, and `CMP`. |
 
 ## Handwritten Notes
 
