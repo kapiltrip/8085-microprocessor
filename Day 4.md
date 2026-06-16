@@ -358,6 +358,83 @@ They do not require an explicit operand because the operation is defined by the 
 
 Common trap: `DI` and `EI` affect interrupt enable state, not the interrupt hardware pins themselves. A masked or disabled interrupt may still physically occur, but the CPU will not service it in the normal way.
 
+## Research Deep Dive: Stack Discipline and Control Flow
+
+Day 4 is where program flow stops being purely sequential. The CPU must remember where to return after `CALL`, `RST`, interrupts, and stack operations. That is why stack tracing must be exact.
+
+### What `CALL` Really Saves
+
+If a three-byte instruction:
+
+```asm
+CALL 2500H
+```
+
+starts at `2000H`, the next instruction address is:
+
+```text
+2003H
+```
+
+That return address is what gets pushed on the stack, not `2000H` and not `2500H`.
+
+The stack grows downward. In 8085 stack discussions, treat the return address as two separate bytes:
+
+```text
+high byte = 20H
+low byte  = 03H
+```
+
+When tracing, do not just write "PC saved." Write the actual bytes and the final `SP`.
+
+### `RST n` As A One-Byte Call
+
+`RST n` is best understood as a compact call to a fixed vector:
+
+```text
+restart address = n x 8
+```
+
+Examples:
+
+| Instruction | Restart address |
+| --- | --- |
+| `RST 1` | `0008H` |
+| `RST 5` | `0028H` |
+| `RST 7.5` interrupt | `003CH` |
+
+The software instruction form `RST n` is one byte, so it is useful when a small vector call is needed. Hardware interrupts use the same restart-address idea for vectored interrupt service.
+
+### Stack Safety Rule
+
+Every push-like action must be matched by a compatible pop-like action. If a subroutine pushes `B`, `D`, and `H`, then it should usually pop them in reverse order:
+
+```asm
+PUSH B
+PUSH D
+PUSH H
+...
+POP H
+POP D
+POP B
+RET
+```
+
+That reverse order is not style; it is required because the stack is last-in, first-out.
+
+### `SIM` And `RIM` Are Packed Bit Interfaces
+
+`SIM` and `RIM` are not normal arithmetic instructions. They treat the accumulator as eight individual control/status bits.
+
+Practical method:
+
+1. Write the accumulator in binary.
+2. Label bits `D7` through `D0`.
+3. Interpret each bit according to the `SIM` or `RIM` table.
+4. Do not treat the byte as a decimal number.
+
+This same bit-field idea appears later in peripheral control words for chips such as the 8255 and 8259.
+
 ## Points To Remember
 
 - Conditional jumps test flags set earlier.

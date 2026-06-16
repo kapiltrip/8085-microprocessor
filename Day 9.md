@@ -268,6 +268,75 @@ AX = 1234H
 
 This makes the 8086 flexible: it can work with 16-bit words or 8-bit bytes using parts of the same register.
 
+## Research Deep Dive: Segmentation, Queue Behavior, and Bus Modes
+
+The 8086 is not just an 8085 with wider registers. The core change is that the programmer sees 16-bit offsets, while the hardware forms 20-bit physical addresses.
+
+### Segment:Offset Address Formation
+
+The formula is:
+
+```text
+physical address = segment x 10H + offset
+```
+
+Example:
+
+```text
+CS = 1234H
+IP = 0100H
+physical address = 12340H + 0100H = 12440H
+```
+
+Different segment:offset pairs can point to the same physical address.
+
+Example:
+
+```text
+1000H:0020H -> 10020H
+1001H:0010H -> 10020H
+1002H:0000H -> 10020H
+```
+
+This aliasing is a natural result of shifting the segment by four bits. It is powerful, but it means a physical address cannot always be uniquely converted back to one segment:offset pair.
+
+### BIU And EU Cooperation
+
+The BIU does not execute arithmetic instructions. The EU does not directly drive the external address bus. They cooperate:
+
+| Unit | Main work |
+| --- | --- |
+| BIU | Forms physical addresses, fetches instruction bytes, performs memory/I/O bus cycles, fills the queue. |
+| EU | Decodes instructions, executes ALU operations, updates flags, requests operands from BIU when needed. |
+
+The instruction queue helps only when the EU is not constantly forcing the BIU to fetch operands or refill after branches. A jump, call, return, or interrupt changes the code path, so prefetched bytes from the old path are discarded.
+
+### Minimum Mode Versus Maximum Mode
+
+Minimum mode is designed for simpler single-processor systems. The 8086 itself provides bus-control signals such as read/write-type control.
+
+Maximum mode is designed for systems with an external bus controller, coprocessor, or more complex bus sharing. The processor outputs status information, and external controller logic turns that status into bus commands.
+
+Revision rule:
+
+```text
+Minimum mode: 8086 directly controls the bus.
+Maximum mode: 8086 reports bus status; external controller generates detailed bus controls.
+```
+
+### Why `BHE` Matters
+
+The 8086 has a 16-bit data bus but memory is byte-addressed. It must select the low byte bank, high byte bank, or both. `A0` and `BHE` help decide which byte lane is active.
+
+| Access type | Meaning |
+| --- | --- |
+| Even-address word | Can use both byte lanes in one bus cycle. |
+| Odd-address word | Crosses a word boundary and may need two bus cycles. |
+| Byte at even address | Low byte lane. |
+| Byte at odd address | High byte lane. |
+
+This explains why alignment matters on a 16-bit bus.
+
 ## Points To Remember
 
 - 8086 has a 16-bit data bus and 20-bit address bus.

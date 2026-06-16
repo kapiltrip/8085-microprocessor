@@ -460,6 +460,104 @@ before string instructions.
 
 The main revision point: 8086 is not just "bigger 8085." It changes how memory is addressed, how registers are used, how interrupts are vectored, and how repeated string operations are handled.
 
+## Research Deep Dive: 8086 Programming Model Details
+
+The Intel 8086 manuals repeatedly connect instruction behavior to registers, flags, and segment defaults. For Day 10, the deeper work is knowing which hidden state an instruction uses.
+
+### Interrupt Entry Is A Far Control Transfer
+
+When an 8086 interrupt is accepted, the CPU does not only jump. It saves enough state to return later.
+
+The essential stack save sequence is:
+
+```text
+push FLAGS
+push CS
+push IP
+load new IP and CS from interrupt vector table
+```
+
+Each interrupt vector occupies four bytes:
+
+| Vector byte(s) | Meaning |
+| --- | --- |
+| first word | new `IP` offset |
+| second word | new `CS` segment |
+
+So interrupt type `n` uses:
+
+```text
+vector address = n x 4
+```
+
+Example:
+
+```text
+type 3 vector begins at 0000CH
+```
+
+The vector stores the address of the interrupt service routine, not the ISR code itself.
+
+### Effective Address Versus Physical Address
+
+An addressing mode computes an effective address, which is only an offset. The segment register then supplies the base.
+
+Example:
+
+```asm
+MOV AL,[BX+SI+10H]
+```
+
+If:
+
+```text
+BX = 1000H
+SI = 0020H
+DS = 2000H
+```
+
+then:
+
+```text
+EA = 1000H + 0020H + 0010H = 1030H
+physical = 20000H + 1030H = 21030H
+```
+
+The instruction reads memory from `DS:1030H`.
+
+### String Instructions Use Implicit Registers
+
+String instructions look short because many operands are implied.
+
+| Instruction | Implied source | Implied destination/result |
+| --- | --- | --- |
+| `MOVSB` | `DS:SI` | `ES:DI` |
+| `CMPSB` | `DS:SI` | compared with `ES:DI` |
+| `SCASB` | `AL` | compared with `ES:DI` |
+| `LODSB` | `DS:SI` | `AL` |
+
+Direction flag controls index movement:
+
+| `DF` | Byte string step | Word string step |
+| --- | --- | --- |
+| `0` | increment by 1 | increment by 2 |
+| `1` | decrement by 1 | decrement by 2 |
+
+That is why serious string code often begins with `CLD` unless it intentionally wants backward movement.
+
+### Signed And Unsigned Branches After The Same `CMP`
+
+`CMP AX,BX` only sets flags from `AX - BX`. It does not know whether the programmer means signed or unsigned numbers. The following jump gives the interpretation.
+
+| Meaning | Unsigned jump | Signed jump |
+| --- | --- | --- |
+| below / less than | `JB` | `JL` |
+| above / greater than | `JA` | `JG` |
+| below or equal / less or equal | `JBE` | `JLE` |
+| above or equal / greater or equal | `JAE` | `JGE` |
+
+Use unsigned jumps for addresses, sizes, counts, and raw bytes. Use signed jumps for two's-complement numerical values.
+
 ## Points To Remember
 
 - Single-step mode uses `TF`, the trap flag.

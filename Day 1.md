@@ -1063,6 +1063,71 @@ Control Unit makes all of them work together in the right order.
 
 Without the control unit, the 8085 would have hardware parts, but no organized execution of instructions.
 
+## 24. Research Deep Dive: Turning Pin Facts Into System Behavior
+
+The Intel manuals describe the 8085 as a CPU meant to sit at the center of a small microcomputer system. The important point is that the 8085 is not only a list of registers and instructions. It is also a bus controller: during every external memory or I/O operation it places an address on the bus, announces the cycle type with status/control signals, and samples or drives data at the correct time.
+
+### How A Memory Read Really Happens
+
+Suppose the 8085 must read one byte from memory address `2050H`.
+
+| Step | Hardware meaning |
+| --- | --- |
+| 1 | `A8-A15` carry the high address byte `20H`. |
+| 2 | `AD0-AD7` first carry the low address byte `50H`. |
+| 3 | `ALE` pulses high so an external latch can hold `50H` as `A0-A7`. |
+| 4 | After the low address is latched, `AD0-AD7` stop being address lines and become data lines. |
+| 5 | `/RD` goes active low, telling memory to place the selected byte on the data bus. |
+| 6 | The 8085 samples the data bus and stores the byte internally. |
+
+This is why `ALE` is not optional in a real system that uses external memory. Without latching the low address byte, the external address would disappear when `AD0-AD7` change into data pins.
+
+### Why `READY` Exists
+
+The CPU clock is not the same as memory speed. If memory or an I/O device is too slow, the `READY` input lets external hardware insert wait states. A wait state is not a new instruction; it is extra time added inside a machine cycle so the external device can finish.
+
+Exam shortcut:
+
+```text
+Instruction timing = normal T-states + inserted wait states
+```
+
+If a question says "one wait state is inserted during every memory read," then every memory-read machine cycle becomes longer, but internal register operations do not automatically become longer.
+
+### Why `HOLD` and `HLDA` Matter
+
+`HOLD` and `HLDA` are the beginning of the DMA story. A DMA controller cannot safely drive the system address/data/control bus while the CPU is also driving it. So the controller asserts `HOLD`, the 8085 finishes the current bus activity, floats its bus lines, and responds with `HLDA`.
+
+In system language:
+
+```text
+HOLD = external device asks for bus ownership
+HLDA = CPU says the bus has been released
+```
+
+This connects Day 1 pins directly to Day 8 DMA. The signal names are not isolated facts; they define who owns the system bus at a given time.
+
+### Pin-Level Facts To Keep Together
+
+| Course fact | Deeper system meaning |
+| --- | --- |
+| 16 address lines | The CPU can select `2^16 = 65536` byte locations. |
+| 8 data lines | One external data transfer moves one byte at a time. |
+| `AD0-AD7` multiplexing | The same pins carry low address first and data later. |
+| `IO/M` | External hardware can distinguish memory cycles from I/O cycles. |
+| `/RD` and `/WR` | Direction of transfer: device-to-CPU or CPU-to-device. |
+| Interrupt pins | External hardware can request a controlled change in program flow. |
+| `SID` and `SOD` | The 8085 includes a minimal serial bit path controlled by `RIM` and `SIM`. |
+
+When revising images from Day 1, always connect each pin back to one of four jobs:
+
+```text
+address selection
+data transfer
+cycle control
+external event handling
+```
+
 ## Sources
 
 [S1] Intel Corporation, [MCS-80/85 Family User's Manual, January 1983](https://www.bitsavers.org/components/intel/MCS80/MCS80_85_Users_Manual_Jan83.pdf), Chapter 2, "What the 8085A Is" and "What's in the 8085A." Used for 8085 as 8-bit microprocessor, 64 KB memory access, 8-bit data bus, 16-bit addressing, registers, control signals, and system functions.
