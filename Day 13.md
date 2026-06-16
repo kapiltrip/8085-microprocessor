@@ -70,6 +70,23 @@ Use these checks while studying this day:
 | 52 | [IN and OUT operation table](images/Day%2013/Screenshot%202026-06-16%20223017.png) | Formats, operations, and flags for `IN` and `OUT`. |
 | 53 | [IN and OUT examples](images/Day%2013/Screenshot%202026-06-16%20223136.png) | Byte and word examples for direct I/O. |
 | 54 | [IN and OUT examples clear view](images/Day%2013/Screenshot%202026-06-16%20223211.png) | Same examples with the `DX` range note. |
+| 55 | [Output word to 16-bit port example](images/Day%2013/Screenshot%202026-06-16%20223629.png) | Use `DX` for output to port `B000H`. |
+| 56 | [Read two byte ports and output a word](images/Day%2013/Screenshot%202026-06-16%20224012.png) | Read adjacent input ports into `AX`, then output the word. |
+| 57 | [8086 input bus cycle](images/Day%2013/Screenshot%202026-06-16%20224441.png) | Timing of address, control, and data during I/O read. |
+| 58 | [8086 output bus cycle](images/Day%2013/Screenshot%202026-06-16%20224743.png) | Timing idea for I/O write cycle and signal-direction caution. |
+| 59 | [Interfacing devices](images/Day%2013/Screenshot%202026-06-16%20224953.png) | Why peripherals need interface circuits. |
+| 60 | [Intel 8251 USART](images/Day%2013/Screenshot%202026-06-16%20225324.png) | Serial/parallel conversion for communication. |
+| 61 | [Intel 8257 DMA controller](images/Day%2013/Screenshot%202026-06-16%20225828.png) | Four-channel DMA controller block diagram. |
+| 62 | [8257 DMA controller summary](images/Day%2013/Screenshot%202026-06-16%20230006.png) | DMA purpose, four channels, and read/write/verify operations. |
+| 63 | [8259 interrupt controller introduction](images/Day%2013/Screenshot%202026-06-16%20230119.png) | Programmable interrupt controller for multiple interrupting devices. |
+| 64 | [8259 internal block diagram](images/Day%2013/Screenshot%202026-06-16%20230216.png) | Data bus, priority, mask, request, and in-service blocks. |
+| 65 | [8275 and 8279 interface devices](images/Day%2013/Screenshot%202026-06-16%20230334.png) | CRT controller and keyboard/display interface overview. |
+| 66 | [Input device quiz](images/Day%2013/Screenshot%202026-06-16%20230517.png) | Identify which device lets the processor read external data. |
+| 67 | [Read-operation current quiz](images/Day%2013/Screenshot%202026-06-16%20230618.png) | Avoid excessive source or sink current on data lines. |
+| 68 | [Read-operation loading quiz](images/Day%2013/Screenshot%202026-06-16%20230708.png) | Use tri-state buffers to prevent bus loading. |
+| 69 | [Unsupported operation quiz](images/Day%2013/Screenshot%202026-06-16%20230746.png) | 8086 has no direct packed-BCD multiplication instruction. |
+| 70 | [Stack segment size quiz](images/Day%2013/Screenshot%202026-06-16%20230851.png) | 8086 segment size can be up to 64 KB. |
+| 71 | [Stack segment marked answer](images/Day%2013/Screenshot%202026-06-16%20231006.png) | Confirms 64 KB as the stack segment maximum. |
 
 ## Page-By-Page Explanation
 
@@ -518,6 +535,164 @@ DX can hold 0000H through FFFFH
 
 That is why `DX` is required for ports outside the direct 8-bit immediate range. The accumulator remains the data register: `AL` for byte I/O and `AX` for word I/O.
 
+### Page 55: Output Word To 16-Bit Port Example
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20223629.png"><img src="images/Day%2013/Screenshot%202026-06-16%20223629.png" alt="Output word to 16-bit port example" width="960"></a>
+
+The task is to output `FFFFH` to I/O port address `B000H`. Since `B000H` is a 16-bit port address, the direct immediate form is not enough; original 8086 direct `OUT` encodes only an 8-bit port number.
+
+The correct variable-port sequence is:
+
+```asm
+MOV AX,0FFFFH
+MOV DX,0B000H
+OUT DX,AX
+```
+
+`AX` holds the word data, and `DX` holds the 16-bit port address. The word output uses port `B000H` for the low byte and the next port for the high byte.
+
+### Page 56: Read Two Byte Ports And Output A Word
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20224012.png"><img src="images/Day%2013/Screenshot%202026-06-16%20224012.png" alt="Read two byte ports and output a word" width="960"></a>
+
+The input side uses two adjacent byte-wide ports, `A9H` and `AAH`, as one word input. `IN AX,A9H` reads a word into `AX`, with the low byte from port `A9H` and the high byte from port `AAH`.
+
+For the output side, the same 16-bit port-address rule applies. If the intended output port is `B000H`, use:
+
+```asm
+IN  AX,0A9H
+MOV DX,0B000H
+OUT DX,AX
+```
+
+If the written address is truly `B0000H`, it is outside the 8086 I/O address range of `0000H` to `FFFFH`, so it cannot be addressed as a normal 8086 I/O port. In that case the question likely has a typographical extra zero.
+
+### Page 57: 8086 Input Bus Cycle
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20224441.png"><img src="images/Day%2013/Screenshot%202026-06-16%20224441.png" alt="8086 input bus cycle" width="960"></a>
+
+This timing diagram shows one 8086 I/O read bus cycle. During `T1`, the processor outputs address information on the multiplexed address/data lines, and `ALE` pulses so external latch circuitry can capture that address before the bus is reused for data.
+
+During the middle of the cycle, `M/IO` identifies the transfer as I/O, active-low `RD` indicates a read operation, and `DEN` enables the data bus interface. The input device then drives data onto the data bus during the data phase, so the processor can sample it before the bus cycle ends.
+
+### Page 58: 8086 Output Bus Cycle
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20224743.png"><img src="images/Day%2013/Screenshot%202026-06-16%20224743.png" alt="8086 output bus cycle" width="960"></a>
+
+This page is labelled as an output bus cycle. The main timing idea is the same first step: during `T1`, the processor outputs the I/O address and pulses `ALE` so the address can be latched before the multiplexed bus is reused.
+
+For a true I/O write cycle, the processor should drive data onto the data bus and the active-low `WR` signal should indicate the write operation. The visible screenshot still shows read-style labels such as `RD` and `DATA IN`, so treat it as a timing-shape reminder but remember the correction: input uses `RD` and device-to-CPU data flow; output uses `WR` and CPU-to-device data flow.
+
+### Page 59: Interfacing Devices
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20224953.png"><img src="images/Day%2013/Screenshot%202026-06-16%20224953.png" alt="Interfacing devices" width="960"></a>
+
+This page explains why interface devices are needed. A microprocessor communicates with the outside world through peripherals or I/O devices, but those devices may not produce or accept data in the exact electrical, timing, or format style the processor bus expects.
+
+An input interface converts peripheral data into a processor-compatible format. An output interface converts processor data into the format required by the peripheral. Interface circuits simplify system design by handling selection, timing, buffering, and format conversion between the CPU bus and external devices.
+
+### Page 60: Intel 8251 USART
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20225324.png"><img src="images/Day%2013/Screenshot%202026-06-16%20225324.png" alt="Intel 8251 USART" width="960"></a>
+
+The Intel 8251 is a programmable communication interface, also called a USART: universal synchronous/asynchronous receiver/transmitter. It is compatible with 8085, 8086, and 8088 systems.
+
+Its job is serial communication. On transmission, it accepts parallel data from the microprocessor and converts it into serial data. On reception, it accepts serial data, converts it into parallel format, and provides that parallel data to the CPU.
+
+### Page 61: Intel 8257 DMA Controller
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20225828.png"><img src="images/Day%2013/Screenshot%202026-06-16%20225828.png" alt="Intel 8257 DMA controller" width="960"></a>
+
+The Intel 8257 is a programmable DMA controller. DMA means direct memory access: data can move between memory and an I/O device without the CPU executing one instruction for every byte.
+
+The diagram shows four DMA channels, each with address and count registers. `DRQ0-DRQ3` are DMA request inputs from devices, and `DACK0-DACK3` acknowledge the selected device. The controller also has bus-control signals such as `HRQ` and `HLDA` to request and receive bus ownership from the processor, plus memory and I/O read/write controls for the actual transfer.
+
+### Page 62: 8257 DMA Controller Summary
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230006.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230006.png" alt="8257 DMA controller summary" width="960"></a>
+
+This page explains where DMA is preferred. DMA is useful when a fast I/O device needs to transfer a block of data to memory, or memory needs to transfer a block of data to a fast I/O device. If the CPU handled every byte using normal instructions, it would waste time on repeated input/output and memory-transfer operations.
+
+In a DMA transfer, the device and memory exchange data directly under control of the DMA controller. The 8257 has four channels, so four I/O devices can be connected. Each channel has a 16-bit address register and a 16-bit byte-count register. Before enabling a channel, the program initializes these registers so the DMA controller knows the starting memory address and how many bytes to transfer.
+
+The listed operations are read, write, and verify. In DMA read/write, data is transferred between memory and an I/O device. In verify, the controller can perform the address/count sequencing without actual data movement, which is useful for checking or timing certain operations.
+
+### Page 63: 8259 Interrupt Controller Introduction
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230119.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230119.png" alt="8259 interrupt controller introduction" width="960"></a>
+
+The 8259 is a programmable interrupt controller. It is used when several I/O devices need to interrupt the processor, especially when those interrupt requests must be organized through a limited number of processor interrupt inputs.
+
+Instead of wiring many devices directly and handling priority externally, the 8259 accepts interrupt requests, decides which request should be served first, and then sends one interrupt request to the microprocessor. When the processor acknowledges the interrupt, the 8259 helps provide the correct interrupt information so the CPU can jump to the proper service routine.
+
+The page notes that the 8259 is a single-chip controller, comes as a 28-pin dual in-line package, uses NMOS technology, and is compatible with 8085, 8086, and 8088 systems. The important exam idea is its role: it manages multiple interrupt sources in a programmable priority structure.
+
+### Page 64: 8259 Internal Block Diagram
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230216.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230216.png" alt="8259 internal block diagram" width="960"></a>
+
+The block diagram shows how the 8259 receives, prioritizes, masks, and services interrupt requests. `IR0` through `IR7` are interrupt request inputs from external devices. These requests first enter the interrupt request register, or `IRR`, which records pending interrupts.
+
+The interrupt mask register, or `IMR`, decides which requests are allowed and which are temporarily blocked. A masked request is ignored until it is unmasked. After masking, the priority resolver selects the highest-priority pending request. When an interrupt is accepted for service, the in-service register, or `ISR`, records that the selected interrupt is currently being handled.
+
+The control logic communicates with the processor using `INT` and active-low `INTA`. `INT` tells the CPU that an interrupt request exists, and `INTA` is the CPU's acknowledge signal. The data bus buffer connects the 8259 to `D0-D7`, while the read/write logic allows the CPU to initialize and read the 8259 through control words and status reads. The cascade buffer/comparator supports expanding the interrupt system by connecting multiple 8259 chips.
+
+### Page 65: 8275 And 8279 Interface Devices
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230334.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230334.png" alt="8275 and 8279 interface devices" width="960"></a>
+
+This page lists two more programmable interface chips used with microprocessor systems. The Intel 8275 is a programmable CRT controller. Its role is to interface a CRT or raster-scan display with the microcomputer, so the CPU does not have to directly generate all display timing and control signals.
+
+The Intel 8279 is a programmable keyboard/display interface. It has a keyboard section and a display section. The keyboard section handles keyboard interfacing, while the display section drives alphanumeric displays or indicator lights. The main idea is the same as the other interface chips: specialized hardware sits between the processor and a peripheral so the CPU can use programmed control instead of directly managing every signal detail.
+
+### Page 66: Input Device Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230517.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230517.png" alt="Input device quiz" width="960"></a>
+
+This question asks which device enables the microprocessor to read data from external devices. In microprocessor terminology, reading external data means accepting input into the system.
+
+Among the options, `joystick` is the clearest input device. A printer and display are output devices because the processor sends data to them. A reader can be an input-related device in general wording, but in this MCQ set the expected distinction is input versus output, so joystick is the best answer.
+
+### Page 67: Read-Operation Current Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230618.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230618.png" alt="Read-operation current quiz" width="960"></a>
+
+This question is about bus loading during a read operation. During a read, the selected external device drives the data bus and the processor samples that data. The data lines should not be forced to source or sink excessive current, because that can overload the bus driver, distort logic levels, or create contention if more than one device tries to drive the bus.
+
+The marked answer is option `(c) sourced or sinked from data lines`. In better wording: during a read operation, care must be taken that excessive current is neither sourced from nor sunk into the data lines. Only the selected device should drive the bus, and all non-selected devices should remain electrically disconnected from the bus output path.
+
+### Page 68: Read-Operation Loading Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230708.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230708.png" alt="Read-operation loading quiz" width="960"></a>
+
+This question asks which device is used to avoid loading during a read operation. The marked answer is `(d) tri-state buffer`.
+
+A tri-state buffer has three output states: logic `0`, logic `1`, and high impedance. The high-impedance state is the important one here. When a peripheral is not selected, its tri-state buffer output is effectively disconnected from the data bus, so it does not load the bus or fight with another device. When the peripheral is selected for reading, the buffer is enabled and can safely drive the data lines.
+
+### Page 69: Unsupported Operation Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230746.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230746.png" alt="Unsupported operation quiz" width="960"></a>
+
+This question asks what the 8086 does not support. The 8086 supports normal arithmetic operations, logical operations, and several decimal-adjust instructions used around BCD arithmetic.
+
+The unsupported item here is `direct BCD packed multiplication`. The 8086 has binary multiply instructions such as `MUL` and `IMUL`, and it has BCD adjustment instructions for addition/subtraction style decimal correction, but it does not provide a single direct instruction for multiplying packed BCD operands. Such a task must be handled by a software routine.
+
+### Page 70: Stack Segment Size Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20230851.png"><img src="images/Day%2013/Screenshot%202026-06-16%20230851.png" alt="Stack segment size quiz" width="960"></a>
+
+This question asks the maximum memory block size of the 8086 stack segment. In 8086 segmentation, each segment is addressed by a 16-bit offset, so a segment can cover `0000H` through `FFFFH`.
+
+That is `10000H` bytes, or 64 KB. Therefore the stack segment may have a maximum size of `64 K bytes`, assuming the stack is allowed to use the full segment range.
+
+### Page 71: Stack Segment Marked Answer
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20231006.png"><img src="images/Day%2013/Screenshot%202026-06-16%20231006.png" alt="Stack segment marked answer" width="960"></a>
+
+This page repeats the stack-segment size question and marks `64 K bytes` as the answer. The reason is the same: 8086 offsets are 16-bit values, so one segment can address `2^16` byte positions.
+
+For the stack, `SS` gives the segment base and `SP`/`BP` provide offsets inside that segment. Since the offset range is `0000H` to `FFFFH`, the maximum block covered by the stack segment is 64 KB.
+
 ## Deep Revision Tables
 
 ### Rotate And Shift Summary
@@ -569,6 +744,9 @@ That is why `DX` is required for ports outside the direct 8-bit immediate range.
 - In minimum mode, the 8086 directly provides I/O bus-control signals.
 - In maximum mode, the 8288 bus controller creates the I/O control signals.
 - Direct `IN`/`OUT` uses an 8-bit port number; variable `IN`/`OUT` uses `DX`.
+- 8257 handles DMA transfers so fast devices can exchange blocks with memory without CPU involvement for each byte.
+- 8259 handles multiple interrupt requests, applies masks and priority, and presents a controlled interrupt request to the CPU.
+- 8275 supports CRT/raster display interfacing; 8279 supports keyboard and display interfacing.
 
 ## Sources
 
