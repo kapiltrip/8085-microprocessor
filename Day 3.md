@@ -312,6 +312,92 @@ This is a compact way to clear the accumulator. It also sets the zero flag becau
 
 Common trap: `XRA A` is not the same as `MVI A,00H` in timing and flag behavior. `MVI A,00H` loads zero but does not affect flags; `XRA A` clears `A` and affects flags.
 
+## Research Deep Dive: Addressing and Data-Movement Patterns
+
+The Intel assembly manual treats instruction mnemonics as precise contracts. For Day 3, the contract is usually about where the data comes from, where it goes, and whether flags are changed.
+
+### `HL` As A Pointer
+
+In 8085 notation, `M` is not a physical register. It means:
+
+```text
+M = memory byte whose address is in HL
+```
+
+So:
+
+```asm
+MVI M,42H
+```
+
+does not store `42H` in `H` or `L`. It stores `42H` into memory at address `HL`.
+
+Worked example:
+
+```asm
+LXI H,2050H
+MVI M,42H
+```
+
+Result:
+
+```text
+H = 20H
+L = 50H
+memory[2050H] = 42H
+```
+
+### `LHLD` And Little-Endian Loading
+
+For:
+
+```asm
+LHLD 3000H
+```
+
+the CPU reads two consecutive memory locations:
+
+| Memory location | Loaded into |
+| --- | --- |
+| `3000H` | `L` |
+| `3001H` | `H` |
+
+This low-byte-first rule is the same idea that later appears in 8086 word storage. It is easy to reverse `H` and `L`, so always write the two memory addresses separately.
+
+### Why `XCHG` Is Useful
+
+`XCHG` exchanges `HL` and `DE`. It is useful when one register pair is acting as a source pointer and the other as a destination pointer.
+
+Example:
+
+```asm
+LXI H,2000H
+LXI D,3000H
+XCHG
+```
+
+After `XCHG`:
+
+```text
+HL = 3000H
+DE = 2000H
+```
+
+No memory byte is read or written by `XCHG`; only internal register-pair contents are exchanged.
+
+### Logical Instructions As Bit Tools
+
+Use this mental table:
+
+| Goal | Instruction pattern | Example |
+| --- | --- | --- |
+| Set selected bits | `ORI mask` | `ORI 80H` sets bit 7. |
+| Clear selected bits | `ANI mask` | `ANI 0FH` clears high nibble. |
+| Toggle selected bits | `XRI mask` | `XRI 01H` toggles bit 0. |
+| Clear accumulator | `XRA A` | Result is always `00H`. |
+
+This is deeper than saying "logical instruction." In programs, these instructions are used to modify control/status bytes without disturbing unrelated bits.
+
 ## Points To Remember
 
 - `M` means `memory[HL]`.

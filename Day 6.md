@@ -357,6 +357,81 @@ For maximum T-state questions, do not guess from instruction name alone. Ask:
 
 That is why stack and call instructions often take more time than simple register operations: they need extra memory cycles.
 
+## Research Deep Dive: Solving Assignment Traces Like Hardware
+
+Day 6 is mainly about disciplined tracing. The Intel timing tables look large, but most answers come from repeating a small process carefully.
+
+### Trace State, Not Just Instructions
+
+For every instruction in a trace, maintain a table with at least:
+
+| Field | Why it matters |
+| --- | --- |
+| `PC` | Finds the next instruction and detects instruction length errors. |
+| `A` | Most arithmetic/logical instructions use the accumulator. |
+| Register pairs | `HL`, `DE`, and `BC` often act as addresses or 16-bit values. |
+| Flags | Conditional branches use earlier flag results. |
+| `SP` | Stack questions depend on exact byte positions. |
+| T-states | Delay and timing questions depend on the actual executed path. |
+
+### Branch Timing Needs The Actual Path
+
+For loops, the final iteration is often different because the conditional jump is not taken.
+
+Example structure:
+
+```asm
+LOOP: DCR C
+      JNZ LOOP
+```
+
+If `C` starts at `05H`, `DCR C` executes five times. `JNZ` executes five times too, but it is taken only four times. The last `JNZ` falls through because `Z = 1`.
+
+So the timing form is:
+
+```text
+total = setup + (body for taken iterations) + final fall-through iteration
+```
+
+Do not multiply one loop body blindly unless the taken/not-taken timing is the same.
+
+### Stack Invariants
+
+Use these invariants to catch mistakes:
+
+| Operation | Invariant |
+| --- | --- |
+| `PUSH rp` | `SP` decreases by 2. |
+| `POP rp` | `SP` increases by 2. |
+| `CALL addr` | Return address is pushed; `SP` decreases by 2. |
+| `RET` | Return address is popped; `SP` increases by 2. |
+
+If a subroutine begins and ends with the same `SP`, its pushes/pops and call/return behavior are balanced. If `SP` does not come back, either the program intentionally changed the stack or the trace is wrong.
+
+### Flag Lifetime
+
+A flag is only meaningful until another flag-affecting instruction changes it.
+
+Example:
+
+```asm
+CMP B
+MOV C,A
+JZ SAME
+```
+
+`MOV C,A` does not affect flags, so `JZ` still tests the result of `CMP B`.
+
+But:
+
+```asm
+CMP B
+INR C
+JZ SAME
+```
+
+`INR C` affects `Z`, so `JZ` no longer tests the comparison. It tests whether `C` became zero.
+
 ## Points To Remember
 
 - `CALL` stores the return address on the stack; `RET` restores it by popping the address back.

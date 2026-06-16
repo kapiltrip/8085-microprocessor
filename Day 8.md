@@ -291,6 +291,81 @@ The later support chips are specialized controllers:
 
 The reason these chips exist is the same reason DMA and interrupt controllers exist: a general-purpose CPU should not have to perform every low-level timing and control task directly. Support chips turn complex peripheral timing into programmable registers and status/control signals.
 
+## Research Deep Dive: Why Support Chips Exist
+
+The support chips in Day 8 are not random part numbers. Each one converts a messy real-world timing problem into programmable registers and status bits.
+
+### 8255: Parallel I/O Becomes Programmable
+
+The 8255 gives the CPU three 8-bit ports:
+
+| Port | Typical role |
+| --- | --- |
+| Port A | 8-bit input/output group, often with handshaking. |
+| Port B | 8-bit input/output group, often simpler than Port A. |
+| Port C | Can be used as one 8-bit port or split into upper/lower control bits. |
+
+The CPU writes a control word to select the mode:
+
+| Mode | Main idea |
+| --- | --- |
+| Mode 0 | Simple input/output, no handshaking. |
+| Mode 1 | Strobed input/output with handshaking signals. |
+| Mode 2 | Bidirectional bus mode for Port A. |
+| BSR | Bit set/reset mode for individual Port C bits. |
+
+This connects directly to the handshaking screenshots: the CPU does not need to manually toggle every handshake line if the interface chip can manage a defined protocol.
+
+### 8253: Timing Without Burning CPU Loops
+
+A software delay loop wastes CPU time and depends on instruction timing. The 8253 provides hardware counters that can count clock pulses or external events.
+
+Typical uses:
+
+| Use | Why hardware timer helps |
+| --- | --- |
+| Periodic interrupt | CPU gets a regular time base. |
+| Square-wave generation | Output waveform can continue without software toggling. |
+| Event counting | External pulses can be counted accurately. |
+| One-shot delay | Hardware can signal after a programmed interval. |
+
+The CPU programs the counter, mode, and count value. After that, the timer hardware does the repetitive timing work.
+
+### 8257: DMA Controller As Temporary Bus Master
+
+The 8257 makes DMA practical by storing transfer state for multiple channels. A channel needs at least:
+
+| Information | Purpose |
+| --- | --- |
+| Starting address | Where memory transfer begins. |
+| Count | How many bytes are transferred. |
+| Direction/control | Whether memory is read or written. |
+| Request/acknowledge lines | Handshake with the I/O device. |
+
+DMA is not magic. The CPU first programs the controller. Then the controller requests the bus, becomes bus master during transfer, updates address/count, and releases the bus when done.
+
+### 8259: Interrupt Controller As Priority Hardware
+
+The 8259 is useful because a CPU has limited interrupt pins but a real system may have many devices. The controller keeps separate internal ideas:
+
+| Register idea | Meaning |
+| --- | --- |
+| IRR | Interrupt Request Register: which inputs are requesting service. |
+| IMR | Interrupt Mask Register: which requests are masked. |
+| ISR | In-Service Register: which interrupt is currently being serviced. |
+
+That separation explains why "interrupt requested" is not the same as "interrupt serviced." A request can exist but be masked or lower priority than another active request.
+
+### Choosing A Transfer Method
+
+| Situation | Best fit |
+| --- | --- |
+| Rare simple byte transfer | Programmed I/O. |
+| Device and CPU need readiness coordination | Handshaking or interrupt-driven I/O. |
+| Large block transfer where CPU should not move every byte | DMA. |
+| Many devices competing for service | Programmable interrupt controller. |
+| Accurate periodic timing | Programmable interval timer. |
+
 ## Points To Remember
 
 - Programmed I/O keeps the CPU involved in the transfer.
@@ -310,3 +385,11 @@ The reason these chips exist is the same reason DMA and interrupt controllers ex
 [S1] Intel Corporation, [MCS-80/85 Family User's Manual, January 1983](https://www.bitsavers.org/components/intel/MCS80/MCS80_85_Users_Manual_Jan83.pdf). Used for 8085 bus control, `HOLD/HLDA`, memory/I/O cycles, and peripheral-interface context.
 
 [S2] Intel Corporation, [8080/8085 Assembly Language Programming Manual, May 1981](https://www.bitsavers.org/pdf/intel/ISIS_II/9800301-04_8080_8085_Assembly_Language_Programming_Manual_May81.pdf). Used for `IN`, `OUT`, I/O mapped instruction behavior, and programming notation.
+
+[S3] Intel Corporation, [Intel Microprocessors and Peripherals Handbook, 1983](https://bitsavers.org/components/intel/_dataBooks/1983_Intel_Microprocessors_and_Peripherals_Handbook.pdf), 8255A material. Used for port grouping, mode 0/mode 1/mode 2, and bit set/reset behavior.
+
+[S4] Intel Corporation, [Intel Microprocessors and Peripherals Handbook, 1983](https://bitsavers.org/components/intel/_dataBooks/1983_Intel_Microprocessors_and_Peripherals_Handbook.pdf), 8253 material. Used for counter/timer purpose, programmable modes, and count-based timing behavior.
+
+[S5] Intel Corporation, [Intel Microprocessors and Peripherals Handbook, 1983](https://bitsavers.org/components/intel/_dataBooks/1983_Intel_Microprocessors_and_Peripherals_Handbook.pdf), 8257 material. Used for DMA channel, address/count, bus-request, and transfer-control behavior.
+
+[S6] Intel Corporation, [Intel Microprocessors and Peripherals Handbook, 1983](https://bitsavers.org/components/intel/_dataBooks/1983_Intel_Microprocessors_and_Peripherals_Handbook.pdf), 8259A material. Used for interrupt request, mask, in-service, priority, and cascade-controller behavior.

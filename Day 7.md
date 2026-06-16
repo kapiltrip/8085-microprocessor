@@ -285,6 +285,69 @@ An interrupt handler is the routine that services the interrupt. A good handler 
 
 The habit to build is this: an interrupt is not simply a jump. It is a controlled context change with a return path.
 
+## Research Deep Dive: Interrupt Acceptance Sequence
+
+The 8085 interrupt system combines four separate ideas: request, mask, priority, and vectoring. A correct answer must say which one is being discussed.
+
+### Request, Mask, Priority, Vector
+
+| Idea | Meaning |
+| --- | --- |
+| Request | A device or pin asks for service. |
+| Mask | The CPU may be configured to ignore some maskable requests. |
+| Priority | If multiple accepted requests exist, the CPU chooses the highest priority. |
+| Vector | The CPU obtains or knows the ISR starting address. |
+
+The priority order usually taught for 8085 is:
+
+```text
+TRAP > RST 7.5 > RST 6.5 > RST 5.5 > INTR
+```
+
+But priority only matters after masking and interrupt-enable state are considered.
+
+### What Happens When An Interrupt Is Accepted
+
+For a vectored interrupt such as `RST 7.5`, the CPU already knows the service address:
+
+```text
+RST 7.5 -> 003CH
+```
+
+For `INTR`, the CPU does not have a fixed vector. It acknowledges the interrupt, and external hardware must place an instruction on the data bus, often a restart instruction or call sequence in teaching examples.
+
+Important consequence:
+
+```text
+INTR needs external interrupt-acknowledge hardware.
+Vectored interrupts do not need the device to supply the vector instruction.
+```
+
+### Edge Versus Level In Practice
+
+`RST 7.5` is edge triggered and latched, so a short transition can be remembered until serviced or reset. `RST 6.5`, `RST 5.5`, and `INTR` are level sensitive in the usual course model, so the request level must remain active long enough to be recognized.
+
+`TRAP` is special because it is non-maskable and highest priority. In practical system design, that makes it suitable for urgent events such as power-failure warning or emergency shutdown logic.
+
+### ISR Register Preservation
+
+An interrupt can occur between ordinary program instructions. That means the interrupted program may be using registers without expecting them to change. A serious ISR saves registers it will modify:
+
+```asm
+PUSH PSW
+PUSH B
+PUSH D
+PUSH H
+; service device
+POP H
+POP D
+POP B
+POP PSW
+RET
+```
+
+The exact return instruction depends on the system convention and interrupt mechanism being taught, but the preservation idea is universal.
+
 ## Points To Remember
 
 - `TRAP` has the highest priority and is non-maskable.

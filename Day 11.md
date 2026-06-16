@@ -119,6 +119,106 @@ Example operations from the screenshot:
 
 The 8086 stack stores words, so `PUSH` works with 16-bit operands such as general-purpose word registers, segment registers, or memory words. Byte registers like `BL`, `AL`, and `CH` cannot be pushed directly.
 
+## Research Deep Dive: Address Versus Contents, Far Pointers, and Stack Bytes
+
+Day 11 has a small number of screenshots, but the concepts are central to 8086 programming.
+
+### `LEA` Does Address Arithmetic Only
+
+Compare these two instructions:
+
+```asm
+LEA SI,PRICES[BX]
+MOV SI,PRICES[BX]
+```
+
+If:
+
+```text
+offset PRICES = 1000H
+BX = 0004H
+memory word at DS:1004H = 2222H
+```
+
+then:
+
+| Instruction | Result |
+| --- | --- |
+| `LEA SI,PRICES[BX]` | `SI = 1004H` |
+| `MOV SI,PRICES[BX]` | `SI = 2222H` |
+
+This is the cleanest way to remember `LEA`: it loads the calculated offset, not the memory contents.
+
+### `LES` Loads A Far Pointer
+
+`LES register,memory` reads four bytes from memory:
+
+| Memory bytes | Loaded into |
+| --- | --- |
+| first word | destination register |
+| second word | `ES` |
+
+Example memory layout:
+
+| Offset | Byte |
+| --- | --- |
+| `2000H` | `56H` |
+| `2001H` | `34H` |
+| `2002H` | `9AH` |
+| `2003H` | `78H` |
+
+For:
+
+```asm
+LES DI,[2000H]
+```
+
+the result is:
+
+```text
+DI = 3456H
+ES = 789AH
+```
+
+The bytes are low-byte first inside each word. After this, `ES:DI` points to the far memory location `789AH:3456H`.
+
+### `PUSH` Byte Order Example
+
+Suppose:
+
+```text
+SS = 3000H
+SP = 0100H
+AX = 1234H
+```
+
+After:
+
+```asm
+PUSH AX
+```
+
+the stack pointer becomes:
+
+```text
+SP = 00FEH
+```
+
+The word is stored low byte first at the new stack location:
+
+| Logical stack address | Byte |
+| --- | --- |
+| `SS:00FEH` | `34H` |
+| `SS:00FFH` | `12H` |
+
+Physical location of the first byte:
+
+```text
+3000H x 10H + 00FEH = 300FEH
+```
+
+This example connects `PUSH` to segmentation, downward stack growth, and little-endian word storage.
+
 ## Points To Remember
 
 | Instruction | Main use | Key point |
@@ -127,3 +227,9 @@ The 8086 stack stores words, so `PUSH` works with 16-bit operands such as genera
 | `LEA` | Load an effective offset address | Loads the address, not the contents of memory. |
 | `LES` | Load far pointer into `ES:register` | First memory word goes to the register; next word goes to `ES`. |
 | `PUSH` | Save a word on stack | `SP` decreases by 2 before the word is stored. |
+
+## Sources
+
+[S1] Intel Corporation, [The 8086 Family User's Manual, October 1979](https://www.ardent-tool.com/CPU/docs/Intel/808x/manuals/9800722-03.pdf). Used for 8086 data-transfer instructions, effective-address calculation, stack operation, and segment-register behavior.
+
+[S2] Intel Corporation, [iAPX 86,88 User's Manual, August 1981](https://www.dosdays.co.uk/media/intel/1981_iAPX_86_88_Users_Manual.pdf). Used for far pointer, `LES`, stack, and programming-model details.

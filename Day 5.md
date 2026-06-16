@@ -362,6 +362,94 @@ A = 62H
 
 Common trap: `RRC` and `RAL` are not the same kind of rotation. `RRC` is circular within the accumulator and copies old bit 0 to carry. `RAL` rotates through carry, so old carry enters bit 0 and old bit 7 becomes carry.
 
+## Research Deep Dive: Flag-Correct Arithmetic
+
+Most Day 5 mistakes come from treating hexadecimal subtraction as ordinary decimal subtraction and then guessing flags. The safer method is to solve at the binary width of the CPU.
+
+### Carry Means Borrow In Subtraction
+
+For 8085 subtraction:
+
+```text
+A <- A - operand
+```
+
+`CY = 1` means a borrow was required. It does not mean the result is positive.
+
+Example:
+
+```text
+A = 20H
+operand = 35H
+20H - 35H needs borrow
+```
+
+As an 8-bit result:
+
+```text
+20H - 35H = EBH
+CY = 1
+S = 1
+Z = 0
+```
+
+The stored result is `EBH`, but the carry flag tells you that unsigned `20H` was less than unsigned `35H`.
+
+### `CMP` Is Subtraction Without Storage
+
+`CMP B` internally evaluates:
+
+```text
+A - B
+```
+
+Only flags are updated. `A` and `B` remain unchanged.
+
+Use this table:
+
+| Relation after `CMP B` | `CY` | `Z` |
+| --- | --- | --- |
+| `A < B` | `1` | `0` |
+| `A = B` | `0` | `1` |
+| `A > B` | `0` | `0` |
+
+That table is for unsigned comparison. If a question treats the byte as signed two's-complement data, the sign flag alone is not enough; you must reason from the actual signed values.
+
+### Instruction Storage And Program Counter Discipline
+
+For three-byte instructions such as:
+
+```asm
+LDA 2050H
+```
+
+memory stores:
+
+| Address | Byte |
+| --- | --- |
+| `PC` | opcode |
+| `PC + 1` | low address byte `50H` |
+| `PC + 2` | high address byte `20H` |
+
+The low byte appears first because Intel 8080/8085-style instruction streams use low-order byte first for 16-bit data/address fields.
+
+### Rotate Instructions And Carry
+
+Rotates are easiest if you draw nine positions:
+
+```text
+CY + A7 A6 A5 A4 A3 A2 A1 A0
+```
+
+For `RAL` and `RAR`, carry is part of the rotation path. For `RLC` and `RRC`, the accumulator rotates circularly and carry receives a copy of the outgoing bit.
+
+| Instruction | New carry | Bit entering accumulator |
+| --- | --- | --- |
+| `RLC` | old `A7` | old `A7` enters `A0` |
+| `RRC` | old `A0` | old `A0` enters `A7` |
+| `RAL` | old `A7` | old `CY` enters `A0` |
+| `RAR` | old `A0` | old `CY` enters `A7` |
+
 ## Points To Remember
 
 - In subtraction, carry means borrow.

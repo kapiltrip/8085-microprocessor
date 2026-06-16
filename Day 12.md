@@ -1222,6 +1222,85 @@ physical address = segment x 10H + offset
 | `AAM`, `AAD` | `PF`, `SF`, `ZF` updated; `AF`, `CF`, `OF` undefined. |
 | `OR` | `CF = 0`, `OF = 0`, `SF/ZF/PF` updated, `AF` undefined. |
 
+## Research Deep Dive: Writing Correct 8086 Arithmetic Programs
+
+Day 12 is heavy because the 8086 often hides one operand in a fixed register. The safe method is to identify operand size before thinking about the mnemonic.
+
+### Pick Signed Or Unsigned Before Coding
+
+The same bit pattern can mean different values.
+
+```text
+F6H unsigned = 246
+F6H signed   = -10
+```
+
+That choice controls the instruction sequence:
+
+| Goal | Correct preparation |
+| --- | --- |
+| Treat byte as unsigned word | Clear high byte: `XOR AH,AH`. |
+| Treat byte as signed word | Sign extend: `CBW`. |
+| Treat word as signed doubleword | Sign extend: `CWD`. |
+
+Using `CBW` on unsigned data is a classic bug. If `AL = F6H`, `CBW` makes `AX = FFF6H`, which is signed `-10`, not unsigned `246`.
+
+### Division Requires A Correct Dividend
+
+For 16-bit division, `DX:AX` is the dividend. That means `DX` must be correct before `DIV` or `IDIV`.
+
+Unsigned example:
+
+```asm
+XOR DX,DX
+MOV AX,1234H
+MOV CX,0010H
+DIV CX
+```
+
+Signed example:
+
+```asm
+MOV AX,0FFF6H
+CWD
+MOV CX,0002H
+IDIV CX
+```
+
+In the signed example, `CWD` fills `DX` with the sign extension of `AX`. Without that, the numerator would be wrong.
+
+### Memory Operand Size Must Be Unambiguous
+
+For memory operations, the assembler sometimes needs help:
+
+```asm
+INC BYTE PTR [BX]
+INC WORD PTR [BX]
+MUL BYTE PTR [BX]
+MUL WORD PTR [BX]
+```
+
+The address expression `[BX]` only says where memory is. It does not always say whether the operand is a byte or word. The instruction result can be completely different depending on that size.
+
+### Flags After Multiply And Divide
+
+Do not assume arithmetic flags behave the same for every arithmetic-looking instruction.
+
+| Instruction | Reliable flag idea |
+| --- | --- |
+| `ADD`, `ADC`, `SUB`, `SBB`, `CMP` | Full status flags are meaningful. |
+| `MUL`, `IMUL` | Only `CF` and `OF` have defined product-fit meaning. |
+| `DIV`, `IDIV` | Flags are undefined. |
+| `INC`, `DEC` | `CF` is preserved. |
+
+For example, checking `ZF` after `DIV` is invalid. If you need to test the quotient, compare the quotient register explicitly:
+
+```asm
+DIV CX
+CMP AX,0000H
+JZ QUOTIENT_ZERO
+```
+
 ## Points To Remember
 
 - `MOV` copies; it does not change flags.

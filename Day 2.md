@@ -527,6 +527,100 @@ Examples:
 
 The exam trick is to ask "where is the operand?" The answer is: it is built into the instruction meaning. For accumulator instructions, the accumulator is assumed.
 
+## Research Deep Dive: Bus Cycles, Decoding, and Address Aliasing
+
+A useful way to study Day 2 is to separate three layers that often get mixed together:
+
+| Layer | Question it answers |
+| --- | --- |
+| Instruction layer | What operation is the CPU trying to perform? |
+| Bus-cycle layer | Which external transfer is needed right now? |
+| Hardware decoding layer | Which memory or I/O chip is selected by the address/control signals? |
+
+### Instruction Cycle Versus Machine Cycle
+
+`MVI B,05H` is one instruction cycle, but it is not one machine cycle. It needs:
+
+| Machine cycle | Why it is needed |
+| --- | --- |
+| Opcode fetch | Fetch the opcode byte for `MVI B,data`. |
+| Memory read | Fetch the immediate data byte `05H`. |
+
+That is why the program counter advances by 2. The first byte tells the CPU what to do; the second byte is the operand.
+
+### Status Lines Are External Clues
+
+The 8085 internally knows which cycle it is performing, but external hardware needs signals. `IO/M`, `S1`, and `S0` tell the outside system whether the current bus operation is opcode fetch, memory read, memory write, I/O read, I/O write, or interrupt acknowledge.
+
+The practical meaning:
+
+```text
+Memory chip select should not respond to an I/O cycle.
+I/O port hardware should not respond to an ordinary memory cycle.
+```
+
+That separation is why memory-mapped I/O and I/O-mapped I/O produce different decoding designs.
+
+### Full Decoding Example
+
+Suppose a `4K x 8` ROM must occupy:
+
+```text
+2000H to 2FFFH
+```
+
+`4K = 4096 = 1000H`, so the range is correct:
+
+```text
+2000H + 1000H - 1 = 2FFFH
+```
+
+The lower 12 address lines `A0-A11` select a byte inside the ROM. The higher address lines must be decoded so the chip is enabled only when the address begins with `2` in hex:
+
+```text
+0010 xxxx xxxx xxxx
+```
+
+So the key high nibble is:
+
+```text
+A15 A14 A13 A12 = 0010
+```
+
+### Partial Decoding And Foldback
+
+If the hardware does not decode all high-order address lines, the same physical chip can appear at repeated address ranges. That is called aliasing or foldback.
+
+Example idea:
+
+```text
+Only A15 and A14 are decoded.
+A13-A12 are ignored.
+```
+
+Then several different address blocks may select the same chip. This is cheaper hardware, but it wastes address space and can create confusing duplicate addresses.
+
+### Timing Formula
+
+Use this for numerical timing questions:
+
+```text
+instruction time = total T-states x clock period
+clock period = 1 / clock frequency
+```
+
+If the clock is `3 MHz`, one T-state is:
+
+```text
+1 / 3,000,000 = 0.333 microsecond
+```
+
+An instruction taking 10 T-states therefore takes about:
+
+```text
+10 x 0.333 = 3.33 microseconds
+```
+
 ## Points To Remember
 
 - Every instruction begins with opcode fetch.
