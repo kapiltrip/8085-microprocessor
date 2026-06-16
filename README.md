@@ -6,18 +6,19 @@ This repository is organized as a study-day learning log. Each completed day has
 
 | Day | Date from screenshots | Status | Notes | Image folder | Main coverage |
 | --- | --- | --- | --- | --- | --- |
-| Day 1 | 2026-05-13 | Complete | [Day 1.md](Day%201.md) | [images/Day 1](images/Day%201/) | Microprocessor basics, 8085 pins/signals, buses, `ALE`, machine cycles, serial I/O. |
-| Day 2 | 2026-05-26 | Complete | [Day 2.md](Day%202.md) | [images/Day 2](images/Day%202/) | Machine cycles, timing diagrams, address decoding, memory/I/O mapping, instruction formats. |
-| Day 3 | 2026-05-27 | Complete | [Day 3.md](Day%203.md) | [images/Day 3](images/Day%203/) | `MVI M`, `LHLD`, `XCHG`, register-pair tracing, `ORI`, `XRA A`. |
-| Day 4 | 2026-05-28 | Complete | [Day 4.md](Day%204.md) | [images/Day 4](images/Day%204/) | Conditional jumps, `CALL`, `RST`, stack pointer, `PSW`, `SIM/RIM`, signed input test. |
-| Day 5 | 2026-05-29 | Complete | [Day 5.md](Day%205.md) | [images/Day 5](images/Day%205/) | `SUB/SBB`, `CMP`, memory placement of instruction bytes, `ORA`, `RRC`, `RAL`. |
-| Day 6 | 2026-05-30 | Complete | [Day 6.md](Day%206.md) | [images/Day 6](images/Day%206/) | Assignment questions on `HLT`, rotates, T-states, delay loops, stack effects, flags, and instruction timing. |
-| Day 7 | 2026-05-31 | Complete | [Day 7.md](Day%207.md) | [images/Day 7](images/Day%207/) | Interrupt service flow, `DI/EI`, `TRAP`, `RST 7.5/6.5/5.5`, `INTR`, vector table, priority, and daisy chaining. |
-| Day 8 | 2026-05-31 | Complete | [Day 8.md](Day%208.md) | [images/Day 8](images/Day%208/) | I/O handshaking, DMA transfer modes, `HOLD/HLDA`, and Intel 8155/8255/8253/8257/8259/8272/8275/8279 support chips. |
-| Day 9 | 2026-06-01, 2026-06-10 | Complete | [Day 9.md](Day%209.md) | [images/Day 9](images/Day%209/) | 8086 pin configuration, min/max mode signals, BIU, EU, block diagram, and general-purpose register roles. |
+| Day 01 | 2026-05-13 | Complete | [Day 01.md](Day%2001.md) | [images/Day 01](images/Day%2001/) | Microprocessor basics, 8085 pins/signals, buses, `ALE`, machine cycles, serial I/O. |
+| Day 02 | 2026-05-26 | Complete | [Day 02.md](Day%2002.md) | [images/Day 02](images/Day%2002/) | Machine cycles, timing diagrams, address decoding, memory/I/O mapping, instruction formats. |
+| Day 03 | 2026-05-27 | Complete | [Day 03.md](Day%2003.md) | [images/Day 03](images/Day%2003/) | `MVI M`, `LHLD`, `XCHG`, register-pair tracing, `ORI`, `XRA A`. |
+| Day 04 | 2026-05-28 | Complete | [Day 04.md](Day%2004.md) | [images/Day 04](images/Day%2004/) | Conditional jumps, `CALL`, `RST`, stack pointer, `PSW`, `SIM/RIM`, signed input test. |
+| Day 05 | 2026-05-29 | Complete | [Day 05.md](Day%2005.md) | [images/Day 05](images/Day%2005/) | `SUB/SBB`, `CMP`, memory placement of instruction bytes, `ORA`, `RRC`, `RAL`. |
+| Day 06 | 2026-05-30 | Complete | [Day 06.md](Day%2006.md) | [images/Day 06](images/Day%2006/) | Assignment questions on `HLT`, rotates, T-states, delay loops, stack effects, flags, and instruction timing. |
+| Day 07 | 2026-05-31 | Complete | [Day 07.md](Day%2007.md) | [images/Day 07](images/Day%2007/) | Interrupt service flow, `DI/EI`, `TRAP`, `RST 7.5/6.5/5.5`, `INTR`, vector table, priority, and daisy chaining. |
+| Day 08 | 2026-05-31 | Complete | [Day 08.md](Day%2008.md) | [images/Day 08](images/Day%2008/) | I/O handshaking, DMA transfer modes, `HOLD/HLDA`, and Intel 8155/8255/8253/8257/8259/8272/8275/8279 support chips. |
+| Day 09 | 2026-06-01, 2026-06-10 | Complete | [Day 09.md](Day%2009.md) | [images/Day 09](images/Day%2009/) | 8086 pin configuration, min/max mode signals, BIU, EU, block diagram, and general-purpose register roles. |
 | Day 10 | 2026-06-10 | Complete | [Day 10.md](Day%2010.md) | [images/Day 10](images/Day%2010/) | 8086 flags, addressing modes, hardware/software interrupts, interrupt vector table, data transfer, arithmetic, logical, branch, loop, flag, string, and repeat instructions. |
 | Day 11 | 2026-06-12 | Complete | [Day 11.md](Day%2011.md) | [images/Day 11](images/Day%2011/) | 8086 `XCHG`, `LEA`, `LES`, and `PUSH` instructions, including effective addresses, far pointers, and stack word rules. |
 | Day 12 | 2026-06-15, 2026-06-16 | Complete | [Day 12.md](Day%2012.md) | [images/Day 12](images/Day%2012/) | 8086 instruction-set deep dive: `MOV`, `XCHG`, `LEA`, `IN`, `ADD/ADC`, `SUB/SBB`, `MUL/IMUL`, `DIV/IDIV`, `INC/DEC`, BCD/ASCII adjust, `OR`, and `CMP`. |
+| Day 13 | 2026-06-16 | Complete | [Day 13.md](Day%2013.md) | [images/Day 13](images/Day%2013/) | 8086 rotate/shift, string instructions, jumps, calls, returns, process-control instructions, short programs, and isolated versus memory-mapped I/O. |
 
 ## Handwritten Notes
 
@@ -44,4 +45,4 @@ The notes use the screenshots as the primary course sequence and cross-check tec
 - Intel Corporation, [The 8086 Family User's Manual, October 1979](https://www.ardent-tool.com/CPU/docs/Intel/808x/manuals/9800722-03.pdf)
 - Intel Corporation, [iAPX 86,88 User's Manual, August 1981](https://www.dosdays.co.uk/media/intel/1981_iAPX_86_88_Users_Manual.pdf)
 
-Day 1 also contains additional source links for background topics such as CPU basics, microcontroller versus microprocessor, Intel 4004/8008 history, and architecture terms.
+Day 01 also contains additional source links for background topics such as CPU basics, microcontroller versus microprocessor, Intel 4004/8008 history, and architecture terms.

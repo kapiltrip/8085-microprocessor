@@ -47,6 +47,242 @@ For every 8086 instruction, ask five questions:
 | 28 | [OR instruction examples](images/Day%2012/Screenshot%202026-06-16%20003601.png) | Bitwise OR, destination update, and logical flag behavior. |
 | 29 | [CMP instruction](images/Day%2012/Screenshot%202026-06-16%20004203.png) | Compare by subtraction without saving the result. |
 
+## Page-By-Page Explanation
+
+Every screenshot is explained separately here. Later sections still group related ideas for revision, but this section keeps the page order clear.
+
+### Page 1: MOV Examples And `BP` Addressing
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20161545.png"><img src="images/Day%2012/Screenshot%202026-06-15%20161545.png" alt="MOV examples and BP addressing" width="960"></a>
+
+This page introduces `MOV destination, source` as a copy operation. The source value remains unchanged, the destination receives a byte or word copy, and no flags are affected. The operand size comes from the destination: `MOV CX,037AH` is a word move because `CX` is 16-bit, while `MOV BL,[437AH]` is a byte move because `BL` is 8-bit.
+
+The important addressing point is `MOV RESULT[BP],AX`. When an effective address uses `BP`, the default segment is `SS`, not `DS`. The effective offset is `offset RESULT + BP`, and the physical address is `SS x 10H + effective offset`. Since `AX` is a word, the low byte `AL` is stored first and `AH` is stored at the next address.
+
+### Page 2: `XCHG` And `LEA`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20162837.png"><img src="images/Day%2012/Screenshot%202026-06-15%20162837.png" alt="XCHG and LEA" width="960"></a>
+
+`XCHG` exchanges two operands of the same size. `XCHG AX,DX` swaps two words, `XCHG BL,CH` swaps two bytes, and `XCHG AL,PRICES[BX]` swaps `AL` with the memory byte at `DS:(offset PRICES + BX)`. At least one operand must be a register, so memory-to-memory exchange is not allowed.
+
+`LEA` means load effective address. It calculates the offset of a memory expression and puts that offset into a 16-bit register. `LEA SI,PRICES[BX]` makes `SI = offset PRICES + BX`; it does not read the value stored at that address. This is why `LEA` is used for pointer setup and array indexing.
+
+### Page 3: `IN` With Immediate Port And `DX` Port
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20170903.png"><img src="images/Day%2012/Screenshot%202026-06-15%20170903.png" alt="IN instruction immediate and DX port forms" width="960"></a>
+
+`IN` reads from an I/O port into the accumulator. Byte input always goes to `AL`; word input always goes to `AX`. `IN AL,0C8H` reads one byte from port `0C8H`, while `IN AX,34H` reads one word from port `34H`.
+
+The page also separates immediate port addressing from `DX` port addressing. The immediate form can encode only an 8-bit port number, so it covers `00H` through `FFH`. For a 16-bit port address, the port number must be loaded into `DX`, then the instruction uses `IN AL,DX` or `IN AX,DX`.
+
+### Page 4: `IN` Address Range Annotation
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20171252.png"><img src="images/Day%2012/Screenshot%202026-06-15%20171252.png" alt="IN instruction with annotations" width="960"></a>
+
+This page reinforces why `DX` matters. Because `DX` is 16-bit, it can select ports from `0000H` to `FFFFH`, giving 65,536 possible I/O port addresses. The immediate port form is shorter but limited to 256 ports.
+
+`IN` does not access memory and does not affect flags. It is part of isolated I/O behavior: the address belongs to the I/O address space, not to the memory address space.
+
+### Page 5: MOV Physical Address Annotation
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20171949.png"><img src="images/Day%2012/Screenshot%202026-06-15%20171949.png" alt="MOV examples with physical-address annotation" width="960"></a>
+
+This page adds physical-address calculation to the earlier `MOV` examples. For `MOV BL,[437AH]`, the offset is `437AH` and the default segment is `DS`, so the physical address is `DS x 10H + 437AH`. If `DS = 2000H`, the physical address is `2437AH`.
+
+The page also shows the common shorthand mistake around segment arithmetic. You should not think of the physical address as simply `segment + offset`; the segment register is shifted left by one hexadecimal digit first. The correct formula is always `segment x 10H + offset`.
+
+### Page 6: `ADD`, `ADC`, `SUB`, And `SBB` Introduction
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20172546.png"><img src="images/Day%2012/Screenshot%202026-06-15%20172546.png" alt="ADD ADC SUB SBB introduction" width="960"></a>
+
+This page collects the main addition and subtraction instructions. `ADD` performs ordinary addition, while `ADC` adds the source plus the current carry flag. `ADC` is required for multi-byte or multi-word addition because the carry from the lower part must be included in the higher part.
+
+`SUB` subtracts the source from the destination. `SBB` subtracts the source and also subtracts `CF`, so it is the subtraction equivalent of `ADC`. In subtraction, `CF = 1` means a borrow was needed. These instructions update the main arithmetic flags: `CF`, `OF`, `SF`, `ZF`, `PF`, and `AF`.
+
+### Page 7: `SUB` And `SBB` Flag Effects
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20223644.png"><img src="images/Day%2012/Screenshot%202026-06-15%20223644.png" alt="SUB and SBB flag effects" width="960"></a>
+
+This page focuses on borrow and flags. `SUB AX,3427H` calculates `AX - 3427H` and stores the result in `AX`. `SBB BX,[3427H]` calculates `BX - word at DS:3427H - CF`, so a previous borrow changes the result.
+
+The flag meaning depends on signed or unsigned interpretation. For unsigned comparisons, `CF` and `ZF` are the main flags. For signed comparisons, `SF`, `OF`, and `ZF` must be interpreted together. The same binary subtraction can therefore support both signed and unsigned decisions.
+
+### Page 8: Byte Array Subtraction With `DB`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20225034.png"><img src="images/Day%2012/Screenshot%202026-06-15%20225034.png" alt="Byte array subtraction example" width="960"></a>
+
+The page uses `PRICES DB 10H,20H,30H,40H` to show byte array indexing. A `DB` element occupies one byte, so `PRICES + 0`, `PRICES + 1`, `PRICES + 2`, and `PRICES + 3` select consecutive bytes.
+
+With `BX = 0002H`, `PRICES[BX]` selects the third byte, `30H`. `SUB PRICES[BX],04H` writes the result back to that memory byte: `30H - 04H = 2CH`. The source immediate `04H` is not changed.
+
+### Page 9: Word Array Subtraction With `DW`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20230050.png"><img src="images/Day%2012/Screenshot%202026-06-15%20230050.png" alt="Word array subtraction example" width="960"></a>
+
+This page changes the declaration to `DW`, so each element occupies two bytes. If `PRICES` starts at `1000H`, the words begin at `1000H`, `1002H`, `1004H`, and `1006H`.
+
+With `BX = 0004H`, `PRICES[BX]` selects the third word at offset `1004H`. The operation is `3000H - 0004H = 2FFCH`. The result is stored little-endian: `FCH` at the lower byte address and `2FH` at the next byte address.
+
+### Page 10: Unsigned `MUL` Result And Flags
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20230824.png"><img src="images/Day%2012/Screenshot%202026-06-15%20230824.png" alt="MUL result and flags" width="960"></a>
+
+`MUL source` performs unsigned multiplication with one explicit operand and one implicit operand. If the source is 8-bit, the hidden multiplicand is `AL` and the product goes into `AX`. If the source is 16-bit, the hidden multiplicand is `AX` and the product goes into `DX:AX`.
+
+For `MUL`, only `CF` and `OF` have defined product-fit meaning. They are both cleared if the upper half of the product is zero, and both set if the upper half is nonzero. Other flags are undefined and should not be tested.
+
+### Page 11: `MUL` Upper-Half Annotation
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20230928.png"><img src="images/Day%2012/Screenshot%202026-06-15%20230928.png" alt="MUL result and flags annotation" width="960"></a>
+
+This annotated page makes the upper-half rule explicit. In byte multiplication, the upper half is `AH`; in word multiplication, the upper half is `DX`. That upper half tells whether the product fit into the lower half alone.
+
+If `AL x r/m8` produces a product where `AH = 00H`, `CF = OF = 0`. If `AH` is nonzero, the full `AX` product was needed, so `CF = OF = 1`. For `AX x r/m16`, apply the same idea to `DX`.
+
+### Page 12: `MUL` Byte And Word Examples
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20231037.png"><img src="images/Day%2012/Screenshot%202026-06-15%20231037.png" alt="MUL byte and word examples" width="960"></a>
+
+This page gives example forms. `MUL BH` means `AX <- AL x BH`. `MUL CX` means `DX:AX <- AX x CX`. `MUL BYTE PTR [BX]` means `AX <- AL x byte at DS:BX`.
+
+The `BYTE PTR` keyword is important when a memory operand does not reveal its size from a register name. Without a size clue, the assembler cannot know whether `[BX]` means an 8-bit or 16-bit operand.
+
+### Page 13: Repeated `MUL` Examples
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20231041.png"><img src="images/Day%2012/Screenshot%202026-06-15%20231041.png" alt="MUL examples repeated" width="960"></a>
+
+This page repeats the same `MUL` forms so the implicit-register rule becomes automatic. The written operand is only the multiplier. The other operand and result location are decided entirely by operand size.
+
+The rule to remember is: byte multiply starts from `AL` and ends in `AX`; word multiply starts from `AX` and ends in `DX:AX`.
+
+### Page 14: Clear View Of One-Operand `MUL`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20231259.png"><img src="images/Day%2012/Screenshot%202026-06-15%20231259.png" alt="MUL examples clear view" width="960"></a>
+
+This page is the clearest view of the one-operand `MUL` rule. The instruction does not support a normal two-explicit-operand byte-by-word form in the original 8086 syntax.
+
+If an unsigned byte must be multiplied by a word, first widen the byte into a word by clearing the high byte, for example `XOR AH,AH` after loading `AL`. Do not use `CBW` for unsigned widening, because `CBW` sign-extends and may fill `AH` with `FFH` for values whose top bit is 1.
+
+### Page 15: Signed Multiplication With `IMUL`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20231849.png"><img src="images/Day%2012/Screenshot%202026-06-15%20231849.png" alt="IMUL source rule" width="960"></a>
+
+`IMUL source` is the signed version of `MUL` in the original 8086 one-operand form. Byte `IMUL` treats `AL` and the source byte as signed values and stores the signed product in `AX`. Word `IMUL` treats `AX` and the source word as signed values and stores the product in `DX:AX`.
+
+For signed multiplication, `CF` and `OF` clear when the upper half is only a sign extension of the lower half. They set when the upper half contains significant product bits. This is a signed-fit test, not an unsigned nonzero-upper-half test.
+
+### Page 16: `IMUL` And `CBW`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20232308.png"><img src="images/Day%2012/Screenshot%202026-06-15%20232308.png" alt="IMUL and CBW examples" width="960"></a>
+
+This page explains how to multiply a signed byte with a signed word. The byte must first be converted into a signed word. If the byte is in `AL`, the correct 8086 instruction is `CBW`, which copies the sign bit of `AL` into every bit of `AH`.
+
+After `CBW`, `AX` contains the same signed value as `AL`, only widened to 16 bits. Then a word `IMUL` can be used. For a signed word in `AX` that must become a signed doubleword before division, the equivalent widening instruction is `CWD`.
+
+### Page 17: Repeated `IMUL` And `CBW` Examples
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20233238.png"><img src="images/Day%2012/Screenshot%202026-06-15%20233238.png" alt="IMUL examples repeated" width="960"></a>
+
+This page repeats the signed byte-to-word warning. The key difference from unsigned arithmetic is that the high byte must be filled with copies of the sign bit, not with zero.
+
+Example: if `AL = F6H`, the signed byte value is `-10`. `CBW` converts it to `AX = FFF6H`, which is still `-10` as a signed word. Zero-extending it to `00F6H` would incorrectly treat it as positive `246`.
+
+### Page 18: Final `IMUL` Example View
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20233837.png"><img src="images/Day%2012/Screenshot%202026-06-15%20233837.png" alt="IMUL examples final view" width="960"></a>
+
+This final signed-multiply page connects memory operands with the implicit-register rule. `MOV CX,MULTIPLIER` loads a signed word into `CX`; `MOV AL,MULTIPLICAND` loads a signed byte into `AL`.
+
+If the next operation is a byte `IMUL`, the result is in `AX`. If the next operation is a word `IMUL`, the multiplicand must be in `AX` and the product becomes `DX:AX`. Always decide the operand size before deciding where to look for the result.
+
+### Page 19: Unsigned Division And Quotient Overflow
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20234500.png"><img src="images/Day%2012/Screenshot%202026-06-15%20234500.png" alt="DIV quotient overflow and flags" width="960"></a>
+
+`DIV source` performs unsigned division. If the divisor is 8-bit, the dividend is `AX`, the quotient goes to `AL`, and the remainder goes to `AH`. If the divisor is 16-bit, the dividend is `DX:AX`, the quotient goes to `AX`, and the remainder goes to `DX`.
+
+The 8086 generates a type 0 interrupt if the divisor is zero or if the quotient is too large for its destination. After `DIV`, all flags are undefined, so a program must explicitly compare the quotient or remainder if it needs a condition.
+
+### Page 20: Signed Division With `IDIV`
+
+<a href="images/Day%2012/Screenshot%202026-06-15%20234819.png"><img src="images/Day%2012/Screenshot%202026-06-15%20234819.png" alt="IDIV signed division" width="960"></a>
+
+`IDIV source` is signed division. The register placement is the same as `DIV`, but the dividend, divisor, quotient, and remainder are interpreted as signed values. The remainder has the same sign as the dividend.
+
+Before signed byte division, use `CBW` to create a signed `AX` dividend. Before signed word division, use `CWD` to create a signed `DX:AX` dividend. For a word quotient, the valid signed range is `-32768` through `+32767`; outside that range, the processor raises type 0.
+
+### Page 21: `INC` Examples
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20000249.png"><img src="images/Day%2012/Screenshot%202026-06-16%20000249.png" alt="INC examples" width="960"></a>
+
+`INC destination` adds 1 to a byte or word register or memory operand. `INC BL` changes only `BL`; `INC CX` changes the whole 16-bit `CX`; `INC BYTE PTR [BX]` changes one byte in memory; and `INC WORD PTR [BX]` changes a word in memory.
+
+For memory increments, `BYTE PTR` or `WORD PTR` is often needed because `[BX]` only tells the assembler the address expression. It does not by itself say whether the operand is 8-bit or 16-bit.
+
+### Page 22: `DEC` Instruction
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20000734.png"><img src="images/Day%2012/Screenshot%202026-06-16%20000734.png" alt="DEC instruction" width="960"></a>
+
+`DEC destination` subtracts 1 from a byte or word destination. It updates `AF`, `OF`, `SF`, `PF`, and `ZF`, but it does not affect `CF`.
+
+That carry rule is the exam trap. If `CL` changes from `00H` to `FFH`, `DEC CL` still preserves the old carry flag. A `SUB CL,01H` instruction would update carry, but `DEC` intentionally leaves it alone.
+
+### Page 23: `DAA` After Packed BCD Addition
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20000946.png"><img src="images/Day%2012/Screenshot%202026-06-16%20000946.png" alt="DAA after BCD addition" width="960"></a>
+
+`DAA` adjusts `AL` after adding packed BCD digits. It does not add by itself; it corrects the binary result already produced by `ADD` or `ADC`.
+
+If the low nibble is greater than 9, or `AF = 1`, `DAA` adds `06H`. If the high nibble is greater than 9, or a decimal carry is required, it adds `60H`. After correction, `AL` contains a valid packed BCD result, and `CF`/`AF` reflect decimal carry behavior.
+
+### Page 24: `AAS` After ASCII Subtraction
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20001921.png"><img src="images/Day%2012/Screenshot%202026-06-16%20001921.png" alt="AAS after ASCII subtraction" width="960"></a>
+
+`AAS` is used after subtracting unpacked decimal or ASCII digit values. It adjusts the result in `AL` into an unpacked BCD digit and may adjust `AH` if a borrow correction is needed.
+
+After `AAS`, the digit is not automatically an ASCII character. If the result must be displayed as ASCII, add or OR `30H` after the adjustment. `AF` and `CF` show whether adjustment happened; several other flags are undefined.
+
+### Page 25: `AAM` After Multiplying Decimal Digits
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20002303.png"><img src="images/Day%2012/Screenshot%202026-06-16%20002303.png" alt="AAM after multiply" width="960"></a>
+
+`AAM` is used after multiplying two unpacked decimal digits. The binary product is in `AL`; `AAM` splits it into two unpacked decimal digits.
+
+With the normal 8086 base-10 behavior, `AH <- AL / 10` and `AL <- AL mod 10`. For example, a product of decimal `56` becomes `AH = 05H` and `AL = 06H`, so `AX` contains the two decimal digits separately.
+
+### Page 26: `AAD` Before Division
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20002501.png"><img src="images/Day%2012/Screenshot%202026-06-16%20002501.png" alt="AAD before division" width="960"></a>
+
+`AAD` prepares two unpacked decimal digits in `AH:AL` before division. It combines them into a binary value in `AL` and clears `AH`.
+
+The default base is 10, so the operation is `AL <- AH x 10 + AL`, then `AH <- 00H`. After this, `DIV` can divide the binary value. The quotient and remainder can then be interpreted as unpacked BCD digits.
+
+### Page 27: `AAD` With Board Annotation
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20003032.png"><img src="images/Day%2012/Screenshot%202026-06-16%20003032.png" alt="AAD with board annotation" width="960"></a>
+
+This annotated page reinforces the `AAD` flow. It is a before-division instruction, unlike `AAM`, which is an after-multiply instruction.
+
+After `AAD`, `PF`, `SF`, and `ZF` are updated from the result, while `AF`, `CF`, and `OF` are undefined. Do not carry old flag assumptions across this instruction.
+
+### Page 28: Logical `OR`
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20003601.png"><img src="images/Day%2012/Screenshot%202026-06-16%20003601.png" alt="OR instruction examples" width="960"></a>
+
+`OR destination, source` performs bitwise OR and stores the result in the destination. It is commonly used to set selected bits to 1 without changing other bits.
+
+For example, `OR BL,80H` sets bit 7 of `BL` because `80H = 1000 0000B`. `OR` clears `CF` and `OF`, updates `SF`, `ZF`, and `PF`, and leaves `AF` undefined.
+
+### Page 29: `CMP`
+
+<a href="images/Day%2012/Screenshot%202026-06-16%20004203.png"><img src="images/Day%2012/Screenshot%202026-06-16%20004203.png" alt="CMP instruction" width="960"></a>
+
+`CMP destination, source` internally calculates `destination - source`, updates flags, and discards the subtraction result. Neither operand is changed.
+
+After `CMP AX,BX`, equality is tested with `ZF`, unsigned order is read mainly from `CF` and `ZF`, and signed order is read from `SF`, `OF`, and `ZF`. That is why 8086 has separate unsigned jumps like `JA`, `JB`, `JAE`, and `JBE`, and signed jumps like `JG`, `JL`, `JGE`, and `JLE`.
+
 ## 1. MOV: Copying Data Without Changing Flags
 
 ![MOV examples and BP addressing](images/Day%2012/Screenshot%202026-06-15%20161545.png)

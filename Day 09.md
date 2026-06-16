@@ -1,20 +1,20 @@
-# Day 9: 8086 Pin Signals, BIU/EU, Queue, and Register Organization
+# Day 09: 8086 Pin Signals, BIU/EU, Queue, and Register Organization
 
-Day 9 is the transition from 8085 to 8086. The biggest change is not only that the 8086 is a 16-bit processor. The deeper change is that 8086 separates bus work and execution work into two cooperating units: the **Bus Interface Unit** and the **Execution Unit**. This creates instruction prefetching and introduces segment-based memory addressing.
+Day 09 is the transition from 8085 to 8086. The biggest change is not only that the 8086 is a 16-bit processor. The deeper change is that 8086 separates bus work and execution work into two cooperating units: the **Bus Interface Unit** and the **Execution Unit**. This creates instruction prefetching and introduces segment-based memory addressing.
 
 ## Image Index
 
 | No. | Image | Main idea |
 | --- | --- | --- |
-| 1 | [8086 pin configuration](images/Day%209/day-9-8086-pin-configuration.png) | 8086 pinout with multiplexed address/data/status/control signals. |
-| 2 | [8086 min/max mode signals](images/Day%209/day-9-8086-min-max-mode-signals.png) | Compare minimum-mode and maximum-mode signal meanings. |
-| 3 | [8086 internal architecture](images/Day%209/day-9-8086-internal-architecture.png) | 8086 is divided into BIU and EU. |
-| 4 | [8086 block diagram](images/Day%209/day-9-8086-block-diagram.png) | Block diagram showing registers, bus interface, ALU, and control logic. |
-| 5 | [8086 bus interface unit](images/Day%209/day-9-8086-bus-interface-unit.png) | BIU handles address/data transfer, queue fetch, memory, and I/O access. |
-| 6 | [8086 execution unit](images/Day%209/day-9-8086-execution-unit.png) | EU receives opcodes from the queue, decodes, and executes instructions. |
-| 7 | [8086 general-purpose register uses](images/Day%209/day-9-8086-general-purpose-register-uses.png) | AX, BX, CX, and DX have general and special-purpose roles. |
+| 1 | [8086 pin configuration](images/Day%2009/day-9-8086-pin-configuration.png) | 8086 pinout with multiplexed address/data/status/control signals. |
+| 2 | [8086 min/max mode signals](images/Day%2009/day-9-8086-min-max-mode-signals.png) | Compare minimum-mode and maximum-mode signal meanings. |
+| 3 | [8086 internal architecture](images/Day%2009/day-9-8086-internal-architecture.png) | 8086 is divided into BIU and EU. |
+| 4 | [8086 block diagram](images/Day%2009/day-9-8086-block-diagram.png) | Block diagram showing registers, bus interface, ALU, and control logic. |
+| 5 | [8086 bus interface unit](images/Day%2009/day-9-8086-bus-interface-unit.png) | BIU handles address/data transfer, queue fetch, memory, and I/O access. |
+| 6 | [8086 execution unit](images/Day%2009/day-9-8086-execution-unit.png) | EU receives opcodes from the queue, decodes, and executes instructions. |
+| 7 | [8086 general-purpose register uses](images/Day%2009/day-9-8086-general-purpose-register-uses.png) | AX, BX, CX, and DX have general and special-purpose roles. |
 
-## Handwritten Notes Linked To Day 9
+## Handwritten Notes Linked To Day 09
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
 
@@ -86,7 +86,7 @@ Technical explanation: the 8086 architecture separates bus work from execution w
 
 ## 1. Why 8086 Feels Different From 8085
 
-![8086 internal architecture](images/Day%209/day-9-8086-internal-architecture.png)
+![8086 internal architecture](images/Day%2009/day-9-8086-internal-architecture.png)
 
 <img src="images/HandWrittenNotes/85completed/page-021.jpg" width="960">
 
@@ -107,7 +107,7 @@ The important consequence is overlap. While the EU executes the current instruct
 
 ## 2. 8086 Pin Configuration
 
-![8086 pin configuration](images/Day%209/day-9-8086-pin-configuration.png)
+![8086 pin configuration](images/Day%2009/day-9-8086-pin-configuration.png)
 
 <img src="images/HandWrittenNotes/86tilllnow/page-001.jpg" width="960">
 
@@ -130,7 +130,7 @@ The 8086 can transfer a word through its 16-bit data bus, but memory is still by
 
 ## 3. Minimum Mode and Maximum Mode
 
-![8086 min/max mode signals](images/Day%209/day-9-8086-min-max-mode-signals.png)
+![8086 min/max mode signals](images/Day%2009/day-9-8086-min-max-mode-signals.png)
 
 <img src="images/HandWrittenNotes/86tilllnow/page-002.jpg" width="960">
 
@@ -149,7 +149,7 @@ This is why some pins have two names. The same physical pin can have one meaning
 
 ## 4. Bus Interface Unit
 
-![8086 bus interface unit](images/Day%209/day-9-8086-bus-interface-unit.png)
+![8086 bus interface unit](images/Day%2009/day-9-8086-bus-interface-unit.png)
 
 <img src="images/HandWrittenNotes/86tilllnow/page-006.jpg" width="960">
 
@@ -189,7 +189,7 @@ The segment register gives the starting region; the offset selects a byte inside
 
 ## 5. Execution Unit
 
-![8086 execution unit](images/Day%209/day-9-8086-execution-unit.png)
+![8086 execution unit](images/Day%2009/day-9-8086-execution-unit.png)
 
 <img src="images/HandWrittenNotes/86tilllnow/page-005.jpg" width="960">
 
@@ -215,7 +215,7 @@ If a branch, call, return, or interrupt changes the flow, the prefetched queue m
 
 ## 6. Block Diagram and Queue
 
-![8086 block diagram](images/Day%209/day-9-8086-block-diagram.png)
+![8086 block diagram](images/Day%2009/day-9-8086-block-diagram.png)
 
 <img src="images/HandWrittenNotes/85completed/page-022.jpg" width="960">
 
@@ -239,7 +239,7 @@ Do not overstate this as modern pipelining. The 8086 does not have a deep modern
 
 ## 7. General-Purpose Registers
 
-![8086 general-purpose register uses](images/Day%209/day-9-8086-general-purpose-register-uses.png)
+![8086 general-purpose register uses](images/Day%2009/day-9-8086-general-purpose-register-uses.png)
 
 The 8086 has four main 16-bit general-purpose registers:
 
