@@ -9,6 +9,32 @@ Day 11 continues the 8086 instruction-set discussion from Day 10. The screenshot
 | 1 | [XCHG and LEA instructions](images/Day%2011/Screenshot%202026-06-12%20163213.png) | `XCHG` swaps operands; `LEA` loads an offset address without changing flags. |
 | 2 | [LES and PUSH instructions](images/Day%2011/Screenshot%202026-06-12%20163257.png) | `LES` loads a register and `ES` from memory; `PUSH` stores a word on the stack. |
 
+## Handwritten Notes Linked To Day 11
+
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: address versus contents, far pointer layout, stack byte order, and why stack instructions operate on words.
+
+### [scanned-2026-06-16-231727 p011](images/HandWrittenNotes/scanned-2026-06-16-231727/page-011.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-011.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-011.jpg" alt="scanned-2026-06-16-231727 p011 handwritten note" width="960"></a>
+
+Technical explanation: this page is directly tied to Day 11 because it compares `MOV`, `XCHG`, `LEA`, `LES`, and `PUSH`. The left side shows `MOV CX,037AH`, `MOV BL,[437AH]`, and `MOV DL,[BX]`. The rule is that the destination size controls how many bytes are copied. `CX` receives a word immediate, `BL` receives one byte from memory, and `DL` receives one byte from the memory offset held in `BX`.
+
+`XCHG` exchanges two operands but cannot exchange two memory locations directly. At least one side must be a register. This restriction exists because the 8086 instruction format and execution path do not support a direct memory-to-memory swap as one instruction. If two memory values need to be exchanged, a register must be used as temporary storage.
+
+`LEA` and `LES` are often confused, so this page is valuable. `LEA register,source` loads the calculated offset address; it does not read the data stored there. `LES register,memory` reads a four-byte far pointer from memory: the first word goes into the destination register and the second word goes into `ES`. After `LES`, the pair `ES:register` identifies a far memory location.
+
+The `PUSH` examples on the right reinforce that 8086 stack operations are word-oriented. `PUSH BX` and `PUSH DS` are valid because they are 16-bit operands. `PUSH BL` is invalid because `BL` is only 8 bits. A push decrements `SP` by 2 first, then stores the word at `SS:SP`.
+
+### [scanned-2026-06-16-231727 p012](images/HandWrittenNotes/scanned-2026-06-16-231727/page-012.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-012.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-012.jpg" alt="scanned-2026-06-16-231727 p012 handwritten note" width="960"></a>
+
+Technical explanation: this page adds `POP`, `PUSHF`, and stack-to-memory addressing. `POP` reverses `PUSH`: it copies a word from the top of the stack to the destination, then increments `SP` by 2. `POP TABLE[DX]` means the popped word is stored into memory at effective address `offset TABLE + DX` in the data segment, unless a segment override is used.
+
+The worked address example `POP 1000[0050]` is really an effective-address calculation. The effective address is `1000H + 0050H = 1050H`. If `DS = 2000H`, the physical address is `2000H x 10H + 1050H = 21050H`. The important point is that the stack source is in `SS:SP`, but the destination memory operand can be in `DS`. One instruction can therefore read from the stack segment and write into the data segment.
+
+`PUSHF` pushes the flag register onto the stack. That is different from pushing a normal data register because it captures processor-status information. It is useful before a subroutine or interrupt-like sequence when flags must be restored later. The page also reminds that `MOV`, `IN`, and `OUT` have special operand restrictions: `IN` and `OUT` use `AL/AX` as the accumulator-side operand, while `MOV` cannot simply copy from one memory location to another memory location in one instruction.
+
 ## 1. XCHG and LEA Instructions
 
 ![XCHG and LEA instructions](images/Day%2011/Screenshot%202026-06-12%20163213.png)

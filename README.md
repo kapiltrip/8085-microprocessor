@@ -18,7 +18,7 @@ This repository is organized as a study-day learning log. Each completed day has
 | Day 10 | 2026-06-10 | Complete | [Day 10.md](Day%2010.md) | [images/Day 10](images/Day%2010/) | 8086 flags, addressing modes, hardware/software interrupts, interrupt vector table, data transfer, arithmetic, logical, branch, loop, flag, string, and repeat instructions. |
 | Day 11 | 2026-06-12 | Complete | [Day 11.md](Day%2011.md) | [images/Day 11](images/Day%2011/) | 8086 `XCHG`, `LEA`, `LES`, and `PUSH` instructions, including effective addresses, far pointers, and stack word rules. |
 | Day 12 | 2026-06-15, 2026-06-16 | Complete | [Day 12.md](Day%2012.md) | [images/Day 12](images/Day%2012/) | 8086 instruction-set deep dive: `MOV`, `XCHG`, `LEA`, `IN`, `ADD/ADC`, `SUB/SBB`, `MUL/IMUL`, `DIV/IDIV`, `INC/DEC`, BCD/ASCII adjust, `OR`, and `CMP`. |
-| Day 13 | 2026-06-16 | Complete | [Day 13.md](Day%2013.md) | [images/Day 13](images/Day%2013/) | 8086 rotate/shift, string instructions, jumps, calls, returns, process-control instructions, short programs, and isolated versus memory-mapped I/O. |
+| Day 13 | 2026-06-16 | Complete | [Day 13.md](Day%2013.md) | [images/Day 13](images/Day%2013/) | 8086 rotate/shift, string instructions, jumps, calls, returns, process-control instructions, short programs, isolated versus memory-mapped I/O, support chips, and revision MCQs. |
 
 ## Handwritten Notes
 

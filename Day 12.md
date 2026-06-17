@@ -47,6 +47,70 @@ For every 8086 instruction, ask five questions:
 | 28 | [OR instruction examples](images/Day%2012/Screenshot%202026-06-16%20003601.png) | Bitwise OR, destination update, and logical flag behavior. |
 | 29 | [CMP instruction](images/Day%2012/Screenshot%202026-06-16%20004203.png) | Compare by subtraction without saving the result. |
 
+## Handwritten Notes Linked To Day 12
+
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: effective-address arithmetic, implicit operands, flag reliability, BCD/ASCII adjustment, and exact result placement.
+
+### [scanned-2026-06-16-231727 p013](images/HandWrittenNotes/scanned-2026-06-16-231727/page-013.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-013.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-013.jpg" alt="scanned-2026-06-16-231727 p013 handwritten note" width="960"></a>
+
+Technical explanation: this page connects arithmetic instructions to effective-address calculation. `ADD destination,source` stores the sum in the destination. `ADC` does the same but includes the carry flag, so it is used for multi-byte or multi-word addition. `SUB` subtracts source from destination. `SBB` subtracts source plus `CF`, which is the borrow chain for multi-precision subtraction.
+
+The byte-array example `PRICES DB 10H,20H,30H,40H` and `BX = 0002H` means `PRICES[BX]` points to `PRICES + 2`, the third byte, because `DB` elements are one byte each. If `PRICES` starts at `1000H`, the effective address is `1002H`. The word-array example `PRICES DW 1000H,2000H,3000H,4000H` advances by two bytes per element, so index arithmetic must account for word spacing.
+
+The page also begins multiply-result reasoning. For `MUL r/m8`, the hidden multiplicand is `AL` and the result is in `AX`. For `MUL r/m16`, the hidden multiplicand is `AX` and the result is in `DX:AX`. `CF` and `OF` are cleared only when the upper half of the result is zero; otherwise both are set. Other arithmetic flags are not reliable after multiply.
+
+### [scanned-2026-06-16-231727 p014](images/HandWrittenNotes/scanned-2026-06-16-231727/page-014.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-014.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-014.jpg" alt="scanned-2026-06-16-231727 p014 handwritten note" width="960"></a>
+
+Technical explanation: this page separates unsigned `MUL` from signed `IMUL`. `MUL BH` multiplies unsigned `AL` by unsigned `BH`, placing the 16-bit result in `AX`. `MUL CX` multiplies unsigned `AX` by unsigned `CX`, placing the 32-bit result in `DX:AX`. If a memory operand is used, the assembler must know whether it is byte or word, for example `MUL BYTE PTR [BX]` versus `MUL WORD PTR [BX]`.
+
+`IMUL` treats the operands as signed two's-complement values. For byte `IMUL`, signed `AL` is multiplied by a signed byte source and the signed result goes to `AX`. For word `IMUL`, signed `AX` is multiplied by a signed word source and the signed result goes to `DX:AX`.
+
+The `CBW` note is about sign extension. `CBW` copies the sign bit of `AL` into all bits of `AH`, converting a signed byte in `AL` into a signed word in `AX`. It is not zero extension. If `AL = F6H`, `CBW` gives `AX = FFF6H`, representing `-10`, not `00F6H`.
+
+### [scanned-2026-06-16-231727 p015](images/HandWrittenNotes/scanned-2026-06-16-231727/page-015.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-015.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-015.jpg" alt="scanned-2026-06-16-231727 p015 handwritten note" width="960"></a>
+
+Technical explanation: this page focuses on division, where operand size and dividend preparation are critical. For unsigned byte division, the dividend is `AX`, the divisor is an 8-bit register or memory operand, the quotient goes to `AL`, and the remainder goes to `AH`. For unsigned word division, the dividend is `DX:AX`, the divisor is 16-bit, the quotient goes to `AX`, and the remainder goes to `DX`.
+
+`DIV` can raise type 0 interrupt in two cases: divisor is zero, or the quotient is too large to fit in the required quotient register. This means even if the mathematical division is possible, the instruction can fail if the quotient does not fit into `AL` for byte division or `AX` for word division.
+
+For `IDIV`, the dividend must be sign-extended correctly. `CBW` sign-extends `AL` into `AX`; `CWD` sign-extends `AX` into `DX:AX`. Without these, a negative signed dividend may be interpreted as a completely different positive number, giving wrong quotient/remainder or quotient overflow.
+
+### [scanned-2026-06-16-231727 p016](images/HandWrittenNotes/scanned-2026-06-16-231727/page-016.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-016.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-016.jpg" alt="scanned-2026-06-16-231727 p016 handwritten note" width="960"></a>
+
+Technical explanation: this page continues `IDIV` examples and then moves to `INC`, `DEC`, and `DAA`. `INC destination` adds one to a register or memory operand. `DEC destination` subtracts one. Both update `OF`, `SF`, `ZF`, `AF`, and `PF`, but preserve `CF`. That preservation is important in multi-precision code where carry or borrow must not be destroyed by loop-counter updates.
+
+`DAA` means decimal adjust accumulator after packed BCD addition. It is used after adding two packed BCD numbers in `AL`. If the low nibble is greater than 9 or `AF = 1`, `DAA` adds `06H`. If the upper nibble is greater than 9 or `CF = 1`, it adds `60H`. The goal is not normal binary addition; the goal is to make each nibble a valid decimal digit.
+
+The example idea with `59 BCD + 35 BCD` shows why adjustment is needed. Binary addition can create nibbles that are not valid BCD digits. `DAA` corrects the result so the hexadecimal-looking nibbles again represent decimal digits.
+
+### [scanned-2026-06-16-231727 p017](images/HandWrittenNotes/scanned-2026-06-16-231727/page-017.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-017.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-017.jpg" alt="scanned-2026-06-16-231727 p017 handwritten note" width="960"></a>
+
+Technical explanation: this page collects the decimal and ASCII adjustment instructions. `DAS` adjusts after packed BCD subtraction. `AAA` adjusts after unpacked ASCII/decimal addition. `AAM` adjusts after multiplying two unpacked decimal digits, usually producing tens in `AH` and units in `AL`. `AAD` prepares unpacked decimal digits before division by converting `AH:AL` into a binary value in `AL`.
+
+These instructions exist because ASCII digits, unpacked BCD digits, packed BCD digits, and binary values are not the same representation. For example, ASCII `'5'` is `35H`, unpacked BCD digit 5 may be `05H`, packed BCD `59` is `59H`, and binary decimal 59 is `3BH`. Adjustment instructions bridge those representations around arithmetic operations.
+
+The right side begins logical instructions. `AND destination,source` performs bit-by-bit AND and stores the result in the destination. It is commonly used for masking: clearing selected bits while preserving others. Logical instructions generally clear `CF` and `OF`, update `SF`, `ZF`, and `PF`, and leave `AF` undefined.
+
+### [scanned-2026-06-16-231727 p018](images/HandWrittenNotes/scanned-2026-06-16-231727/page-018.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-018.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-018.jpg" alt="scanned-2026-06-16-231727 p018 handwritten note" width="960"></a>
+
+Technical explanation: this page gives an `AAM` worked example. If `AL = 05H` and `BL = 07H`, multiplying unpacked decimal digits gives decimal 35. `AAM` divides that value by 10: quotient 3 goes into `AH`, remainder 5 goes into `AL`. So `AX` becomes `0305H`, representing the unpacked decimal result `35`.
+
+The page also covers `XOR`, `NEG`, and `CMP`. `XOR destination,source` is useful for toggling bits or clearing a register with `XOR AX,AX`. `NEG destination` replaces the operand with its two's complement, effectively calculating `0 - destination`, and it updates flags. `CMP destination,source` performs `destination - source` only to update flags; it does not store the subtraction result.
+
+The important flag lesson is reliability. After logical instructions, `CF` and `OF` are cleared and `SF/ZF/PF` reflect the result. After `CMP`, flags behave as if subtraction happened. After `AAM`, `SF`, `ZF`, and `PF` are updated but `AF`, `CF`, and `OF` are undefined. Do not test a flag unless the preceding instruction defines it.
+
 ## Page-By-Page Explanation
 
 Every screenshot is explained separately here. Later sections still group related ideas for revision, but this section keeps the page order clear.

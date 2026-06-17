@@ -78,6 +78,36 @@ Technical explanation: 8086 branch instructions modify instruction flow by chang
 
 Compared with the 8085, the 8086 has a wider external data bus, a 20-bit address space, segmentation, a prefetch queue, richer addressing modes, and a more complex flag model. That is why an 8086 trace often begins by forming `segment:offset`, while an 8085 trace usually begins with a direct 16-bit address or a register-pair pointer.
 
+### [scanned-2026-06-16-231727 p008](images/HandWrittenNotes/scanned-2026-06-16-231727/page-008.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-008.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-008.jpg" alt="scanned-2026-06-16-231727 p008 handwritten note" width="960"></a>
+
+Technical explanation: this page begins with immediate and direct addressing. In immediate addressing, the data is part of the instruction itself, such as `MOV BX,3598H`. No memory operand has to be read to get the source value; the operand bytes follow the opcode in the instruction stream. In direct addressing, the instruction contains an offset, such as `ADD BL,[0103H]`. The processor uses the offset with the default segment, usually `DS`, to locate the memory byte or word.
+
+The page then lists the elements that can form an 8086 effective address: base register content, index register content, and displacement. The effective address is only an offset. The physical address is still formed later by the BIU using `segment x 10H + offset`. This split is essential: the EU can calculate `BX + SI + displacement`, but the BIU adds the segment base and performs the actual bus cycle.
+
+The note "each memory segment was of 64 KB" is a direct consequence of 16-bit offsets. An offset can range from `0000H` to `FFFFH`, which is `65536` bytes. Direct addressing therefore gives an offset inside a segment, not a full 20-bit physical address by itself.
+
+### [scanned-2026-06-16-231727 p009](images/HandWrittenNotes/scanned-2026-06-16-231727/page-009.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-009.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-009.jpg" alt="scanned-2026-06-16-231727 p009 handwritten note" width="960"></a>
+
+Technical explanation: the left side expands addressing modes. Register addressing keeps the operand inside a register, so no memory bus cycle is needed for that operand. Register-indirect addressing uses a register as a pointer, for example `[BP]`, `[BX]`, `[SI]`, or `[DI]`. Register-relative addressing adds a displacement to a register, such as `[BX+05H]`. Based-indexed addressing combines a base register and an index register, such as `[BX+SI]`, and can also include displacement.
+
+The most important correction is default segment selection. Effective addresses involving `BP` usually default to `SS`; many others default to `DS`. This is why `MOV BX,[BP]` is not the same segment assumption as `MOV BX,[SI]`. Both produce offsets, but the segment base can differ.
+
+The right side links interrupts to vectoring. In 8086, hardware interrupt inputs are `NMI` and `INTR`. `NMI` cannot be disabled by software; `INTR` depends on the interrupt flag `IF` and receives an acknowledge sequence. Software interrupts use `INT n`. The phrase "interrupt vector" means the memory entry that contains the address of the interrupt service routine, not the interrupt signal itself.
+
+### [scanned-2026-06-16-231727 p010](images/HandWrittenNotes/scanned-2026-06-16-231727/page-010.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-010.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-010.jpg" alt="scanned-2026-06-16-231727 p010 handwritten note" width="960"></a>
+
+Technical explanation: this page focuses on the interrupt vector table and the beginning of `MOV`-style data transfer. The 8086 IVT starts at physical address `00000H` and occupies `1024` bytes because there are 256 interrupt types and each type uses four bytes. The formula is `vector address = interrupt type x 4`. Type 0 starts at `00000H`, type 1 starts at `00004H`, and type 2 starts at `00008H`.
+
+Each vector entry stores two words: offset first and segment second. That means the processor loads both `IP` and `CS` when it vectors to an interrupt service routine. This is deeper than the 8085 restart idea, where many interrupts map to fixed 16-bit restart addresses. In 8086, the table entry gives a full far pointer.
+
+The `MOV destination,source` notes are also important. Source can be register, memory, or immediate data depending on the exact form. Destination can be register or memory, but not immediate. Memory-to-memory `MOV` is generally not allowed as a single instruction. When the note shows `MOV BX,[0301H]`, the bracketed value is an offset; the processor reads the word or byte from memory, depending on the destination size.
+
 ## 1. 8086 Flag Register and Single-Step Mode
 
 ![Question: flag bit used for single-step mode](images/Day%2010/Screenshot%202026-06-10%20113754.png)
