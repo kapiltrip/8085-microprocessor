@@ -11,6 +11,8 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [till73.pdf](HandWrittenNotes/till73.pdf) | [images/HandWrittenNotes/till73](images/HandWrittenNotes/till73/) | 24 | Stack, subroutines, branch practice, `SIM/RIM`, rotates, timing, flags, assignment traces. |
 | [85completed.pdf](HandWrittenNotes/85completed.pdf) | [images/HandWrittenNotes/85completed](images/HandWrittenNotes/85completed/) | 22 | Late 8085: delay loops, interrupts, programmed I/O, DMA, support chips, 8086 transition. |
 | [86tilllnow.pdf](HandWrittenNotes/86tilllnow.pdf) | [images/HandWrittenNotes/86tilllnow](images/HandWrittenNotes/86tilllnow/) | 12 | 8086 pins, min/max mode, BIU/EU, flags, addressing modes, interrupts, instruction set. |
+| [Scanned Document 16-06-26 at 11.17.27 PM.pdf](HandWrittenNotes/Scanned%20Document%2016-06-26%20at%2011.17.27%E2%80%AFPM.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231727](images/HandWrittenNotes/scanned-2026-06-16-231727/) | 24 | 8086 pins, min/max mode, BIU/EU, flags, addressing, stack, arithmetic, rotate/string/control-transfer, and I/O. |
+| [Scanned Document 16-06-26 at 11.18.51 PM.pdf](HandWrittenNotes/Scanned%20Document%2016-06-26%20at%2011.18.51%E2%80%AFPM.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231851](images/HandWrittenNotes/scanned-2026-06-16-231851/) | 6 | 8086 I/O organization, min/max mode interface, `IN/OUT`, support chips, bus-loading MCQs, and stack segment size. |
 
 ## Page Map
 
@@ -122,10 +124,42 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [86tilllnow page 010](images/HandWrittenNotes/86tilllnow/page-010.jpg) | [Day 10](Day%2010.md) | `MOV` examples, direct/register addressing, and instruction operands. |
 | [86tilllnow page 011](images/HandWrittenNotes/86tilllnow/page-011.jpg) | [Day 10](Day%2010.md) | `XLAT`, `IN`, `OUT`, I/O port addressing, and memory/addressing distinction. |
 | [86tilllnow page 012](images/HandWrittenNotes/86tilllnow/page-012.jpg) | [Day 10](Day%2010.md) | Multiple branching and 8086 versus 8085 bus/address comparison. |
+| [scanned-2026-06-16-231727 page 001](images/HandWrittenNotes/scanned-2026-06-16-231727/page-001.jpg) | [Day 09](Day%2009.md) | 8086 features, multiplexed pins, 20-bit address bus, `READY`, `TEST`, `BHE/S7`, and min/max selection. |
+| [scanned-2026-06-16-231727 page 002](images/HandWrittenNotes/scanned-2026-06-16-231727/page-002.jpg) | [Day 09](Day%2009.md) | Minimum-mode versus maximum-mode control-signal ownership and 8086/8288 bus-control split. |
+| [scanned-2026-06-16-231727 page 003](images/HandWrittenNotes/scanned-2026-06-16-231727/page-003.jpg) | [Day 09](Day%2009.md) | 8086 pin recap: `AD0-AD15`, 1 MB addressing, `READY`, `/RD`, `A16-A19`, `BHE/S7`, `NMI`, and `TEST`. |
+| [scanned-2026-06-16-231727 page 004](images/HandWrittenNotes/scanned-2026-06-16-231727/page-004.jpg) | [Day 09](Day%2009.md) | Min/max mode signals, queue status, local bus priority, BIU/EU division, and instruction queue idea. |
+| [scanned-2026-06-16-231727 page 005](images/HandWrittenNotes/scanned-2026-06-16-231727/page-005.jpg) | [Day 09](Day%2009.md) | Internal register groups, segment registers, BIU signals, and queue sketch. |
+| [scanned-2026-06-16-231727 page 006](images/HandWrittenNotes/scanned-2026-06-16-231727/page-006.jpg) | [Day 09](Day%2009.md) | Branching, overlapped BIU/EU execution, relocation, general-purpose registers, pointer/index registers, and segments. |
+| [scanned-2026-06-16-231727 page 007](images/HandWrittenNotes/scanned-2026-06-16-231727/page-007.jpg) | [Day 09](Day%2009.md) | Memory segments, 64 KB segment size, 8086 flag register, and control/status flags. |
+| [scanned-2026-06-16-231727 page 008](images/HandWrittenNotes/scanned-2026-06-16-231727/page-008.jpg) | [Day 10](Day%2010.md) | Immediate, direct, register, register-indirect, displacement, and segment-offset addressing. |
+| [scanned-2026-06-16-231727 page 009](images/HandWrittenNotes/scanned-2026-06-16-231727/page-009.jpg) | [Day 10](Day%2010.md) | Register, indirect, relative, indexed, based-indexed addressing and interrupt categories/vectoring. |
+| [scanned-2026-06-16-231727 page 010](images/HandWrittenNotes/scanned-2026-06-16-231727/page-010.jpg) | [Day 10](Day%2010.md) | 8086 IVT size, type-vector calculation, `MOV` operand rules, and stack-related source/destination examples. |
+| [scanned-2026-06-16-231727 page 011](images/HandWrittenNotes/scanned-2026-06-16-231727/page-011.jpg) | [Day 11](Day%2011.md) | `MOV`, physical address, `XCHG`, `LEA`, `LES`, and `PUSH` word-only stack rule. |
+| [scanned-2026-06-16-231727 page 012](images/HandWrittenNotes/scanned-2026-06-16-231727/page-012.jpg) | [Day 11](Day%2011.md) | `POP`, effective-address calculation for stack-to-memory transfer, `PUSHF`, `IN/OUT`, and `MOV` examples. |
+| [scanned-2026-06-16-231727 page 013](images/HandWrittenNotes/scanned-2026-06-16-231727/page-013.jpg) | [Day 12](Day%2012.md) | `ADD/ADC/SUB/SBB`, byte and word arrays, effective addresses, `DB/DW`, and multiply result-fit flags. |
+| [scanned-2026-06-16-231727 page 014](images/HandWrittenNotes/scanned-2026-06-16-231727/page-014.jpg) | [Day 12](Day%2012.md) | `CBW`, unsigned `MUL`, signed `IMUL`, implicit operands, memory operand size, and `CF/OF` after multiplication. |
+| [scanned-2026-06-16-231727 page 015](images/HandWrittenNotes/scanned-2026-06-16-231727/page-015.jpg) | [Day 12](Day%2012.md) | `DIV`, `IDIV`, quotient/remainder placement, type 0 interrupt, `CBW`, and `CWD`. |
+| [scanned-2026-06-16-231727 page 016](images/HandWrittenNotes/scanned-2026-06-16-231727/page-016.jpg) | [Day 12](Day%2012.md) | `IDIV` examples, `INC/DEC`, `DAA`, BCD correction, and carry-preserving increment/decrement behavior. |
+| [scanned-2026-06-16-231727 page 017](images/HandWrittenNotes/scanned-2026-06-16-231727/page-017.jpg) | [Day 12](Day%2012.md) | `DAS`, `AAA`, `AAM`, `AAD`, ASCII/unpacked BCD adjustment, and logical `AND`. |
+| [scanned-2026-06-16-231727 page 018](images/HandWrittenNotes/scanned-2026-06-16-231727/page-018.jpg) | [Day 12](Day%2012.md) | `AAM` worked example, `XOR`, `NEG`, and `CMP` flag-only subtraction. |
+| [scanned-2026-06-16-231727 page 019](images/HandWrittenNotes/scanned-2026-06-16-231727/page-019.jpg) | [Day 13](Day%2013.md) | `RCL`, `RCR`, `ROL`, `ROR`, `SAL/SHL`, `SAR`, counts, `CF`, and `OF`. |
+| [scanned-2026-06-16-231727 page 020](images/HandWrittenNotes/scanned-2026-06-16-231727/page-020.jpg) | [Day 13](Day%2013.md) | `MOVS`, `STOS`, `CMPS`, `LODS`, direction flag, `REP`, and near jump behavior. |
+| [scanned-2026-06-16-231727 page 021](images/HandWrittenNotes/scanned-2026-06-16-231727/page-021.jpg) | [Day 13](Day%2013.md) | Indirect jumps, conditional unsigned jumps, `CALL`, near call return address, and stack reason for calls. |
+| [scanned-2026-06-16-231727 page 022](images/HandWrittenNotes/scanned-2026-06-16-231727/page-022.jpg) | [Day 13](Day%2013.md) | Near/far calls, indirect calls, `RET`, `RET n`, and stack cleanup rules. |
+| [scanned-2026-06-16-231727 page 023](images/HandWrittenNotes/scanned-2026-06-16-231727/page-023.jpg) | [Day 13](Day%2013.md) | Process-control instructions, interrupt enable/disable, `HLT`, `NOP`, `ESC`, sample programs, and review questions. |
+| [scanned-2026-06-16-231727 page 024](images/HandWrittenNotes/scanned-2026-06-16-231727/page-024.jpg) | [Day 13](Day%2013.md) | `PUSH/POPF`, `IN/OUT`, isolated I/O page/port organization, and isolated I/O advantages/disadvantages. |
+| [scanned-2026-06-16-231851 page 001](images/HandWrittenNotes/scanned-2026-06-16-231851/page-001.jpg) | [Day 13](Day%2013.md) | Memory-mapped I/O, isolated I/O comparison, min-mode interface signals, `ALE`, `/RD`, `/WR`, `M/IO`, `DT/R`, and `DEN`. |
+| [scanned-2026-06-16-231851 page 002](images/HandWrittenNotes/scanned-2026-06-16-231851/page-002.jpg) | [Day 13](Day%2013.md) | Minimum and maximum mode I/O interface diagrams, 8288 controller, and max-mode I/O control signal substitution. |
+| [scanned-2026-06-16-231851 page 003](images/HandWrittenNotes/scanned-2026-06-16-231851/page-003.jpg) | [Day 13](Day%2013.md) | Direct and variable `IN/OUT`, `DX` port addressing, output to `B000H`, and word input/output examples. |
+| [scanned-2026-06-16-231851 page 004](images/HandWrittenNotes/scanned-2026-06-16-231851/page-004.jpg) | [Day 13](Day%2013.md) | I/O bus-cycle steps, interface-device need, 8251 USART, 8257 DMA, and peripheral-to-memory bus ownership. |
+| [scanned-2026-06-16-231851 page 005](images/HandWrittenNotes/scanned-2026-06-16-231851/page-005.jpg) | [Day 13](Day%2013.md) | 8259, 8275, 8279, input-device quiz, bus current/loading quiz, memory-mapped device view, and unsupported direct BCD multiplication. |
+| [scanned-2026-06-16-231851 page 006](images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg) | [Day 13](Day%2013.md) | Stack segment maximum-size recap: 16-bit offset range gives 64 KB per segment. |
 
 ## Expanded Page Notes
 
-Each handwritten page is displayed as a large full-page image first. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
+The original handwritten sets are displayed below as large full-page images. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
+
+The two newest scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). That keeps each new handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised.
 
 ### `till46.pdf`
 

@@ -1,6 +1,6 @@
 # Day 13: 8086 Rotate, String, Control Transfer, Programs, and I/O
 
-Day 13 continues the 8086 instruction-set sequence. The screenshots cover rotate and shift instructions, string manipulation, jumps, calls, returns, process-control instructions, small assembly programs, and the difference between isolated I/O and memory-mapped I/O.
+Day 13 continues the 8086 instruction-set sequence. The screenshots cover rotate and shift instructions, string manipulation, jumps, calls, returns, process-control instructions, small assembly programs, the difference between isolated I/O and memory-mapped I/O, support chips, and a long MCQ revision set tying 8085 and 8086 concepts together.
 
 Use these checks while studying this day:
 
@@ -87,6 +87,187 @@ Use these checks while studying this day:
 | 69 | [Unsupported operation quiz](images/Day%2013/Screenshot%202026-06-16%20230746.png) | 8086 has no direct packed-BCD multiplication instruction. |
 | 70 | [Stack segment size quiz](images/Day%2013/Screenshot%202026-06-16%20230851.png) | 8086 segment size can be up to 64 KB. |
 | 71 | [Stack segment marked answer](images/Day%2013/Screenshot%202026-06-16%20231006.png) | Confirms 64 KB as the stack segment maximum. |
+| 72 | [8085 non-vectored interrupt quiz](images/Day%2013/Screenshot%202026-06-16%20232615.png) | `INTR` is the non-vectored 8085 hardware interrupt. |
+| 73 | [Memory-mapped I/O address-space quiz](images/Day%2013/Screenshot%202026-06-16%20232707.png) | A 16-bit address bus gives 64K total addressable locations shared by memory and I/O. |
+| 74 | [8085 interrupt-enable reset quiz](images/Day%2013/Screenshot%202026-06-16%20233116.png) | The interrupt-enable flip-flop is reset by `DI`, reset, or interrupt acknowledgement. |
+| 75 | [8085 software interrupt quiz](images/Day%2013/Screenshot%202026-06-16%20233334.png) | `RST 7` is a software interrupt instruction. |
+| 76 | [SIM incorrect-statement quiz](images/Day%2013/Screenshot%202026-06-16%20233419.png) | `SIM` does not selectively mask every 8085 interrupt source. |
+| 77 | [8085 interrupt property matching](images/Day%2013/Screenshot%202026-06-16%20233520.png) | `INTR`, `RST 5.5`, `RST 7.5`, and `TRAP` properties. |
+| 78 | [TRAP vector-address quiz](images/Day%2013/Screenshot%202026-06-16%20233730.png) | `TRAP` transfers control to `0024H`. |
+| 79 | [8085 pin-function matching](images/Day%2013/Screenshot%202026-06-16%20233758.png) | `RST 7.5`, `HOLD`, `IO/M`, and `ALE` functions. |
+| 80 | [Fastest data-transfer scheme quiz](images/Day%2013/Screenshot%202026-06-16%20233921.png) | DMA is the fastest practical transfer method; the marked option needs caution. |
+| 81 | [Highest-efficiency DMA mode quiz](images/Day%2013/Screenshot%202026-06-16%20234006.png) | Burst DMA has the highest transfer efficiency. |
+| 82 | [Cycle-stealing DMA quiz](images/Day%2013/Screenshot%202026-06-16%20234019.png) | Cycle stealing transfers one unit at a time by taking bus cycles. |
+| 83 | [8254 counter-count quiz](images/Day%2013/Screenshot%202026-06-16%20234057.png) | 8254 contains three independent 16-bit counters. |
+| 84 | [8259A capability quiz](images/Day%2013/Screenshot%202026-06-16%20234125.png) | 8259A manages interrupt inputs and is programmed through command words. |
+| 85 | [Output-mode transfer path quiz](images/Day%2013/Screenshot%202026-06-16%20234226.png) | Output transfer is between accumulator/CPU data path and an I/O device. |
+| 86 | [One-word DMA transfer quiz](images/Day%2013/Screenshot%202026-06-16%20234303.png) | One word at a time is cycle stealing. |
+| 87 | [Slow-memory wait-state quiz](images/Day%2013/Screenshot%202026-06-16%20234308.png) | Slow memory adds wait states by pulling `READY` low. |
+| 88 | [DMA program-intervention quiz](images/Day%2013/Screenshot%202026-06-16%20234415.png) | DMA transfers data without per-byte program intervention. |
+| 89 | [8086 IVT contents quiz](images/Day%2013/Screenshot%202026-06-16%20234513.png) | Each vector stores the starting `IP` and `CS` of an ISR. |
+| 90 | [8086 arithmetic data-types quiz](images/Day%2013/Screenshot%202026-06-16%20234518.png) | Arithmetic support covers binary signed/unsigned work plus adjust support for ASCII/unpacked BCD. |
+| 91 | [8086 interrupt-priority quiz](images/Day%2013/Screenshot%202026-06-16%20234549.png) | NMI is the highest-priority external interrupt among the shown choices. |
+| 92 | [8086 address-bus width quiz](images/Day%2013/Screenshot%202026-06-16%20234606.png) | 8086 has a 20-bit address bus. |
+| 93 | [8086 registers and flags quiz](images/Day%2013/Screenshot%202026-06-16%20234610.png) | Register-count convention and nine active flags. |
+| 94 | [BHE signal quiz](images/Day%2013/Screenshot%202026-06-16%20234629.png) | `/BHE` enables the high-order data byte. |
+| 95 | [8086 active-flags count quiz](images/Day%2013/Screenshot%202026-06-16%20234640.png) | The 8086 flag register has nine active flags. |
+| 96 | [8086 memory-segment count quiz](images/Day%2013/Screenshot%202026-06-16%20234648.png) | 8086 has four main segment registers. |
+| 97 | [8086 not-true statement quiz](images/Day%2013/Screenshot%202026-06-16%20234701.png) | 8086 does not have only a 16-bit address bus. |
+| 98 | [8086 addressing-mode count quiz](images/Day%2013/Screenshot%202026-06-16%20234707.png) | The course groups 8086 addressing modes into eight types. |
+| 99 | [Interrupt-vector-table size quiz](images/Day%2013/Screenshot%202026-06-16%20234717.png) | 256 interrupt procedures require a 1 KB vector table in 8086. |
+| 100 | [8086 memory capacity quiz](images/Day%2013/Screenshot%202026-06-16%20234725.png) | 20 address lines provide 1 MB addressability. |
+| 101 | [Physical-address bit-width quiz](images/Day%2013/Screenshot%202026-06-16%20234730.png) | 8086 physical addresses are 20 bits. |
+| 102 | [AAD before arithmetic quiz](images/Day%2013/Screenshot%202026-06-16%20234754.png) | `AAD` is used before ASCII/unpacked BCD division. |
+| 103 | [Undefined carry after adjust quiz](images/Day%2013/Screenshot%202026-06-16%20234807.png) | `AAM`/`AAD` leave carry undefined; `AAA` and `ADC` define carry. |
+| 104 | [Logical AND without result quiz](images/Day%2013/Screenshot%202026-06-16%20234815.png) | `TEST` performs AND only for flags. |
+| 105 | [RCL data-path quiz](images/Day%2013/Screenshot%202026-06-16%20234836.png) | `RCL` pushes old `CF` into LSB and old MSB into `CF`. |
+| 106 | [Repeat-prefix quiz](images/Day%2013/Screenshot%202026-06-16%20234846.png) | `REP` repeats a string instruction while `CX` counts down. |
+| 107 | [Call-return instruction quiz](images/Day%2013/Screenshot%202026-06-16%20234856.png) | `CALL` enters a subroutine; `RET` returns. |
+| 108 | [Unconditional-transfer quiz](images/Day%2013/Screenshot%202026-06-16%20234904.png) | `JMP` unconditionally transfers control. |
+| 109 | [HLT exit-source quiz](images/Day%2013/Screenshot%202026-06-16%20234915.png) | Interrupt or reset can leave halt; `HOLD` does not execute code. |
+| 110 | [NOP delay quiz](images/Day%2013/Screenshot%202026-06-16%20235004.png) | `NOP` consumes time without changing useful state. |
+| 111 | [Machine-control instruction quiz](images/Day%2013/Screenshot%202026-06-16%20235009.png) | `CLC` is flag control, not machine control. |
+| 112 | [Microprocessor single-chip quiz](images/Day%2013/Screenshot%202026-06-16%20235025.png) | A microprocessor integrates CPU functions on a single chip. |
+| 113 | [Microprocessor circuit-type quiz](images/Day%2013/Screenshot%202026-06-16%20235033.png) | A microprocessor is an electronic circuit functioning as the CPU. |
+| 114 | [Microprocessor role quiz](images/Day%2013/Screenshot%202026-06-16%20235043.png) | The microprocessor is treated as the heart/CPU of the computer. |
+| 115 | [Microprocessor purpose quiz](images/Day%2013/Screenshot%202026-06-16%20235050.png) | The processor controls processing tasks. |
+| 116 | [First digital electronic computer quiz](images/Day%2013/Screenshot%202026-06-16%20235104.png) | Course-level recall of early digital electronic computer history. |
+| 117 | [Texas Instruments invention quiz](images/Day%2013/Screenshot%202026-06-16%20235112.png) | TI is associated with integrated circuits through Jack Kilby. |
+| 118 | [8086 processor width quiz](images/Day%2013/Screenshot%202026-06-16%20235116.png) | 8086 is a 16-bit processor. |
+| 119 | [8086 16-bit data transfer quiz](images/Day%2013/Screenshot%202026-06-16%20235122.png) | 8086 can read/write 16-bit data to memory. |
+| 120 | [8086 address-bus width repeat quiz](images/Day%2013/Screenshot%202026-06-16%20235129.png) | The address bus is 20 bits wide. |
+| 121 | [8086 flag-register purpose quiz](images/Day%2013/Screenshot%202026-06-16%20235138.png) | Flags indicate ALU result conditions. |
+| 122 | [Execution-unit work quiz](images/Day%2013/Screenshot%202026-06-16%20235143.png) | EU decodes and executes instructions. |
+| 123 | [Sign-flag quiz](images/Day%2013/Screenshot%202026-06-16%20235201.png) | `SF` means sign flag. |
+| 124 | [Carry-flag quiz](images/Day%2013/Screenshot%202026-06-16%20235204.png) | `CF` means carry flag. |
+
+## Handwritten Notes Linked To Day 13
+
+Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: rotate data paths, string pointer movement, jump/call stack behavior, bus-cycle control signals, I/O address-space rules, and support-chip purpose.
+
+### [scanned-2026-06-16-231727 p019](images/HandWrittenNotes/scanned-2026-06-16-231727/page-019.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-019.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-019.jpg" alt="scanned-2026-06-16-231727 p019 handwritten note" width="960"></a>
+
+Technical explanation: this page gives the core rotate/shift mental model. `RCL` and `RCR` rotate through carry, so the carry flag behaves like an extra bit attached to the operand. For `RCL`, the old `CF` enters the low bit and the old `MSB` goes to `CF`. For `RCR`, the old `CF` enters the high bit and the old `LSB` goes to `CF`. That is different from `ROL` and `ROR`, where the operand rotates internally and carry receives a copy of the bit that wrapped around.
+
+The count rules matter. On original 8086 syntax, a rotate or shift count is either `1` or the value in `CL`. That is why examples such as `MOV CL,04H` followed by `ROL BL,CL` appear. The destination can be register or memory, but the instruction still operates on one byte or one word at that destination.
+
+The shift instructions are not just rotates without wraparound. `SAL/SHL` shifts left, inserts zero into the low bit, and moves the old high bit into `CF`. `SAR` shifts right while preserving the sign bit, so it is suitable for signed divide-by-2 style movement. `SHR` shifts right and inserts zero into the high bit, so it is logical, not signed. For a one-bit operation, `OF` has defined meaning; for multi-bit counts, `OF` is not reliable.
+
+### [scanned-2026-06-16-231727 p020](images/HandWrittenNotes/scanned-2026-06-16-231727/page-020.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-020.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-020.jpg" alt="scanned-2026-06-16-231727 p020 handwritten note" width="960"></a>
+
+Technical explanation: this page covers string manipulation and begins control transfer. `MOVS`, `MOVSB`, and `MOVSW` copy from `DS:SI` to `ES:DI`. `STOS`, `STOSB`, and `STOSW` store from `AL` or `AX` into `ES:DI`. `CMPS`, `CMPSB`, and `CMPSW` compare bytes or words at `DS:SI` and `ES:DI`. These instructions look short because their operands are implicit.
+
+`DF` controls pointer movement. If `DF = 0`, `SI` and/or `DI` increment after the string operation. If `DF = 1`, they decrement. The step is 1 for byte operations and 2 for word operations. This is why `CLD` is common before forward string processing and `STD` is used only when backward movement is intended.
+
+The jump section explains near direct jumps. A near jump stays in the current code segment, so only `IP` changes. Direct means the target displacement or offset is encoded in the instruction stream. `JMP CONTINUE` makes the next instruction come from the label `CONTINUE`, and queued instruction bytes from the old path are discarded.
+
+### [scanned-2026-06-16-231727 p021](images/HandWrittenNotes/scanned-2026-06-16-231727/page-021.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-021.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-021.jpg" alt="scanned-2026-06-16-231727 p021 handwritten note" width="960"></a>
+
+Technical explanation: this page moves from direct jumps to indirect jumps and conditional jumps. `JMP BX` loads `IP` from `BX`, so it is near and register-indirect. `JMP WORD PTR [BX]` reads a word from memory at `DS:BX` and loads that word into `IP`. `JMP DWORD PTR [SI]` reads a far pointer from memory: offset and segment, so both `IP` and `CS` can change.
+
+The conditional jump notes are unsigned comparisons. After `CMP AX,4371H`, the flags represent `AX - 4371H`. `JAE`, `JNB`, and `JNC` all mean the carry flag is clear, so unsigned `AX >= 4371H`. `JBE` and `JNA` mean unsigned below-or-equal, so they test `CF = 1` or `ZF = 1`. The jump instruction does not compare by itself; it only reads flags produced by the earlier `CMP`.
+
+The `CALL` section explains why call is not the same as jump. A jump changes control flow without saving a return address. A call transfers control to a subroutine and saves the return address on the stack. Near call saves return `IP`; far call saves return `CS:IP`. This saved address is what allows `RET` to come back after the subroutine finishes.
+
+### [scanned-2026-06-16-231727 p022](images/HandWrittenNotes/scanned-2026-06-16-231727/page-022.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-022.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-022.jpg" alt="scanned-2026-06-16-231727 p022 handwritten note" width="960"></a>
+
+Technical explanation: this page deepens near and far call behavior. A near call stays in the same code segment, so it pushes only the return offset and loads `IP` with the subroutine offset. A far call moves to another segment, so it pushes both return `CS` and return `IP`, then loads new `CS:IP`. The stack must preserve enough information to restore the exact caller location.
+
+Indirect calls work the same way conceptually, but the destination address is read from a register or memory location. `CALL BX` uses the offset in `BX`. `CALL WORD PTR [BX]` reads a near target offset from memory. `CALL DWORD PTR [BX]` reads a far pointer from memory: offset and segment. Because 8086 is little-endian, the low byte of each word appears first in memory.
+
+`RET` pops the saved return address. Near `RET` pops `IP`. Far `RET` pops `IP` and `CS`. `RET n` additionally increases `SP` by `n` after the return address is popped; that is used to remove stack parameters. This is why the note says the stack pointer is increased by an additional number of bytes.
+
+### [scanned-2026-06-16-231727 p023](images/HandWrittenNotes/scanned-2026-06-16-231727/page-023.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-023.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-023.jpg" alt="scanned-2026-06-16-231727 p023 handwritten note" width="960"></a>
+
+Technical explanation: this page collects process-control instructions. `STC`, `CLC`, and `CMC` set, clear, and complement carry. `STD` and `CLD` set and clear the direction flag, changing string movement direction. `STI` sets the interrupt flag, enabling maskable interrupts through `INTR`; on 8086, recognition is delayed until after the next instruction. `CLI` clears the interrupt flag and disables maskable `INTR` recognition.
+
+`HLT` stops instruction fetching/execution until an interrupt, reset, or similar external event resumes operation. `NOP` consumes time and advances `IP` without changing data state; it is useful for timing padding or reserving patch space. `ESC` passes an instruction escape code to a coprocessor such as 8087; the 8086 provides the bus/instruction mechanism while the coprocessor interprets the operation.
+
+The right side has small program ideas. The "find greatest of two" pattern uses `CMP`, then a conditional jump based on flags. The data-copy question correctly rejects instructions that are not pure data-copy operations. For example, `DAS` is an adjust instruction, not a data-transfer instruction.
+
+### [scanned-2026-06-16-231727 p024](images/HandWrittenNotes/scanned-2026-06-16-231727/page-024.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231727/page-024.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231727/page-024.jpg" alt="scanned-2026-06-16-231727 p024 handwritten note" width="960"></a>
+
+Technical explanation: this page connects stack instructions with I/O organization. `PUSH` decrements `SP` by 2 and stores a word. `POPF` restores the flag register from the stack. That means the flag register can be saved and restored around code that might disturb condition codes or control flags.
+
+The I/O part starts with `IN` and `OUT`. In isolated I/O, the processor uses a separate I/O address space, so I/O ports are not ordinary memory locations. Direct port forms encode an 8-bit port number, while variable port forms use `DX` for a 16-bit port number. Data still moves through `AL` for byte ports or `AX` for word ports.
+
+The note describes I/O address space as `0000H-FFFFH`, divided into 256 pages of 256 ports. That is a useful way to remember 64K ports. The advantage of isolated I/O is that memory address space is not consumed by device registers and special `IN/OUT` instructions clearly identify I/O transfers. The disadvantage is that only accumulator-based I/O instructions are available, so normal memory instructions cannot operate directly on isolated ports.
+
+### [scanned-2026-06-16-231851 p001](images/HandWrittenNotes/scanned-2026-06-16-231851/page-001.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-001.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-001.jpg" alt="scanned-2026-06-16-231851 p001 handwritten note" width="960"></a>
+
+Technical explanation: this page compares memory-mapped I/O and isolated I/O while beginning minimum-mode interface signals. In memory-mapped I/O, device registers occupy normal memory addresses. Therefore normal memory instructions such as `MOV`, `ADD`, or `AND` can operate on those device addresses. The drawback is that part of the memory address space is consumed by I/O devices, and memory-style bus timing may be slower or less specialized than isolated I/O.
+
+In isolated I/O, I/O devices live in a separate port address space and are accessed by `IN` and `OUT`. The note says data transfer is usually through the accumulator, which means `AL` or `AX`. This separation keeps memory space free and makes I/O cycles explicit, but it limits the instruction forms.
+
+The right side begins minimum-mode interface operation. `ALE` latches the address from multiplexed pins. `/RD` means a read operation is in progress. `/WR` means a write operation is in progress. `M/IO = 0` identifies I/O rather than memory for 8086 minimum mode. `DT/R` controls data direction through transceivers, and `DEN` enables the data bus interface.
+
+### [scanned-2026-06-16-231851 p002](images/HandWrittenNotes/scanned-2026-06-16-231851/page-002.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-002.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-002.jpg" alt="scanned-2026-06-16-231851 p002 handwritten note" width="960"></a>
+
+Technical explanation: this page shows I/O interface circuits in minimum mode and maximum mode. In minimum mode, the 8086 directly supplies bus-control signals to the I/O interface circuit. The I/O interface then selects a device, buffers data, and converts raw bus timing into a device-friendly handshake.
+
+In maximum mode, the 8288 bus controller sits between the processor status outputs and the external bus commands. The 8086 gives status lines, and the 8288 produces commands such as I/O read command and I/O write command. This is why the page notes signal changes: the max-mode system replaces the simple minimum-mode read/write outputs with bus-controller-generated commands.
+
+The interface circuit is needed because a CPU bus is not the same as a peripheral connection. A peripheral may be slower, may need selection logic, may require buffering, and may not understand multiplexed address/data timing. The interface circuit protects timing and electrical correctness between processor and devices.
+
+### [scanned-2026-06-16-231851 p003](images/HandWrittenNotes/scanned-2026-06-16-231851/page-003.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-003.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-003.jpg" alt="scanned-2026-06-16-231851 p003 handwritten note" width="960"></a>
+
+Technical explanation: this page gives `IN` and `OUT` forms and examples. Direct I/O addressing places an 8-bit port number in the instruction, such as `IN AL,0C8H` or `OUT 3BH,AL`. Variable I/O addressing uses `DX`, so the port can range from `0000H` to `FFFFH`. The port address is not memory; it selects an I/O port in the isolated I/O address space.
+
+For word I/O, `AX` is used and two adjacent byte ports are involved. For example, inputting a word from port `A9H` reads the low byte from `A9H` and the high byte from `AAH`. Outputting a word to port `B000H` should use `DX` because `B000H` cannot fit in the direct 8-bit port field:
+
+```asm
+MOV AX,0FFFFH
+MOV DX,0B000H
+OUT DX,AX
+```
+
+The handwritten page also shows the common `B0000H` confusion. A normal 8086 I/O port address is 16 bits, so valid port addresses are `0000H-FFFFH`. `B0000H` is five hex digits and is outside the normal isolated I/O port range; the intended address is almost certainly `B000H`.
+
+### [scanned-2026-06-16-231851 p004](images/HandWrittenNotes/scanned-2026-06-16-231851/page-004.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-004.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-004.jpg" alt="scanned-2026-06-16-231851 p004 handwritten note" width="960"></a>
+
+Technical explanation: this page turns the I/O cycle into ordered steps. First, the processor places the port address on the multiplexed address/data bus. Then `ALE` goes high so external latch hardware can hold that address. Then `M/IO` identifies the cycle as I/O, and `/RD` or `/WR` tells the interface whether data is being read or written. For a write, `DT/R` selects CPU-to-device direction and `DEN` enables the bus transceiver. For a read, the device drives data back toward the CPU.
+
+The "interface device" notes explain why specialized chips exist. The CPU should not directly manage every peripheral's electrical timing and data format. An interface chip matches CPU bus signals to peripheral requirements, handles selection, buffers data, and may convert serial/parallel formats or manage block transfers.
+
+The page lists 8251 and 8257. The 8251 USART handles serial communication by converting parallel CPU data to serial data for transmission and serial data back to parallel data on reception. The 8257 DMA controller lets a peripheral request bus access so blocks can move between I/O and memory without the CPU executing an instruction for every byte.
+
+### [scanned-2026-06-16-231851 p005](images/HandWrittenNotes/scanned-2026-06-16-231851/page-005.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-005.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-005.jpg" alt="scanned-2026-06-16-231851 p005 handwritten note" width="960"></a>
+
+Technical explanation: this page collects support chips and MCQ corrections. The 8259 is a programmable interrupt controller: it accepts multiple interrupt requests, prioritizes them, masks them if programmed, and presents a controlled interrupt request to the processor. The 8275 is a programmable CRT controller for display timing/interface work. The 8279 is a keyboard/display interface, separating keyboard scan/control from display drive work.
+
+The input-device question asks what enables the microprocessor to read external data. In the option set, a joystick is the clear input device, while printer and display are output devices. A reader may sound input-related in general English, but the expected input-versus-output classification marks joystick as the best answer.
+
+The read-current and loading questions are about bus electrical behavior. During a read, only the selected device should drive the data lines. Too much sourced or sunk current can disturb logic levels or damage/overload drivers. A tri-state buffer avoids loading because non-selected devices enter high impedance, electrically disconnecting themselves from the bus. The page also notes that memory-mapped devices are viewed as memory locations and that 8086 does not support direct packed-BCD multiplication as one instruction.
+
+### [scanned-2026-06-16-231851 p006](images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg)
+
+<a href="images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg"><img src="images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg" alt="scanned-2026-06-16-231851 p006 handwritten note" width="960"></a>
+
+Technical explanation: this page is a short stack-segment recap. In 8086, a segment register gives the segment base and a 16-bit offset selects a byte inside that segment. Since the offset range is `0000H` through `FFFFH`, one segment can cover `2^16 = 65536` bytes, which is 64 KB.
+
+For the stack, `SS` gives the stack segment base and `SP` or `BP` gives the offset. So the maximum stack segment block is 64 KB, assuming the whole segment is available for stack use. The physical address is still formed as `SS x 10H + offset`; the 64 KB limit comes from the 16-bit offset range, not from the 20-bit physical address bus.
 
 ## Page-By-Page Explanation
 
@@ -693,6 +874,430 @@ This page repeats the stack-segment size question and marks `64 K bytes` as the 
 
 For the stack, `SS` gives the segment base and `SP`/`BP` provide offsets inside that segment. Since the offset range is `0000H` to `FFFFH`, the maximum block covered by the stack segment is 64 KB.
 
+### Page 72: 8085 Non-Vectored Interrupt Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20232615.png"><img src="images/Day%2013/Screenshot%202026-06-16%20232615.png" alt="8085 non-vectored interrupt quiz" width="960"></a>
+
+The answer is `INTR`. In the 8085, a vectored interrupt has a fixed service address known by the processor. `TRAP`, `RST 7.5`, `RST 6.5`, `RST 5.5`, and software `RST n` instructions are vectored because their target addresses are predetermined.
+
+`INTR` is different. It is a general maskable interrupt request. When the processor accepts `INTR`, the external interrupting device must place an instruction, usually a `RST` instruction or a call sequence, on the data bus during interrupt acknowledge. That is why `INTR` is non-vectored: the processor does not internally know the service address.
+
+### Page 73: Memory-Mapped I/O Address-Space Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20232707.png"><img src="images/Day%2013/Screenshot%202026-06-16%20232707.png" alt="Memory-mapped I/O address-space quiz" width="960"></a>
+
+With a 16-bit address bus, the total addressable space is `2^16 = 65536` byte locations, or 64K locations. In memory-mapped I/O, I/O devices do not live in a separate port-address space. They consume addresses from the same address space used by memory.
+
+So the important word is "total." The system can have 64K addressable locations in all: some may be memory and some may be I/O registers. If every address is assigned to memory, then there are no memory-mapped I/O devices. If some addresses are assigned to I/O devices, the available memory locations reduce by the same amount.
+
+### Page 74: 8085 Interrupt-Enable Reset Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233116.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233116.png" alt="8085 interrupt-enable reset quiz" width="960"></a>
+
+The interrupt-enable flip-flop controls whether the 8085 will respond to maskable interrupts. It is set by `EI` and reset by `DI`. It is also cleared by system reset, because after reset the processor starts from a known disabled-interrupt state.
+
+It is also reset when an interrupt is acknowledged. This prevents another maskable interrupt from immediately interrupting the current interrupt service routine unless the service routine deliberately executes `EI` again. Therefore the broad answer is: `DI`, system reset, or interrupt acknowledgement can reset the interrupt-enable flip-flop.
+
+### Page 75: 8085 Software Interrupt Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233334.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233334.png" alt="8085 software interrupt quiz" width="960"></a>
+
+The software interrupt in the options is `RST 7`. In the 8085, `RST 0` through `RST 7` are software instructions written into the program. When executed, they behave like one-byte call instructions to fixed addresses.
+
+The hardware interrupt pins are different: `TRAP`, `RST 7.5`, `RST 6.5`, `RST 5.5`, and `INTR` are activated by external hardware. The confusion comes from the name `RST`: `RST 7.5` is a hardware interrupt pin, while `RST 7` is a software instruction.
+
+### Page 76: SIM Incorrect-Statement Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233419.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233419.png" alt="SIM incorrect statement quiz" width="960"></a>
+
+The incorrect statement is the one claiming that `SIM` selectively masks all interrupts of the 8085. `SIM` can control the masks for `RST 5.5`, `RST 6.5`, and `RST 7.5`, and it can reset the `RST 7.5` latch. It does not selectively mask `TRAP`, because `TRAP` is non-maskable, and it is not the normal selective-mask mechanism for `INTR`.
+
+The serial-output part is correct: bit `D7` of the accumulator is copied to `SOD` only when `D6`, the serial data enable bit, is 1. This page is useful because it ties two jobs of `SIM` together: interrupt masking/reset control and serial output control.
+
+### Page 77: 8085 Interrupt Property Matching
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233520.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233520.png" alt="8085 interrupt property matching" width="960"></a>
+
+The matching is: `INTR` is non-vectored, `RST 5.5` is level sensitive, `RST 7.5` is edge sensitive, and `TRAP` is non-maskable. This is a compact way to revise the 8085 interrupt priority block.
+
+`INTR` needs external hardware to supply the service instruction, so it is non-vectored. `RST 7.5` is latched on an edge, which is why it can be reset through `SIM`. `RST 5.5` and `RST 6.5` are level-sensitive maskable interrupts. `TRAP` has the highest priority and cannot be disabled by `DI`.
+
+### Page 78: TRAP Vector-Address Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233730.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233730.png" alt="TRAP vector address quiz" width="960"></a>
+
+The answer is `0024H`. The 8085 `RST n` vector pattern is `n x 8`. `TRAP` is commonly treated as vector `4.5`, so its address is `4.5 x 8 = 36 decimal`, which is `24H`.
+
+This address is fixed. When `TRAP` is accepted, the processor saves the current return address on the stack and transfers program control to `0024H`. That fixed target is why `TRAP` is a vectored interrupt.
+
+### Page 79: 8085 Pin-Function Matching
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233758.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233758.png" alt="8085 pin function matching" width="960"></a>
+
+The matching is `RST 7.5 -> vectored interrupt`, `HOLD -> direct memory access request`, `IO/M -> selects I/O or memory`, and `ALE -> demultiplexes the address/data bus`.
+
+`HOLD` is used when an external device, often a DMA controller, requests control of the system buses. `IO/M` tells external hardware whether the current bus cycle is a memory cycle or an I/O cycle. `ALE` is critical because `AD0-AD7` carry low address bits first and data later; the latch uses `ALE` to capture the address before the bus changes role.
+
+### Page 80: Fastest Data-Transfer Scheme Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20233921.png"><img src="images/Day%2013/Screenshot%202026-06-16%20233921.png" alt="Fastest data transfer scheme quiz" width="960"></a>
+
+The screenshot marks `None`, but the technical rule to remember is that DMA is faster than programmed data transfer for block movement. In programmed transfer, the CPU executes instructions for each byte or word: read device, store memory, update pointer, update count, repeat. That costs many instruction cycles.
+
+DMA lets a controller move data between memory and an I/O device after initial setup. The CPU is not executing one transfer instruction per data item, so the bus bandwidth is used more efficiently. If an exam uses this exact wording and its answer key treats "DMA-DTS" as invalid terminology, follow the key; conceptually, DMA is the fastest practical scheme among DMA and programmed transfer.
+
+### Page 81: Highest-Efficiency DMA Mode Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234006.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234006.png" alt="Highest efficiency DMA mode quiz" width="960"></a>
+
+The answer is burst mode of DMA transfer. In burst mode, the DMA controller takes control of the bus and transfers an entire block continuously before releasing the bus. That minimizes arbitration overhead and gives high transfer efficiency.
+
+The tradeoff is CPU blocking. While the DMA controller owns the bus, the processor cannot use the system bus for normal memory or I/O access. Cycle stealing gives the CPU more opportunities to continue, but each DMA transfer has more interruption overhead.
+
+### Page 82: Cycle-Stealing DMA Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234019.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234019.png" alt="Cycle stealing DMA quiz" width="960"></a>
+
+Cycle stealing means the DMA controller transfers one byte or word by temporarily taking a bus cycle from the CPU. It does not keep the bus for a full block like burst mode.
+
+That is why cycle stealing is a compromise. It slows the processor slightly because some bus cycles are taken away, but it allows the CPU and DMA activity to interleave. The key phrase is one transfer unit at a time, not an entire block at once.
+
+### Page 83: 8254 Counter-Count Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234057.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234057.png" alt="8254 counter count quiz" width="960"></a>
+
+The answer is `3`. The Intel 8254 programmable interval timer contains three independent 16-bit counters. Each counter can be programmed for timing, event counting, square-wave generation, rate generation, and related timing jobs.
+
+The word "independent" matters. The three counters share the same chip interface to the processor, but each counter has its own count register and control behavior, so one chip can handle multiple timing channels.
+
+### Page 84: 8259A Capability Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234125.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234125.png" alt="8259A capability quiz" width="960"></a>
+
+The page marks the first three statements as true. The central idea is that the 8259A manages up to eight interrupt request inputs, organizes them through priority and masking logic, and supplies vector information after the processor acknowledges an interrupt.
+
+The statement about command words also needs careful wording. The 8259A is initialized using initialization command words, and later controlled using operation command words. In revision terms, remember the chip is programmable: the CPU writes command words to define interrupt vectoring, priority, masking, and operating mode.
+
+### Page 85: Output-Mode Transfer Path Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234226.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234226.png" alt="Output mode transfer path quiz" width="960"></a>
+
+The answer is accumulator and I/O device. In output mode, the processor sends data from its internal data path to an external port or interface device. For 8085 and many basic instruction descriptions, the accumulator is the normal source for `OUT`.
+
+Do not confuse output mode with memory-to-I/O DMA movement. This question is asking the basic programmed-I/O direction: CPU accumulator data goes out through the selected port to the peripheral interface.
+
+### Page 86: One-Word DMA Transfer Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234303.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234303.png" alt="One word DMA transfer quiz" width="960"></a>
+
+The answer is cycle stealing. When the DMA technique transfers one word at a time and then gives the bus back, it is stealing individual bus cycles rather than holding the bus for the whole block.
+
+Burst mode transfers a block continuously. Demand mode continues while the device keeps requesting service. Cycle stealing is the one-unit-at-a-time mode, useful when the CPU should keep making progress between DMA transfers.
+
+### Page 87: Slow-Memory Wait-State Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234308.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234308.png" alt="Slow memory wait state quiz" width="960"></a>
+
+The answer is causing the `READY` signal to go low. `READY` tells the processor whether the external memory or I/O device can complete the bus cycle at normal speed.
+
+If memory is slow, external hardware holds `READY` low. The processor inserts wait states, stretching the bus cycle until valid data can be read or the write can be safely accepted. This is better than increasing clock frequency, which would make the timing problem worse.
+
+### Page 88: DMA Program-Intervention Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234415.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234415.png" alt="DMA program intervention quiz" width="960"></a>
+
+The answer is without program intervention. More precisely, the CPU program initializes the DMA controller first: starting address, count, channel, direction, and mode. After that setup, the DMA controller performs the actual data movement without the CPU executing one instruction per data item.
+
+That distinction is important. DMA is not magic or uncontrolled; it is programmed once, then the hardware controller performs the repetitive transfer work.
+
+### Page 89: 8086 IVT Contents Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234513.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234513.png" alt="8086 IVT contents quiz" width="960"></a>
+
+The 8086 interrupt vector table contains the starting `IP` and `CS` values of each interrupt service routine. Each vector is four bytes: two bytes for offset and two bytes for segment.
+
+For interrupt type `n`, the vector begins at physical address `4n`. The CPU reads the offset and segment from that vector, loads them into `IP` and `CS`, and starts executing the interrupt service routine from that address.
+
+### Page 90: 8086 Arithmetic Data-Types Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234518.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234518.png" alt="8086 arithmetic data types quiz" width="960"></a>
+
+The course answer is all three: signed and unsigned numbers, ASCII data, and unpacked BCD data. The precise technical distinction is that the core arithmetic hardware works on binary values, while the instruction set provides signed/unsigned interpretations and adjustment instructions for decimal-coded data.
+
+For example, `ADD` performs binary addition. `ADC`, `SUB`, and `SBB` also work on binary operands but the flags let you interpret results as signed or unsigned. Instructions such as `AAA`, `AAS`, `AAM`, and `AAD` help adjust ASCII or unpacked BCD digit operations around normal binary arithmetic.
+
+### Page 91: 8086 Interrupt-Priority Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234549.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234549.png" alt="8086 interrupt priority quiz" width="960"></a>
+
+The marked answer is `NMI`, and for external interrupts that is the main rule: non-maskable interrupt has priority over maskable `INTR` and cannot be disabled by clearing `IF`.
+
+For full technical accuracy, internal exceptions such as divide error are generated by instruction execution and have their own recognition timing. In this MCQ set, the intended contrast is among interrupt sources commonly taught as external or interrupt-type categories, so `NMI` is the expected answer.
+
+### Page 92: 8086 Address-Bus Width Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234606.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234606.png" alt="8086 address bus width quiz" width="960"></a>
+
+The answer is `20`. The 8086 has a 20-bit physical address bus, so it can address `2^20` byte locations.
+
+That equals 1 MB of physical address space. The internal registers are 16-bit, so the processor forms a 20-bit physical address using segment and offset: `physical address = segment x 10H + offset`.
+
+### Page 93: 8086 Registers And Flags Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234610.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234610.png" alt="8086 registers and flags quiz" width="960"></a>
+
+The course-style answer is thirteen 16-bit registers and nine active flags. The count depends on whether the flag register itself is counted as a register. A common study convention lists 13 named 16-bit registers apart from the flag register: `AX`, `BX`, `CX`, `DX`, `SP`, `BP`, `SI`, `DI`, `CS`, `DS`, `SS`, `ES`, and `IP`.
+
+The 8086 flag register is 16 bits wide, but only nine flags are active: `CF`, `PF`, `AF`, `ZF`, `SF`, `TF`, `IF`, `DF`, and `OF`. The remaining flag-register bits are unused or reserved in the 8086 programming model.
+
+### Page 94: BHE Signal Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234629.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234629.png" alt="BHE signal quiz" width="960"></a>
+
+The answer is `/BHE`, bus high enable. It is used to enable the higher byte of the 16-bit data bus, `D8-D15`.
+
+8086 memory is organized into even and odd byte banks. `A0` selects the low bank, while `/BHE` selects the high bank. Together they allow byte and word transfers: low byte only, high byte only, or both bytes for a word transfer.
+
+### Page 95: 8086 Active-Flags Count Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234640.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234640.png" alt="8086 active flags count quiz" width="960"></a>
+
+The answer is `9`. The 8086 flag register is 16 bits wide, but not all bit positions are active flags.
+
+The active flags are six status flags and three control flags. Status flags are `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF`. Control flags are `TF`, `IF`, and `DF`.
+
+### Page 96: 8086 Memory-Segment Count Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234648.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234648.png" alt="8086 memory segment count quiz" width="960"></a>
+
+The answer is `4`: code segment, data segment, stack segment, and extra segment. They are represented by `CS`, `DS`, `SS`, and `ES`.
+
+Each segment register holds a 16-bit segment base value. The base is shifted left by four bits, then a 16-bit offset is added. This lets the 8086 use 16-bit registers while still generating 20-bit physical addresses.
+
+### Page 97: 8086 Not-True Statement Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234701.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234701.png" alt="8086 not true statement quiz" width="960"></a>
+
+The statement that is not true is "16 bit address bus." The 8086 is a 16-bit processor and has a 16-bit data bus, but its address bus is 20 bits wide.
+
+This distinction is a common exam trap. Data width describes how much data can be transferred in one bus operation or held in the main registers. Address width describes how many byte locations can be selected. For 8086, 20 address lines give 1 MB addressing.
+
+### Page 98: 8086 Addressing-Mode Count Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234707.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234707.png" alt="8086 addressing mode count quiz" width="960"></a>
+
+The marked answer is `8`. Different books group addressing modes slightly differently, but the course grouping usually includes immediate, register, direct, register indirect, based, indexed, based-indexed, and relative or implied/string-related forms depending on the chapter.
+
+The deeper point is not just the number. Addressing modes tell the processor where the operand comes from: inside the instruction, inside a register, at a memory offset, or at an effective address built from base/index registers plus displacement.
+
+### Page 99: Interrupt-Vector-Table Size Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234717.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234717.png" alt="Interrupt vector table size quiz" width="960"></a>
+
+For 8086, the answer is 1 KB and 256 procedures. There are 256 interrupt types, numbered `00H` through `FFH`.
+
+Each vector entry is 4 bytes: 2 bytes for `IP` and 2 bytes for `CS`. Therefore total vector table size is `256 x 4 = 1024 bytes`, which is 1 KB. The table starts at physical address `00000H`.
+
+### Page 100: 8086 Memory Capacity Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234725.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234725.png" alt="8086 memory capacity quiz" width="960"></a>
+
+The answer is 1 megabyte. The 8086 has 20 address lines, so it can generate `2^20` physical byte addresses.
+
+`2^20 = 1,048,576` bytes, which is 1 MB in the conventional binary sense used for memory capacity. This is why segmentation exists in the 8086: 16-bit registers alone can name only 64 KB, but segment plus offset can reach the 1 MB space.
+
+### Page 101: Physical-Address Bit-Width Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234730.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234730.png" alt="Physical address bit width quiz" width="960"></a>
+
+The answer is 20 bits. A physical address is the actual address placed on the address bus. For 8086, that bus has 20 address lines.
+
+The CPU computes the physical address from a segment and an offset. Example: if `CS = 2000H` and `IP = 0100H`, the physical address is `20000H + 0100H = 20100H`.
+
+### Page 102: AAD Before Arithmetic Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234754.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234754.png" alt="AAD before arithmetic quiz" width="960"></a>
+
+The answer is `AAD` when the intended operation is ASCII or unpacked BCD division. `AAD` means ASCII adjust before division. It converts two unpacked decimal digits in `AH:AL` into a binary number in `AL`.
+
+The timing of the adjust instructions is the memory trick: `AAA` adjusts after addition, `AAS` after subtraction, `AAM` after multiplication, and `AAD` before division. That "before division" exception is why this MCQ appears.
+
+### Page 103: Undefined Carry After Adjust Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234807.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234807.png" alt="Undefined carry after adjust quiz" width="960"></a>
+
+The safe technical rule is: `AAA` defines `CF` and `AF`, and `ADC` definitely defines carry because carry is part of its operation. `AAM` leaves `CF` undefined. `AAD` also leaves `CF` undefined in the 8086 definition, so a single-answer MCQ may be depending on the chapter context.
+
+If forced to choose from the visible set in the arithmetic-adjust sequence, choose `AAM` when the answer key expects one option. But while tracing programs, never use `CF` after `AAM` or `AAD` as meaningful unless a later instruction has set it again.
+
+### Page 104: Logical AND Without Result Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234815.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234815.png" alt="Logical AND without result quiz" width="960"></a>
+
+The answer is `TEST`. `TEST` performs a bitwise AND internally, sets flags from that AND result, and then discards the result.
+
+This makes `TEST` useful for checking whether selected bits are 0 or 1 without changing the destination operand. `AND` would store the result back into the destination; `TEST` only updates flags.
+
+### Page 105: RCL Data-Path Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234836.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234836.png" alt="RCL data path quiz" width="960"></a>
+
+For `RCL`, the old carry flag is pushed into the least significant bit, and the old most significant bit is pushed into the carry flag. Carry acts like an extra bit connected to the operand.
+
+This is the difference between `RCL` and `ROL`. In `ROL`, the old most significant bit wraps around into the least significant bit and is also copied into carry. In `RCL`, the old carry participates in the rotation path.
+
+### Page 106: Repeat-Prefix Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234846.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234846.png" alt="Repeat prefix quiz" width="960"></a>
+
+The answer is `REP`. `REP` is placed before a string instruction to repeat it while `CX` is not zero. After each repetition, `CX` is decremented.
+
+`REP MOVSB`, for example, copies a block of bytes from `DS:SI` to `ES:DI`. The direction flag controls whether `SI` and `DI` increment or decrement after each byte.
+
+### Page 107: Call-Return Instruction Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234856.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234856.png" alt="Call return instruction quiz" width="960"></a>
+
+The answer is `CALL, RET`. `CALL` transfers control to a subroutine and saves the return address on the stack. `RET` uses that saved return address to resume the caller.
+
+`JMP` is not a subroutine call because it does not save a return address. Once execution jumps, there is no automatic way back unless the program manually branches back.
+
+### Page 108: Unconditional-Transfer Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234904.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234904.png" alt="Unconditional transfer quiz" width="960"></a>
+
+The answer is `JMP`. It unconditionally transfers control to the specified target address.
+
+`CALL` also transfers control, but it is specifically for subroutines and saves a return address. `RET` returns from a subroutine. `IRET` returns from an interrupt service routine and restores flags as well as the return address.
+
+### Page 109: HLT Exit-Source Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20234915.png"><img src="images/Day%2013/Screenshot%202026-06-16%20234915.png" alt="HLT exit source quiz" width="960"></a>
+
+The answer is `HOLD`: it cannot force the processor out of the halt state. Interrupt request and reset can bring the processor out of `HLT`.
+
+`HOLD` is a bus request mechanism. It asks the processor to release control of the buses for DMA-style activity. It does not make the CPU resume instruction execution from halt.
+
+### Page 110: NOP Delay Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235004.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235004.png" alt="NOP delay quiz" width="960"></a>
+
+The answer is delay. `NOP` means no operation. It consumes instruction time while leaving registers, memory, and flags unchanged in any useful way.
+
+`NOP` can be used for small timing adjustment, patch space, or alignment. It is not a memory-location instruction and it does not introduce a new address by itself.
+
+### Page 111: Machine-Control Instruction Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235009.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235009.png" alt="Machine control instruction quiz" width="960"></a>
+
+The answer is `CLC` if the question asks which one is not a machine-control instruction. `CLC` clears the carry flag, so it belongs to flag-manipulation or flag-control instructions.
+
+`HLT`, `LOCK`, and `ESC` are machine-control style instructions in the 8086 grouping. `HLT` stops instruction execution until an interrupt or reset. `LOCK` affects bus locking for certain memory operations. `ESC` is used for coprocessor escape sequences.
+
+### Page 112: Microprocessor Single-Chip Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235025.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235025.png" alt="Microprocessor single chip quiz" width="960"></a>
+
+The answer is single chip. A microprocessor integrates the CPU functions of a computer onto one integrated circuit chip.
+
+That does not mean the whole computer is one chip. Memory, I/O devices, clocks, address decoding, and support controllers can still be separate. The key definition is that the processor core itself is implemented as one chip.
+
+### Page 113: Microprocessor Circuit-Type Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235033.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235033.png" alt="Microprocessor circuit type quiz" width="960"></a>
+
+The answer is electronic circuit. A microprocessor is an electronic integrated circuit that functions as the CPU of a computer system.
+
+It is not mechanical, and "processing" describes what it does rather than what kind of circuit it is. The processor fetches instructions, decodes them, executes arithmetic/logical/control operations, and coordinates data movement with memory and I/O.
+
+### Page 114: Microprocessor Role Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235043.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235043.png" alt="Microprocessor role quiz" width="960"></a>
+
+The course answer is heart of the computer. Many textbooks also call the CPU the brain of the computer, but in this option set "heart" is the intended central-role word.
+
+The reason is that the microprocessor coordinates the system: it fetches instructions, performs calculations, makes decisions using flags, and controls data transfers between registers, memory, and I/O devices.
+
+### Page 115: Microprocessor Purpose Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235050.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235050.png" alt="Microprocessor purpose quiz" width="960"></a>
+
+The answer is processing. The purpose of the microprocessor is to control and perform processing tasks according to the stored program.
+
+It can access memory and communicate with switches or devices, but those are mechanisms. The core purpose is instruction-controlled processing: arithmetic, logic, data movement, branching, and control.
+
+### Page 116: First Digital Electronic Computer Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235104.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235104.png" alt="First digital electronic computer quiz" width="960"></a>
+
+The expected course answer from the visible choices is likely `1940`. Historically, early electronic digital computer milestones span the 1940s, with machines such as Atanasoff-Berry Computer work around 1939-1942, Colossus in 1943, and ENIAC completed later in the 1940s.
+
+For this microprocessor revision file, the practical point is chronology: electronic digital computing predates microprocessors by decades. Microprocessors came after the integrated circuit era made it possible to place CPU logic on a single chip.
+
+### Page 117: Texas Instruments Invention Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235112.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235112.png" alt="Texas Instruments invention quiz" width="960"></a>
+
+The answer is integrated circuits. Jack Kilby at Texas Instruments demonstrated an early integrated circuit in 1958, and course material often rounds this into the late 1950s or 1960s integrated-circuit era.
+
+This matters because microprocessors depend on integration density. Without integrated circuits, putting a full CPU on one chip would not be practical.
+
+### Page 118: 8086 Processor Width Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235116.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235116.png" alt="8086 processor width quiz" width="960"></a>
+
+The answer is 16-bit. The 8086 has 16-bit general-purpose registers and a 16-bit external data bus.
+
+This is different from address width. The 8086 is a 16-bit processor but has a 20-bit address bus. So it can process 16-bit words while addressing up to 1 MB of memory.
+
+### Page 119: 8086 16-Bit Data Transfer Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235122.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235122.png" alt="8086 16 bit data transfer quiz" width="960"></a>
+
+The answer is memory. The 8086 can read or write 16-bit data from or to memory because it has a 16-bit data bus and word-sized instructions.
+
+If the word is aligned at an even address, it can be transferred efficiently using both byte banks. If it is unaligned, the processor may need more bus activity because the word spans two bank positions.
+
+### Page 120: 8086 Address-Bus Width Repeat Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235129.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235129.png" alt="8086 address bus width repeat quiz" width="960"></a>
+
+The answer is 20-bit. This repeats the central 8086 fact: data width is 16 bits, address width is 20 bits.
+
+The processor reaches a 20-bit address by adding a 16-bit offset to a shifted segment base. That is why `CS:IP`, `DS:offset`, `SS:SP`, and `ES:DI` pairs appear throughout the 8086 notes.
+
+### Page 121: 8086 Flag-Register Purpose Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235138.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235138.png" alt="8086 flag register purpose quiz" width="960"></a>
+
+The answer is the condition of the result of an ALU operation. Status flags record properties such as carry, zero, sign, parity, auxiliary carry, and overflow.
+
+Flags are not the result itself. They are a compact status summary used by conditional jumps, arithmetic-with-carry instructions, decimal-adjust instructions, and interrupt/control behavior.
+
+### Page 122: Execution-Unit Work Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235143.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235143.png" alt="Execution unit work quiz" width="960"></a>
+
+The best answer from the options is decoding, with execution understood as the broader job. In the 8086 split, the bus interface unit fetches instruction bytes and handles bus/address work, while the execution unit decodes instructions and carries them out using the ALU, registers, and flags.
+
+If the option set uses "processing" broadly, that can describe the EU's total job, but the architecture-specific contrast is BIU fetches and EU decodes/executes.
+
+### Page 123: Sign-Flag Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235201.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235201.png" alt="Sign flag quiz" width="960"></a>
+
+`SF` is the sign flag. It copies the most significant bit of the result: bit 7 for byte results and bit 15 for word results.
+
+In signed two's-complement interpretation, a most significant bit of 1 means the result is negative. That is why `SF` is tested by signed conditional jumps along with `OF` and `ZF`.
+
+### Page 124: Carry-Flag Quiz
+
+<a href="images/Day%2013/Screenshot%202026-06-16%20235204.png"><img src="images/Day%2013/Screenshot%202026-06-16%20235204.png" alt="Carry flag quiz" width="960"></a>
+
+`CF` is the carry flag. For addition, it records a carry out of the most significant bit. For subtraction, it records a borrow.
+
+`CF` is essential for unsigned arithmetic and multi-precision arithmetic. Instructions such as `ADC` and `SBB` include `CF` in the next byte or word calculation, allowing larger-than-16-bit values to be processed piece by piece.
+
 ## Deep Revision Tables
 
 ### Rotate And Shift Summary
@@ -747,6 +1352,14 @@ For the stack, `SS` gives the segment base and `SP`/`BP` provide offsets inside 
 - 8257 handles DMA transfers so fast devices can exchange blocks with memory without CPU involvement for each byte.
 - 8259 handles multiple interrupt requests, applies masks and priority, and presents a controlled interrupt request to the CPU.
 - 8275 supports CRT/raster display interfacing; 8279 supports keyboard and display interfacing.
+- In 8085, `INTR` is non-vectored, `TRAP` is non-maskable, `RST 7.5` is edge-triggered, and `RST 5.5` is level-sensitive.
+- Memory-mapped I/O shares the normal address space; isolated I/O uses a separate port space.
+- A 16-bit address bus gives 64K addressable locations; the 8086 has a 20-bit address bus and therefore 1 MB physical address space.
+- The 8086 interrupt vector table has 256 entries, 4 bytes each, for a total of 1 KB.
+- `TEST` performs AND for flags only; it does not store the AND result.
+- `AAD` is used before unpacked BCD division; `AAA`, `AAS`, and `AAM` adjust after addition, subtraction, and multiplication.
+- `READY` low inserts wait states for slow memory or I/O.
+- `SF` is sign flag and `CF` is carry flag; flags describe ALU result conditions and guide conditional control flow.
 
 ## Sources
 
