@@ -450,6 +450,20 @@ For `RAL` and `RAR`, carry is part of the rotation path. For `RLC` and `RRC`, th
 | `RAL` | old `A7` | old `CY` enters `A0` |
 | `RAR` | old `A0` | old `CY` enters `A7` |
 
+## Handwritten And Screenshot Deepening
+
+Day 05 should be revised through flag meaning under subtraction and bit operations. The handwritten pages on `SUB`, `SBB`, `SUI`, `CMP`, `DAA`, logical instructions, and rotates are connected by one rule: the result byte alone is not enough. You must also know which flags are meaningful after the instruction and how the next instruction might use them.
+
+For subtraction, remember that the 8085 performs two's-complement addition internally, but the carry flag is interpreted as borrow. If `A` is smaller than the subtracted value in unsigned arithmetic, `CY` becomes 1. `SBB` includes the existing carry as a borrow input, so it is used for multi-byte subtraction. That is why a trace must carry `CY` forward from the lower byte to the higher byte.
+
+`CMP` is a subtraction that throws away the result and keeps only the flags. If `A = operand`, zero is set. If `A < operand` in unsigned comparison, carry is set. If `A > operand`, both zero and carry are clear. The handwritten branch pages become easier when every `CMP` is rewritten mentally as "subtract for flags only."
+
+The BCD material around `DAA` is deeper than a correction trick. Binary addition of packed decimal digits can produce invalid decimal nibbles such as `1010` to `1111`, or a carry between decimal digits. `DAA` checks the lower nibble, `AC`, the upper nibble, and `CY` to add `06H` and/or `60H` when required. So the handwritten `DAA` examples should be solved from the binary addition first, then corrected as BCD.
+
+Logical instructions should be revised bit-by-bit. `ANA` clears bits where the mask is 0, `ORA` sets bits where the mask is 1, and `XRA` toggles bits where the mask is 1. `CMA` complements all accumulator bits without doing arithmetic. This is why logical instructions are useful for masking, clearing, setting, and testing individual bits in I/O or status bytes.
+
+Rotates connect the accumulator to the carry flag. `RLC` and `RRC` rotate inside `A` and copy the wrapped bit into `CY`; `RAL` and `RAR` rotate through carry, so old `CY` becomes part of the shifted value. When checking handwritten rotate traces, draw nine boxes: eight accumulator bits plus carry. That drawing prevents the common error of treating all rotate instructions the same.
+
 ## Points To Remember
 
 - In subtraction, carry means borrow.

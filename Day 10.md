@@ -588,6 +588,20 @@ That is why serious string code often begins with `CLD` unless it intentionally 
 
 Use unsigned jumps for addresses, sizes, counts, and raw bytes. Use signed jumps for two's-complement numerical values.
 
+## Handwritten And Screenshot Deepening
+
+Day 10 should be revised as the first real 8086 programming day. The screenshots introduce flags, addressing modes, interrupts, and instruction groups; the handwritten pages supply the rules that let you predict what each instruction will read, write, and leave in hidden state. The main habit is to identify operand size, operand location, default segment, and flag effect before trying to memorize the mnemonic.
+
+Addressing modes are not names for examples; they are formulas for finding operands. Immediate addressing gets data from the instruction itself. Register addressing uses a CPU register. Direct addressing gives an offset in the instruction. Register-indirect, based, indexed, and based-indexed modes build an effective offset from registers and optional displacement. After the offset is known, the segment rule is applied to form a physical address.
+
+Default segments matter. Most data references use `DS`, but references using `BP` default to `SS` because `BP` is stack-oriented. String source defaults to `DS:SI`, while string destination uses `ES:DI`. The handwritten addressing pages become much deeper when every memory operand is rewritten as segment plus effective offset, not just as bracket notation.
+
+The interrupt vector table page should be solved numerically. 8086 has 256 interrupt types. Each vector is 4 bytes: offset first, then segment. Therefore the vector for type `n` begins at physical address `4n`. For type 0, the first vector starts at `00000H`. For type 5, it starts at `00014H`. This calculation is the reason the IVT occupies 1024 bytes.
+
+`MOV` rules in the handwritten notes should be treated as operand-compatibility rules. Memory-to-memory `MOV` is not allowed in one instruction. Immediate data cannot be moved directly into a segment register. Segment register transfers have restrictions. Source and destination sizes must match unless the instruction is explicitly designed to extend or adjust a value.
+
+When studying instruction groups, separate visible operands from implicit operands. `MUL`, `DIV`, string instructions, `IN`, `OUT`, and interrupt instructions often use hidden registers or fixed state. For example, port I/O uses `AL`/`AX`, variable ports use `DX`, string instructions use `SI`, `DI`, `CX`, and `DF`, and interrupts use stack plus `CS:IP` vector loading. The screenshots become more predictable when these implicit registers are written beside each instruction.
+
 ## Points To Remember
 
 - Single-step mode uses `TF`, the trap flag.

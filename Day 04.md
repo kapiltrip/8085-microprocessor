@@ -435,6 +435,20 @@ Practical method:
 
 This same bit-field idea appears later in peripheral control words for chips such as the 8255 and 8259.
 
+## Handwritten And Screenshot Deepening
+
+Day 04 is where earlier flag tracing becomes control flow. The handwritten pages on `CALL`, conditional call, conditional return, stack, `SIM`, and `RIM` should be read as one topic: how the processor temporarily leaves the normal instruction stream and later resumes correctly. The screenshots show the instruction names, but the handwritten notes explain the hidden state that makes those instructions safe.
+
+For subroutines, the key hidden state is the return address. `CALL addr` pushes the address of the next instruction onto the stack and then loads the program counter with the subroutine address. `RET` reverses that by popping the saved address back into the program counter. If you do not track the stack pointer and the two stored address bytes, you only know where the subroutine starts, not how it returns.
+
+Conditional calls and returns depend completely on the current flags. `CZ`, `CNZ`, `CC`, `CNC`, `CP`, `CM`, `CPE`, and `CPO` do not perform a fresh comparison. They only test flags left by an earlier arithmetic or logical instruction. So the handwritten program traces should be solved in order: compute the previous result, update flags, then decide whether the call or return happens.
+
+The stack instructions in the handwritten notes also explain why register pairs matter. `PUSH B` stores `BC`, `PUSH D` stores `DE`, `PUSH H` stores `HL`, and `PUSH PSW` stores accumulator plus flags. The stack grows downward in 8085 memory, so the stack pointer decreases during push and increases during pop. That behavior is the reason nested subroutines and interrupt service routines can preserve state.
+
+`SIM` and `RIM` should be studied as controlled access to special interrupt and serial-I/O state. `SIM` can set interrupt masks, reset the `RST 7.5` latch, and send serial output through `SOD` when enabled. `RIM` reads interrupt mask/pending status and serial input through `SID`. These instructions are not normal data-transfer instructions; they expose hardware control bits through the accumulator.
+
+The screenshot on signed input and carry/rotate logic belongs with this day because it shows control decisions based on bit meaning. Testing the sign bit, rotating through carry, and branching from flags are all examples of using a single bit to decide a program path. The handwritten pages are strongest when you annotate each branch with the exact flag or bit that controls it.
+
 ## Points To Remember
 
 - Conditional jumps test flags set earlier.

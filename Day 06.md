@@ -388,6 +388,20 @@ Technical explanation: branch instructions test existing state; they do not crea
 
 The 8085 stack grows toward lower memory addresses. On push-like operations, `SP` is decremented before bytes are stored; on pop-like operations, bytes are read and then `SP` is incremented. For register pairs, keep high and low bytes separate because the final memory layout determines what a later `POP` or `RET` reconstructs.
 
+## Handwritten And Screenshot Deepening
+
+Day 06 is the practice day, so the handwritten notes should be used less like definitions and more like worked examples. Each page asks you to combine earlier rules: instruction effect, flag update, memory location, register-pair behavior, stack movement, and T-state counting. The screenshots give the question shape; the handwritten pages show how many small state changes must be tracked before an answer is trustworthy.
+
+For register and memory traces, write down the initial values exactly before executing the first instruction. Then update only the storage locations that the current instruction really touches. `INR M` changes the memory byte pointed to by `HL`, not `HL` itself. `DAD` changes `HL` and `CY`, but not `Z`, `S`, or `P`. `XCHG` swaps `HL` and `DE`, but does not affect flags. These selective effects are where most assignment mistakes happen.
+
+Timing and delay-loop pages should be solved from the inside outward. First find the T-states for one execution path of each instruction. Then decide how many times the loop body actually runs. Conditional jumps often have different timings depending on whether the jump is taken. The last loop iteration usually has a different jump cost because the condition fails. That final iteration is the reason delay calculations cannot be solved by multiplying one line blindly.
+
+For stack examples, draw memory addresses around `SP` and show the direction of movement. On a push, `SP` decreases and bytes are stored on the stack. On a pop, bytes are read and `SP` increases. If a question includes `CALL`, `RET`, `PUSH`, `POP`, or interrupt behavior, the stack is part of the answer even if the question looks like a register trace.
+
+The handwritten flag questions should be tied back to binary arithmetic, not guessed from decimal-looking results. A result of `00H` sets zero. A result with bit 7 set sets sign. Parity depends on the count of 1 bits in the result. Carry and auxiliary carry come from bit-boundary behavior during the operation. If you cannot show the binary or hex carry path, the flag answer is not yet deep enough.
+
+Use this day as a self-test for the screenshots from Days 01-05. If you can solve the Day 06 handwritten examples without looking back, then you understand not just the definitions but the processor state model: registers, flags, memory, stack, buses, and timing all changing in a controlled sequence.
+
 ## Deep Revision Notes
 
 Day 06 is not a new theory chapter as much as it is a solving chapter. The screenshots ask you to combine concepts from earlier days: instruction length, flags, register pairs, stack order, delay loops, and conditional branch timing. The safest method is to build a small trace table for every question.

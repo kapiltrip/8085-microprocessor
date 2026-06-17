@@ -366,6 +366,20 @@ That separation explains why "interrupt requested" is not the same as "interrupt
 | Many devices competing for service | Programmable interrupt controller. |
 | Accurate periodic timing | Programmable interval timer. |
 
+## Handwritten And Screenshot Deepening
+
+Day 08 is about moving data between the processor system and the outside world. The handwritten notes and screenshots should be read through one question: who controls the transfer at this moment? In programmed I/O, the CPU executes instructions for each transfer. In interrupt-driven I/O, the device asks for attention when ready. In DMA, a controller temporarily takes bus ownership so data can move without CPU instruction execution for every byte.
+
+For programmed I/O, the processor is fully involved. It selects the port or memory-mapped device, executes `IN` or `OUT` or memory instructions, and waits through the instruction sequence. This is simple and predictable, but inefficient for large blocks or fast devices because the CPU spends time repeatedly moving data instead of doing other work.
+
+Handshaking pages should be understood as timing protection. A processor and peripheral rarely operate at exactly the same speed. Strobe and handshaking signals let one side say "data is valid" and the other side say "data received" or "ready for next data." That prevents the CPU from reading unstable input or overwriting output before the device can accept it.
+
+DMA pages are deeper if you trace bus ownership. The DMA controller requests the bus using `HOLD`; the processor responds with `HLDA` after releasing address, data, and control buses. Then the DMA controller supplies addresses and read/write controls for memory and I/O. The CPU is not performing the repeated byte transfers; it has only initialized the DMA controller and temporarily surrendered the bus.
+
+Burst mode, cycle stealing, and demand mode should be compared by the tradeoff between speed and CPU availability. Burst mode is fastest for a block but blocks the CPU from the bus during the burst. Cycle stealing transfers one byte or word at a time and returns the bus between transfers. Demand mode continues while the device keeps requesting service. The screenshots become easier when each mode is drawn as a bus-ownership timeline.
+
+For support chips, revise each one by its system problem. The 8255 expands parallel I/O, 8253/8254 provides timing/counting, 8257 handles DMA, 8259 organizes interrupts, 8272 handles floppy control, 8275 handles display timing, and 8279 handles keyboard/display interfacing. These are not random chip numbers; each chip removes a repeated hardware-control burden from the main processor.
+
 ## Points To Remember
 
 - Programmed I/O keeps the CPU involved in the transfer.

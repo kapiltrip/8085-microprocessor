@@ -1298,6 +1298,22 @@ In signed two's-complement interpretation, a most significant bit of 1 means the
 
 `CF` is essential for unsigned arithmetic and multi-precision arithmetic. Instructions such as `ADC` and `SBB` include `CF` in the next byte or word calculation, allowing larger-than-16-bit values to be processed piece by piece.
 
+## Handwritten And Screenshot Deepening
+
+Day 13 is wide because it finishes several 8086 instruction families and then revises older 8085 topics through MCQs. Read it in layers. First, understand the data path for rotate and shift instructions. Second, understand the implicit registers used by string instructions. Third, understand how jumps, calls, returns, interrupts, and I/O change control flow or bus activity. The handwritten pages are valuable because they show these layers on fewer pages than the screenshot sequence.
+
+For rotate and shift instructions, always draw the operand bits plus `CF`. `RCL` and `RCR` include carry as an extra bit in the rotation path. `ROL` and `ROR` wrap bits inside the operand and copy the wrapped bit to carry. `SHL/SAL` inserts zero from the right, while `SAR` preserves the sign bit during right shift. If the page asks about `OF`, remember that overflow is only well-defined for one-bit rotate/shift counts in the basic 8086 rules; multi-bit overflow should not be used as a reliable result.
+
+String instructions are short because their operands are hidden. `MOVS` reads from `DS:SI` and writes to `ES:DI`. `STOS` writes `AL` or `AX` to `ES:DI`. `LODS` reads from `DS:SI` into `AL` or `AX`. `CMPS` compares `DS:SI` with `ES:DI`. `SCAS` compares `AL` or `AX` with `ES:DI`. `DF` decides whether the pointers increment or decrement, and `CX` becomes the repeat counter when a `REP` prefix is used.
+
+For control transfer, separate three questions: does it save a return address, does it stay in the same code segment, and where does the target address come from? `JMP` does not save a return address. `CALL` saves one. Near forms change only `IP`; far forms change `CS:IP`. Direct forms encode the target in the instruction; indirect forms read the target from a register or memory. `RET` restores what the matching call saved, and `RET n` also removes stack parameters.
+
+The I/O pages should be tied to bus-cycle thinking from Day 02 and Day 08. Isolated I/O uses a separate port space and `IN`/`OUT`. Memory-mapped I/O uses ordinary memory addresses and ordinary memory instructions, but consumes memory address space. In minimum mode, the 8086 directly emits the needed bus-control signals. In maximum mode, the 8288 bus controller decodes status lines and generates command signals for the system bus.
+
+The support-chip screenshots should be revised by purpose. 8251 handles serial communication, converting parallel CPU data to serial line data and back. 8257 handles DMA, moving blocks between memory and I/O without CPU intervention for each byte. 8259 handles interrupt priority, masking, request tracking, and interrupt acknowledgement. 8275 handles display control, and 8279 handles keyboard/display interfacing. If a chip number appears in an MCQ, first identify the system bottleneck it solves.
+
+The final MCQ screenshots are useful because they force cross-day retrieval. `INTR` is non-vectored in 8085. `TRAP` is non-maskable and vectors to `0024H`. `SIM` controls selected masks, `SOD`, and `RST 7.5` reset behavior, but not every interrupt. `READY` low adds wait states. 8086 has a 20-bit address bus, 1 MB physical address space, four segment registers, and a 1 KB interrupt vector table. These questions should be answered by the underlying rule, not by remembering the option letter.
+
 ## Deep Revision Tables
 
 ### Rotate And Shift Summary

@@ -1467,6 +1467,22 @@ Examples:
 | Greater or equal | `JAE` | `JGE` |
 | Less or equal | `JBE` | `JLE` |
 
+## Handwritten And Screenshot Deepening
+
+Day 12 is the main 8086 arithmetic and data-manipulation day. The screenshots give many instruction examples, but the handwritten notes are where the hidden conventions become visible: implicit operands, result registers, quotient/remainder locations, adjustment timing, and which flags are defined. The safest study method is to write the operand size first, then the hidden registers, then the result location.
+
+For `ADD`, `ADC`, `SUB`, and `SBB`, connect the handwritten array examples to effective-address calculation. `PRICES[BX]` is not a separate addressing mode magic word; it means base label plus index offset. With `DB`, each element is one byte, so incrementing an index by 1 moves to the next element. With `DW`, each element is a word, so the logical element number must be converted to byte offset, often by multiplying by 2 or using an index already prepared as a byte displacement.
+
+`ADC` and `SBB` are multi-precision tools. `ADC` adds the carry flag into the next higher byte or word; `SBB` subtracts the carry flag as a borrow. This is why you must not reset or ignore `CF` between low-byte and high-byte operations. The handwritten subtraction examples should be revised as chained arithmetic, not isolated one-line subtractions.
+
+Multiplication is one of the best examples of implicit operands. For byte `MUL`, the implicit multiplicand is `AL` and the result goes to `AX`. For word `MUL`, the implicit multiplicand is `AX` and the result goes to `DX:AX`. `IMUL` uses signed interpretation, but the same size-based result locations matter. `CF` and `OF` tell whether the upper half is a significant extension of the result; other flags are not reliable.
+
+Division reverses the register pattern. For byte `DIV`, the dividend is `AX`, quotient goes to `AL`, and remainder goes to `AH`. For word `DIV`, the dividend is `DX:AX`, quotient goes to `AX`, and remainder goes to `DX`. `IDIV` is signed, so `CBW` and `CWD` become preparation instructions: `CBW` extends signed `AL` into `AX`, and `CWD` extends signed `AX` into `DX:AX`.
+
+The decimal/ASCII adjust instructions should be studied by when they occur. `DAA` adjusts after packed BCD addition. `DAS` adjusts after packed BCD subtraction. `AAA` and `AAS` adjust after unpacked/ASCII digit addition or subtraction. `AAM` adjusts after multiplication of unpacked decimal digits. `AAD` is different because it adjusts before division by converting unpacked decimal digits in `AH:AL` into a binary value in `AL`.
+
+For logical instructions, distinguish result-producing operations from test-only operations. `AND`, `OR`, `XOR`, and `NEG` change the destination. `CMP` subtracts only for flags and preserves both operands. The handwritten `CMP` page should be solved exactly like subtraction for flags, then the result should be thrown away. This is why `CMP` is always paired mentally with a later conditional jump.
+
 ## Deep Revision Tables
 
 ### Hidden Register Table

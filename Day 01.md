@@ -1128,6 +1128,18 @@ cycle control
 external event handling
 ```
 
+## Handwritten And Screenshot Deepening
+
+The handwritten Day 01 pages should be read as the hardware foundation behind every later screenshot. Do not treat the ALU, accumulator, flags, buses, and control unit as separate definitions. In the 8085, an instruction becomes useful only when these blocks cooperate: the program counter chooses the next memory address, the instruction register holds the opcode, the control unit creates the timing signals, the register file supplies operands, the ALU performs the operation, and the flags preserve the result condition for later decisions.
+
+When revising the accumulator and flag pages, always ask two questions after an operation: what 8-bit value is left in `A`, and what truth did the flags record about that value? `CY` is about carry out in addition and borrow in subtraction. `AC` is about the nibble boundary from bit 3 to bit 4, so it matters for BCD-style correction even when the final 8-bit result looks simple. `Z`, `S`, and `P` are not optional decoration; they are the bridge from arithmetic into conditional branching later.
+
+The pin screenshots and handwritten pin diagrams are best studied in groups. Address pins select a location, data pins move the byte, control/status pins explain what kind of bus cycle is happening, interrupt pins let outside hardware request attention, serial pins move one-bit data, and DMA pins let another controller borrow the bus. If you can name a pin but cannot say which of those jobs it supports, the revision is still incomplete.
+
+The multiplexed `AD0-AD7` bus is the most important Day 01 hardware idea. During the early part of a machine cycle, those lines carry the low address byte. After `ALE` lets an external latch store that address, the same pins become the data bus. This explains why `ALE` is not just a signal to memorize; it is the reason the 8085 can use fewer package pins while still providing a 16-bit address and 8-bit data path.
+
+Connect the screenshot sequence to the handwritten notes through timing. A microprocessor is not simply "executing an instruction"; it is repeatedly placing addresses on the bus, enabling memory or I/O, waiting for valid data, and then updating internal registers. That is why later timing diagrams, machine cycles, and T-state counts depend directly on Day 01 signals such as `ALE`, `/RD`, `/WR`, `IO/M`, `S1`, and `S0`.
+
 ## Sources
 
 [S1] Intel Corporation, [MCS-80/85 Family User's Manual, January 1983](https://www.bitsavers.org/components/intel/MCS80/MCS80_85_Users_Manual_Jan83.pdf), Chapter 2, "What the 8085A Is" and "What's in the 8085A." Used for 8085 as 8-bit microprocessor, 64 KB memory access, 8-bit data bus, 16-bit addressing, registers, control signals, and system functions.
