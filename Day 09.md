@@ -407,6 +407,20 @@ The 8086 has a 16-bit data bus but memory is byte-addressed. It must select the 
 
 This explains why alignment matters on a 16-bit bus.
 
+## Handwritten And Screenshot Deepening
+
+Day 09 is the bridge from 8085 thinking to 8086 thinking. The handwritten pages on pins, minimum/maximum mode, BIU, EU, queue, segment registers, and flags should be read as a new architecture model. The 8086 is still a bus-based microprocessor, but it has a wider data path, a larger address space, segmentation, and internal overlap between fetching and execution.
+
+For pins, group them by role before memorizing names. `AD0-AD15` are multiplexed address/data pins. `A16/S3` through `A19/S6` carry high address bits first and status later. `/BHE/S7` helps select the high data byte on `D8-D15`. `ALE` supports address latching. `READY` inserts waits for slow devices. `INTR` and `NMI` are interrupt inputs. `TEST` works with `WAIT`. This grouping is the 8086 version of the Day 01 pin strategy.
+
+Minimum mode and maximum mode are about who creates bus-control signals. In minimum mode, a single-processor system lets the 8086 directly provide signals such as `M/IO`, `/RD`, `/WR`, `DT/R`, and `DEN`. In maximum mode, the processor outputs status lines such as `S0`, `S1`, and `S2`, and an external 8288 bus controller decodes them into bus command signals. The handwritten mode table should be revised as control-signal ownership, not just pin-name replacement.
+
+The BIU/EU split is the central internal architecture idea. The Bus Interface Unit forms physical addresses, fetches instruction bytes, reads/writes memory and I/O, and maintains the instruction queue. The Execution Unit decodes and executes instructions using the ALU, general registers, flags, and control logic. This lets the BIU fetch ahead while the EU executes, improving throughput when the queue stays useful.
+
+Segmentation should be understood as address formation. A segment register does not directly hold a full physical address. The 8086 shifts the segment value left by four bits and adds a 16-bit offset. That creates a 20-bit physical address. `CS:IP` selects instruction bytes, `SS:SP/BP` selects stack data, `DS` is the usual data segment, and `ES` is heavily used by string destinations.
+
+The handwritten flag-register pages should be read as a programming contract. Status flags describe ALU results; control flags change processor behavior. `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF` describe results. `TF`, `IF`, and `DF` control single stepping, maskable interrupts, and string direction. Day 09 sets up why later Day 10-13 instructions constantly mention flags.
+
 ## Points To Remember
 
 - 8086 has a 16-bit data bus and 20-bit address bus.

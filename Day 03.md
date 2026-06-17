@@ -398,6 +398,20 @@ Use this mental table:
 
 This is deeper than saying "logical instruction." In programs, these instructions are used to modify control/status bytes without disturbing unrelated bits.
 
+## Handwritten And Screenshot Deepening
+
+Day 03 handwritten notes should be studied as a tracing discipline. The screenshots show specific instructions such as `MVI M,data`, `LHLD`, `XCHG`, `ORI`, and `XRA A`, but the deeper skill is knowing exactly which storage location changes after each instruction. Before writing a result, identify whether the destination is a register, the accumulator, a register pair, or the memory byte addressed by `HL`.
+
+The symbol `M` deserves special attention. It is not a real register; it means memory at the 16-bit address currently held in `HL`. So `MVI M,05H` stores `05H` into memory, while `MVI H,05H` changes the high byte of the pointer itself. Many wrong traces happen because `M` is treated like another register instead of as a memory reference through `HL`.
+
+For direct loading instructions such as `LDA` and `LHLD`, connect the handwritten byte-order notes to the screenshots. `LHLD addr` reads two consecutive memory locations: the byte at `addr` goes into `L`, and the byte at `addr + 1` goes into `H`. This low-byte-first rule is the same little-endian habit that later appears in 8086 words, stack return addresses, and interrupt vectors.
+
+`XCHG` is simple only if you remember it swaps complete register pairs. After `XCHG`, `H` exchanges with `D` and `L` exchanges with `E`. It does not touch memory, flags, or the accumulator. In program traces, write the pair values before and after the swap, because many examples rely on moving an address from `DE` into `HL` so the next `M` instruction points somewhere new.
+
+The logical-instruction screenshots should be revised through bit patterns, not decimal intuition. `ORI data` sets any bit that is 1 in the immediate operand. `XRA A` clears the accumulator because every bit XOR itself is 0. Logical instructions update flags from the resulting accumulator value, but they are not arithmetic addition or subtraction, so the meaning of carry and auxiliary carry is different from arithmetic pages.
+
+The useful handwritten-note method for Day 03 is a four-column trace: instruction, registers before, memory touched, registers after. If an instruction does not affect flags, mark that explicitly. If it does, compute flags from the binary result. This turns the screenshots into repeatable program-tracing technique.
+
 ## Points To Remember
 
 - `M` means `memory[HL]`.

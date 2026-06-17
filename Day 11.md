@@ -245,6 +245,20 @@ Physical location of the first byte:
 
 This example connects `PUSH` to segmentation, downward stack growth, and little-endian word storage.
 
+## Handwritten And Screenshot Deepening
+
+Day 11 looks smaller than other days, but the handwritten notes here are dense because they introduce 8086 address-manipulation instructions. `MOV`, `XCHG`, `LEA`, `LES`, `PUSH`, and `POP` are not just data movement names; they define what counts as data, what counts as an address, and how the stack stores words.
+
+For `XCHG`, the key rule is equal size. A byte register exchanges with a byte register or byte memory operand; a word register exchanges with a word register or word memory operand. `XCHG` does not mean "copy both ways using a temporary variable in memory." It is an instruction-level exchange, and the operands must be compatible. It also does not update arithmetic flags, because no arithmetic result is being produced.
+
+`LEA` is often misunderstood. It loads the effective address, not the data stored at that address. If `TABLE[BX+SI]` points to a memory byte, `MOV AL,TABLE[BX+SI]` reads the byte, while `LEA AX,TABLE[BX+SI]` computes the offset and stores that offset in `AX`. This is why `LEA` is useful for pointer arithmetic and address preparation.
+
+`LES` adds another layer: it loads a far pointer from memory. A far pointer contains both an offset and a segment. `LES DI,[mem]` loads `DI` from the offset word and `ES` from the following segment word. The handwritten page is important because it connects little-endian word storage to segment-offset addressing. The first word is not a random value; it becomes the offset. The second word becomes the segment.
+
+The stack material should be read with byte order and direction together. 8086 stack operations are word-sized for normal `PUSH` and `POP`. On `PUSH`, `SP` decreases by 2 and the word is stored at `SS:SP`. On `POP`, the word at `SS:SP` is loaded and `SP` increases by 2. Since 8086 is little-endian, the low byte of a word is stored at the lower memory address.
+
+When screenshots show physical-address calculation, always separate effective offset from physical address. Effective offset is the 16-bit value produced by the addressing mode. Physical address is produced after adding the shifted segment base. That separation is the difference between understanding `LEA` and confusing it with a memory read.
+
 ## Points To Remember
 
 | Instruction | Main use | Key point |

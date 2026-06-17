@@ -348,6 +348,20 @@ RET
 
 The exact return instruction depends on the system convention and interrupt mechanism being taught, but the preservation idea is universal.
 
+## Handwritten And Screenshot Deepening
+
+Day 07 handwritten notes should be studied as an interrupt-service sequence, not as a list of interrupt names. The correct mental flow is: an external or software event requests service, the processor decides whether it can accept it, the current program state is saved, control transfers to an interrupt service routine, the service routine finishes, and normal execution resumes.
+
+Priority and masking are different ideas. Priority decides which accepted interrupt is serviced first when multiple requests exist. Masking decides whether a maskable interrupt is allowed to be accepted at all. `TRAP` has highest priority and is non-maskable. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts. `INTR` is maskable and non-vectored, so external hardware must supply the service instruction during interrupt acknowledge.
+
+Vectoring means the service address is known in a fixed way. For 8085 `RST n`, the vector address is `n x 8`. That gives `RST 5.5` at `002CH`, `RST 6.5` at `0034H`, `RST 7.5` at `003CH`, and `TRAP` at `0024H`. The handwritten vector-table pages should be revised by computing these addresses, not just reading them.
+
+`EI` and `DI` control acceptance of maskable interrupts, but they do not erase the difference between pending, masked, and non-maskable requests. After reset, maskable interrupts are disabled. After an interrupt is accepted, the interrupt-enable flip-flop is cleared so the service routine is not automatically interrupted by another maskable request unless it intentionally executes `EI`.
+
+`SIM` and `RIM` connect directly to the handwritten masking pages. `SIM` writes mask bits and can reset the `RST 7.5` latch; `RIM` reads mask and pending status. Read those accumulator bit fields as hardware status/control maps. Each bit has a job, so the accumulator is temporarily acting like a control register rather than just a data register.
+
+For daisy chaining and bus arbitration, focus on why hardware needs ordering. Multiple devices may request service, but only one interrupt or bus master can be handled at a time. Daisy chaining solves priority by physical order. DMA bus arbitration solves ownership of address, data, and control buses. These pages connect Day 07 interrupts with Day 08 DMA.
+
 ## Points To Remember
 
 - `TRAP` has the highest priority and is non-maskable.

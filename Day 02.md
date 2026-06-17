@@ -621,6 +621,20 @@ An instruction taking 10 T-states therefore takes about:
 10 x 0.333 = 3.33 microseconds
 ```
 
+## Handwritten And Screenshot Deepening
+
+The handwritten Day 02 pages turn the Day 01 signal list into actual bus behavior. When a screenshot shows opcode fetch, memory read, memory write, I/O read, or I/O write, read the handwritten timing notes beside it and identify three things: the address source, the control signal that makes the external device respond, and the data direction. That habit prevents mixing up `IO/M`, `/RD`, `/WR`, and `ALE`.
+
+For opcode fetch, the processor is not only reading a byte. It is reading a byte that will be decoded as an instruction. That is why opcode fetch has a special status-code combination and usually more T-states than a plain memory read. First the address is placed on the address bus, then the low address is latched using `ALE`, then `/RD` allows memory to drive the opcode onto the data bus, and finally the CPU captures and decodes it.
+
+The handwritten instruction-format pages should be connected directly to the timing screenshots. A one-byte instruction needs only the opcode fetch unless it accesses memory or I/O as part of execution. A two-byte instruction needs the opcode byte plus one extra memory-read cycle for immediate data or port number. A three-byte instruction needs two extra memory-read cycles, usually low address byte first and high address byte second. This is why instruction size and T-state count are not independent facts.
+
+Address decoding is the other deep Day 02 idea. A memory chip responds only when its chip-select input is active. The decoder looks at high-order address lines and decides which chip owns the current address range. If decoding is partial, the same physical chip can appear at repeated address ranges, called address foldback or mirroring. The handwritten address-range calculations are therefore not just arithmetic; they describe which hardware chip will actually drive or accept data.
+
+For memory-mapped versus I/O-mapped I/O, focus on which instructions can reach the device and which address space is consumed. Memory-mapped I/O uses normal memory addresses, so instructions such as `LDA`, `STA`, `MOV M,R`, and other memory forms can access device registers, but memory space is lost. I/O-mapped I/O uses separate port addresses and `IN`/`OUT`, saving memory space but restricting the instruction choices.
+
+When revising this day, re-draw one full bus cycle from memory: address on bus, `ALE`, status/control lines, data direction, and final capture or write. If that drawing is correct, the screenshot timing diagrams and the handwritten machine-cycle pages become one connected explanation instead of separate images.
+
 ## Points To Remember
 
 - Every instruction begins with opcode fetch.

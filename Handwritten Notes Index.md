@@ -1,6 +1,6 @@
 # Handwritten Notes Index
 
-The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images under `images/HandWrittenNotes/`. This index maps every page image to the day where it is most useful for revision. The day files embed the relevant pages directly with the video screenshots and explanations.
+The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images under `images/HandWrittenNotes/`. This index maps every page image to the day where it is most useful for revision. The day files embed the relevant pages directly with the video screenshots, page explanations, and an added day-level deepening section that explains how to study the handwritten notes together with the screenshots.
 
 ## PDF To Image Folders
 
@@ -159,7 +159,7 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 
 The original handwritten sets are displayed below as large full-page images. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
 
-The two newest scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). That keeps each new handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised.
+The two newest scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). That keeps each new handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised. Every day file now also includes a `Handwritten And Screenshot Deepening` section to connect page images, handwritten notes, and exam-style reasoning.
 
 ### `till46.pdf`
 
