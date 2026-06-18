@@ -19,6 +19,7 @@ This repository is organized as a study-day learning log. Each completed day has
 | Day 11 | 2026-06-12 | Complete | [Day 11.md](Day%2011.md) | [images/Day 11](images/Day%2011/) | 8086 `XCHG`, `LEA`, `LES`, and `PUSH` instructions, including effective addresses, far pointers, and stack word rules. |
 | Day 12 | 2026-06-15, 2026-06-16 | Complete | [Day 12.md](Day%2012.md) | [images/Day 12](images/Day%2012/) | 8086 instruction-set deep dive: `MOV`, `XCHG`, `LEA`, `IN`, `ADD/ADC`, `SUB/SBB`, `MUL/IMUL`, `DIV/IDIV`, `INC/DEC`, BCD/ASCII adjust, `OR`, and `CMP`. |
 | Day 13 | 2026-06-16 | Complete | [Day 13.md](Day%2013.md) | [images/Day 13](images/Day%2013/) | 8086 rotate/shift, string instructions, jumps, calls, returns, process-control instructions, short programs, isolated versus memory-mapped I/O, support chips, and revision MCQs. |
+| Day 14 | 2026-06-17, 2026-06-18 | Complete | [Day 14.md](Day%2014.md) | [images/Day 14](images/Day%2014/) | 8051 microcontroller introduction, architecture, PSW/register banks, stack pointer, program counter, ports, serial buffer, timers/control SFRs, `PSEN`, `ALE`, `EA`, reset, oscillator input, memory organization, bit-addressable RAM, external memory expansion, pin descriptions, and addressing modes. |
 
 ## Handwritten Notes
 
@@ -38,11 +39,13 @@ Unrelated screenshots should be moved to `C:\Users\kapil\OneDrive\Desktop\To Rev
 
 ## Source Basis
 
-The notes use the screenshots as the primary course sequence and cross-check technical behavior against Intel's original 8085/MCS-85 documentation:
+The notes use the screenshots as the primary course sequence and cross-check technical behavior against primary/reference documentation for 8085, 8086, and 8051-family topics:
 
 - Intel Corporation, [MCS-80/85 Family User's Manual, January 1983](https://www.bitsavers.org/components/intel/MCS80/MCS80_85_Users_Manual_Jan83.pdf)
 - Intel Corporation, [8080/8085 Assembly Language Programming Manual, May 1981](https://www.bitsavers.org/pdf/intel/ISIS_II/9800301-04_8080_8085_Assembly_Language_Programming_Manual_May81.pdf)
 - Intel Corporation, [The 8086 Family User's Manual, October 1979](https://www.ardent-tool.com/CPU/docs/Intel/808x/manuals/9800722-03.pdf)
 - Intel Corporation, [iAPX 86,88 User's Manual, August 1981](https://www.dosdays.co.uk/media/intel/1981_iAPX_86_88_Users_Manual.pdf)
+- Intel Corporation, [MCS-51 Microcontroller Family User's Manual, February 1994](https://bitsavers.trailing-edge.com/components/intel/8051/MCS-51_Users_Manual_Feb94.pdf)
+- Atmel/Microchip, [Atmel 8051 Microcontrollers Hardware Manual](https://ww1.microchip.com/downloads/en/DeviceDoc/doc4316.pdf)
 
 Day 01 also contains additional source links for background topics such as CPU basics, microcontroller versus microprocessor, Intel 4004/8008 history, and architecture terms.
