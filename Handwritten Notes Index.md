@@ -6,13 +6,14 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 
 | Source PDF | Rendered folder | Pages | Main coverage |
 | --- | --- | ---: | --- |
-| [till46.pdf](HandWrittenNotes/till46.pdf) | [images/HandWrittenNotes/till46](images/HandWrittenNotes/till46/) | 24 | 8085 basics, pins, timing, machine cycles, addressing, memory and I/O interfacing. |
-| [till47.pdf](HandWrittenNotes/till47.pdf) | [images/HandWrittenNotes/till47](images/HandWrittenNotes/till47/) | 24 | Data transfer, addressing modes, arithmetic, logical instructions, rotates, branches. |
-| [till73.pdf](HandWrittenNotes/till73.pdf) | [images/HandWrittenNotes/till73](images/HandWrittenNotes/till73/) | 24 | Stack, subroutines, branch practice, `SIM/RIM`, rotates, timing, flags, assignment traces. |
-| [85completed.pdf](HandWrittenNotes/85completed.pdf) | [images/HandWrittenNotes/85completed](images/HandWrittenNotes/85completed/) | 22 | Late 8085: delay loops, interrupts, programmed I/O, DMA, support chips, 8086 transition. |
-| [86tilllnow.pdf](HandWrittenNotes/86tilllnow.pdf) | [images/HandWrittenNotes/86tilllnow](images/HandWrittenNotes/86tilllnow/) | 12 | 8086 pins, min/max mode, BIU/EU, flags, addressing modes, interrupts, instruction set. |
-| [Scanned Document 16-06-26 at 11.17.27 PM.pdf](HandWrittenNotes/Scanned%20Document%2016-06-26%20at%2011.17.27%E2%80%AFPM.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231727](images/HandWrittenNotes/scanned-2026-06-16-231727/) | 24 | 8086 pins, min/max mode, BIU/EU, flags, addressing, stack, arithmetic, rotate/string/control-transfer, and I/O. |
-| [Scanned Document 16-06-26 at 11.18.51 PM.pdf](HandWrittenNotes/Scanned%20Document%2016-06-26%20at%2011.18.51%E2%80%AFPM.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231851](images/HandWrittenNotes/scanned-2026-06-16-231851/) | 6 | 8086 I/O organization, min/max mode interface, `IN/OUT`, support chips, bus-loading MCQs, and stack segment size. |
+| [8085-basics-pins-timing-memory-io.pdf](HandWrittenNotes/8085-basics-pins-timing-memory-io.pdf) | [images/HandWrittenNotes/till46](images/HandWrittenNotes/till46/) | 24 | 8085 basics, pins, timing, machine cycles, addressing, memory and I/O interfacing. |
+| [8085-instruction-set-addressing-arithmetic-logic-branching.pdf](HandWrittenNotes/8085-instruction-set-addressing-arithmetic-logic-branching.pdf) | [images/HandWrittenNotes/till47](images/HandWrittenNotes/till47/) | 24 | Data transfer, addressing modes, arithmetic, logical instructions, rotates, branches. |
+| [8085-stack-subroutines-sim-rim-timing-practice.pdf](HandWrittenNotes/8085-stack-subroutines-sim-rim-timing-practice.pdf) | [images/HandWrittenNotes/till73](images/HandWrittenNotes/till73/) | 24 | Stack, subroutines, branch practice, `SIM/RIM`, rotates, timing, flags, assignment traces. |
+| [8085-interrupts-io-dma-support-chips-8086-transition.pdf](HandWrittenNotes/8085-interrupts-io-dma-support-chips-8086-transition.pdf) | [images/HandWrittenNotes/85completed](images/HandWrittenNotes/85completed/) | 22 | Late 8085: delay loops, interrupts, programmed I/O, DMA, support chips, 8086 transition. |
+| [8086-pins-architecture-flags-addressing-io.pdf](HandWrittenNotes/8086-pins-architecture-flags-addressing-io.pdf) | [images/HandWrittenNotes/86tilllnow](images/HandWrittenNotes/86tilllnow/) | 12 | 8086 pins, min/max mode, BIU/EU, flags, addressing modes, interrupts, instruction set. |
+| [8086-instructions-addressing-stack-arithmetic-logic-control-flow.pdf](HandWrittenNotes/8086-instructions-addressing-stack-arithmetic-logic-control-flow.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231727](images/HandWrittenNotes/scanned-2026-06-16-231727/) | 24 | 8086 pins, min/max mode, BIU/EU, flags, addressing, stack, arithmetic, rotate/string/control-transfer, and I/O. |
+| [8086-io-interfacing-support-chips-mcqs.pdf](HandWrittenNotes/8086-io-interfacing-support-chips-mcqs.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231851](images/HandWrittenNotes/scanned-2026-06-16-231851/) | 6 | 8086 I/O organization, min/max mode interface, `IN/OUT`, support chips, bus-loading MCQs, and stack segment size. |
+| [8051-microcontroller-architecture-memory-addressing-timers.pdf](HandWrittenNotes/8051-microcontroller-architecture-memory-addressing-timers.pdf) | [images/HandWrittenNotes/8051-microcontroller-notes](images/HandWrittenNotes/8051-microcontroller-notes/) | 8 | 8051 microcontroller overview, features, PSW/register banks, stack, DPTR/PC, ports, SBUF, timers, control pins, internal memory, addressing modes, and timer/counter control. |
 
 ## Page Map
 
@@ -154,14 +155,22 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [scanned-2026-06-16-231851 page 004](images/HandWrittenNotes/scanned-2026-06-16-231851/page-004.jpg) | [Day 13](Day%2013.md) | I/O bus-cycle steps, interface-device need, 8251 USART, 8257 DMA, and peripheral-to-memory bus ownership. |
 | [scanned-2026-06-16-231851 page 005](images/HandWrittenNotes/scanned-2026-06-16-231851/page-005.jpg) | [Day 13](Day%2013.md) | 8259, 8275, 8279, input-device quiz, bus current/loading quiz, memory-mapped device view, and unsupported direct BCD multiplication. |
 | [scanned-2026-06-16-231851 page 006](images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg) | [Day 13](Day%2013.md) | Stack segment maximum-size recap: 16-bit offset range gives 64 KB per segment. |
+| [8051-microcontroller-notes page 001](images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg) | [Day 14](Day%2014.md) | 8051 microcontroller system boundary, integrated resources, and microprocessor-versus-microcontroller comparison. |
+| [8051-microcontroller-notes page 002](images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg) | [Day 14](Day%2014.md) | 8051 features, register banks, PSW bank select bits, stack pointer reset, DPTR bytes, and PC behavior. |
+| [8051-microcontroller-notes page 003](images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg) | [Day 14](Day%2014.md) | Port SFR latches, input setup, `SBUF`, timer pairs, and control registers. |
+| [8051-microcontroller-notes page 004](images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg) | [Day 14](Day%2014.md) | `PSEN`, `ALE`, `EA`, reset, oscillator, internal memory sections, and SFR-region cautions. |
+| [8051-microcontroller-notes page 005](images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg) | [Day 14](Day%2014.md) | Bit-addressable RAM, SFRs, external memory, internal RAM regions, and Port 0/Port 2 bus roles. |
+| [8051-microcontroller-notes page 006](images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg) | [Day 14](Day%2014.md) | Register-bank ranges, bit-addressable/general RAM ranges, pin roles, `PSEN`, `ALE`, and external-memory use. |
+| [8051-microcontroller-notes page 007](images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg) | [Day 14](Day%2014.md) | Addressing modes, immediate data, direct/SFR addressing, register-indirect examples, DPTR split, and invalid register-transfer forms. |
+| [8051-microcontroller-notes page 008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg) | [Day 14](Day%2014.md) | I/O port input/output behavior, external-memory port multiplexing, timers/counters, `TMOD`, mode table, and auto-reload. |
 
 ## Expanded Page Notes
 
 The original handwritten sets are displayed below as large full-page images. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
 
-The two newest scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). That keeps each new handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised. Every day file now also includes a `Handwritten And Screenshot Deepening` section to connect page images, handwritten notes, and exam-style reasoning.
+The two 8086 scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). The 8051 handwritten PDF is mapped to [Day 14](Day%2014.md) because every page is 8051-specific and matches that day's screenshots. That keeps each handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised. Every day file now also includes a `Handwritten And Screenshot Deepening` section to connect page images, handwritten notes, and exam-style reasoning.
 
-### `till46.pdf`
+### `8085-basics-pins-timing-memory-io.pdf`
 
 #### [till46 page 001](images/HandWrittenNotes/till46/page-001.jpg)
 
@@ -383,7 +392,7 @@ Technical explanation: separate opcode bytes from operand bytes. The opcode sele
 
 Control-signal generation is the bridge between the decoded instruction and the outside bus. After opcode fetch, the control unit chooses whether to assert memory read, memory write, I/O read, I/O write, interrupt acknowledge, or no external transfer. That is why a one-byte instruction can still take multiple T-states: the CPU must fetch and decode the opcode even when no explicit operand byte follows.
 
-### `till47.pdf`
+### `8085-instruction-set-addressing-arithmetic-logic-branching.pdf`
 
 #### [till47 page 001](images/HandWrittenNotes/till47/page-001.jpg)
 
@@ -603,7 +612,7 @@ Technical explanation: rotate instructions are best traced as eight accumulator 
 
 Branch instructions test existing state; they do not create the condition themselves. Conditional jumps, calls, and returns read flag bits left by earlier instructions. Timing can differ between taken and not-taken branches because the processor may or may not load the target address into `PC`. This is why loop timing must count the last failed branch separately.
 
-### `till73.pdf`
+### `8085-stack-subroutines-sim-rim-timing-practice.pdf`
 
 #### [till73 page 001](images/HandWrittenNotes/till73/page-001.jpg)
 
@@ -831,7 +840,7 @@ Logical instructions operate bit by bit. `ANA` clears a bit unless both inputs h
 
 For program traces, keep a state table. Each row should list only what the current instruction changes: registers, flags, memory, `PC`, `SP`, or stack bytes. This prevents the common mistake of updating a value but forgetting the pointer that determines where the next memory access will happen.
 
-### `85completed.pdf`
+### `8085-interrupts-io-dma-support-chips-8086-transition.pdf`
 
 #### [85completed page 001](images/HandWrittenNotes/85completed/page-001.jpg)
 
@@ -1041,7 +1050,7 @@ Technical explanation: the 8086 architecture separates bus work from execution w
 
 In 8086 architecture sketches, always trace an address through segment register plus offset before thinking about the external bus. The internal EU may compute an effective offset, but the BIU forms the physical 20-bit address and performs the actual memory or I/O cycle.
 
-### `86tilllnow.pdf`
+### `8086-pins-architecture-flags-addressing-io.pdf`
 
 #### [86tilllnow page 001](images/HandWrittenNotes/86tilllnow/page-001.jpg)
 
@@ -1140,3 +1149,69 @@ Technical explanation: for 8086 data-transfer instructions, identify source, des
 Technical explanation: 8086 branch instructions modify instruction flow by changing `IP` and sometimes `CS`. Short and near branches stay in the current code segment; far transfers also change `CS`. Conditional branches test flags such as `ZF`, `CF`, `SF`, and `OF`, so signed and unsigned comparisons use different branch conditions even if the previous comparison instruction was the same.
 
 Compared with the 8085, the 8086 has a wider external data bus, a 20-bit address space, segmentation, a prefetch queue, richer addressing modes, and a more complex flag model. That is why an 8086 trace often begins by forming `segment:offset`, while an 8085 trace usually begins with a direct 16-bit address or a register-pair pointer.
+
+### `8051-microcontroller-architecture-memory-addressing-timers.pdf`
+
+#### [8051-microcontroller-notes page 001](images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg" alt="8051 handwritten page 001 microcontroller introduction" width="960"></a>
+
+Technical explanation: this page introduces the 8051 as a microcontroller system. The handwritten list of ROM, RAM, decoder, I/O devices, peripheral devices, interrupt control, and programmable I/O explains why a microcontroller is not just a small microprocessor. The 8051 integrates control-oriented hardware blocks that would otherwise need extra interface chips around a CPU.
+
+The microprocessor-versus-microcontroller comparison should be revised as a system-design contrast. A microprocessor-based system can be more flexible because memory and peripherals are chosen externally, but it needs more support hardware and bus wiring. A microcontroller is less flexible but has on-chip RAM, ROM/program memory, I/O, timers, serial interface, and interrupt handling, so it is suited for embedded control where compactness and direct I/O matter more than arbitrary expansion.
+
+#### [8051-microcontroller-notes page 002](images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg" alt="8051 handwritten page 002 features PSW registers stack DPTR PC" width="960"></a>
+
+Technical explanation: this page is the 8051 feature checklist. It captures 4 KB on-chip program memory, 128 bytes on-chip data memory, four register banks, 64 KB program/external memory addressability, 32 bidirectional I/O lines, 16-bit timer/counters, serial communication, direct byte access, and bit addressability. These should be studied as access capabilities: where code lives, where data lives, which registers select banks, and how software reaches pins and peripherals.
+
+The page also connects features to register behavior. `RS1` and `RS0` in `PSW` choose the active bank, so `R0-R7` do not always mean addresses `00H-07H`. `SP=07H` after reset means the first default stack location is just above Bank 0 unless software moves the stack. `DPTR` is a 16-bit pointer split into `DPH` and `DPL`, while PC is a 16-bit code pointer that starts at `0000H` and changes through normal sequencing, jumps, calls, returns, interrupts, and reset.
+
+#### [8051-microcontroller-notes page 003](images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg" alt="8051 handwritten page 003 ports SBUF timers control registers" width="960"></a>
+
+Technical explanation: the port notes explain why 8051 I/O is controlled through SFR latches. `P0`, `P1`, `P2`, and `P3` are not only external pins; they are software-visible SFRs connected to port latch hardware. To read an external input reliably on classic quasi-bidirectional ports, the latch is first written high so the pin is released for external driving.
+
+The `SBUF`, timer, and control-register notes show the 8051 control plane. Writing `SBUF` loads the transmit buffer, while reading `SBUF` reads the receive buffer. `TH0/TL0` and `TH1/TL1` are timer/counter byte pairs. `IE`, `IP`, `TMOD`, `TCON`, `SCON`, and `PCON` configure interrupt enabling, priorities, timer modes/status, serial mode/status, and power/serial-related control. The key skill is linking each SFR to the hardware block it controls.
+
+#### [8051-microcontroller-notes page 004](images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg" alt="8051 handwritten page 004 PSEN ALE EA reset oscillator memory map" width="960"></a>
+
+Technical explanation: this page explains the external-memory control signals. `PSEN` is an active-low output used for external program-memory reads. `ALE` marks the phase when Port 0 carries the low address byte, allowing external hardware to latch `A0-A7` before Port 0 carries data. `EA` selects program-memory source: high permits internal program memory use on classic 8051 parts, while low forces external code fetches.
+
+The same page ties reset, oscillator, and memory organization together. `RST` places the chip into a defined start-up state when held high long enough, and the oscillator gives the timing base for machine cycles. The internal memory notes split RAM into register banks, bit-addressable RAM, general-purpose RAM, and SFR space. This separation is essential because the same numeric-looking address can mean different things depending on direct, indirect, SFR, code, or external-data access.
+
+#### [8051-microcontroller-notes page 005](images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg" alt="8051 handwritten page 005 bit addressable RAM SFRs external memory" width="960"></a>
+
+Technical explanation: this page explains bit addressability. The 8051 has 128 bit-addressable bits in internal RAM addresses `20H-2FH`, plus bit-addressable SFR bits, often taught together as 210 bit-addressable locations. Bit instructions can set, clear, test, `AND`, or `OR` individual bits directly, avoiding manual byte read-mask-write sequences.
+
+The SFR and external-memory notes prevent a common mistake: `80H-FFH` is the direct-address SFR range, not ordinary general RAM. Some addresses are unimplemented, and implemented ones map to hardware control/status registers. The external-memory section says the 8051 can address external code memory and external data memory, with Port 0 multiplexing low address/data and Port 2 supplying high address bits during external bus cycles.
+
+#### [8051-microcontroller-notes page 006](images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg" alt="8051 handwritten page 006 RAM ranges pins and external memory signals" width="960"></a>
+
+Technical explanation: this page gives the internal RAM ranges in revision form. `00H-1FH` is register-bank space, `20H-2FH` is bit-addressable RAM, and `30H-7FH` is general-purpose RAM. The note also connects bit-addressable RAM to direct bit operations such as `SETB bit` and `CLR bit`, which explains why the 8051 is strong for control applications that frequently manipulate single flags or output lines.
+
+The pin notes map logical port names to the 40-pin package. Port 1 uses pins `1-8`, reset is pin `9`, Port 3 uses pins `10-17`, ground is pin `20`, Port 2 uses pins `21-28`, `PSEN` is pin `29`, `ALE` is pin `30`, and Port 0 uses pins `32-39`. During external-memory operation, those ports are no longer just ordinary I/O: Port 0 carries multiplexed low address/data and Port 2 carries high address lines.
+
+#### [8051-microcontroller-notes page 007](images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg" alt="8051 handwritten page 007 addressing modes and examples" width="960"></a>
+
+Technical explanation: this page classifies addressing modes into immediate, register, direct, register-indirect, and indexed forms. Immediate addressing places data directly in the instruction. Register addressing names the active-bank registers. Direct addressing gives a fixed internal RAM or SFR byte address. Register-indirect addressing uses a register as a pointer, usually `@R0` or `@R1`. Indexed addressing uses a base such as `DPTR` or `PC` plus accumulator offset for code-memory table lookup.
+
+The examples are valuable because they show legal and illegal forms. `MOV DPTR,#4521H` is valid because DPTR can load a 16-bit immediate, producing `DPH=45H` and `DPL=21H`. `MOV R7,DPL` is marked invalid because arbitrary register-to-register movement is not generally available in that form. Direct/SFR examples such as `MOV A,40H`, `MOV 0F0H,#55H`, and immediate constants with `#` should be traced by asking whether the operand is an address, a register, or literal data.
+
+#### [8051-microcontroller-notes page 008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg" alt="8051 handwritten page 008 ports timers counters TMOD auto reload" width="960"></a>
+
+Technical explanation: this page ties port behavior to external-memory use. The 8051 has four 8-bit I/O ports. After reset, port latches are high, but input use still depends on writing the latch high so the external signal can drive the pin. Port 0 becomes `AD0-AD7` during external-memory cycles, so the low address must be latched before the same pins are reused for data.
+
+The timer/counter half explains `TMOD` at the operating-mode level. A timer counts internal clock pulses and is used for interval timing, delays, and baud-rate support. A counter counts external pulses on timer input pins. The `M1 M0` table selects Mode 0 as 13-bit mode, Mode 1 as 16-bit mode, Mode 2 as 8-bit auto-reload, and Mode 3 as split timer mode. In auto-reload, `THx` stores the reload value and `TLx` is reloaded after overflow, making repeated timing intervals easier to generate.

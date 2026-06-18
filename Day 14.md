@@ -65,6 +65,109 @@ Use these checks while studying this day:
 | 42 | [Immediate addressing examples](images/Day%2014/Screenshot%202026-06-18%20233151.png) | `#data` examples for `A`, registers, `B`, `DPTR`, ports, and immediate range limits. |
 | 43 | [Register addressing mode](images/Day%2014/Screenshot%202026-06-18%20233333.png) | Register operands named directly in the instruction mnemonic. |
 | 44 | [Handwritten DPTR and register-addressing note](images/Day%2014/day-14-register-addressing-dptr-handwritten-note.jpg) | `MOV DPTR,#4521H` splits into `DPH=45H`, `DPL=21H`; arbitrary register-to-register moves are not a general 8051 form. |
+| 45 | [Direct addressing mode](images/Day%2014/Screenshot%202026-06-18%20234503.png) | Internal RAM and SFR locations can be named by direct byte address. |
+| 46 | [SFR direct-addressing examples](images/Day%2014/Screenshot%202026-06-18%20234551.png) | SFRs can be accessed by symbolic name or direct address, such as `ACC=E0H` and `B=F0H`. |
+| 47 | [SFR address-space caution](images/Day%2014/Screenshot%202026-06-18%20234751.png) | SFR addresses lie in `80H-FFH`, but unused locations are reserved. |
+| 48 | [Register-indirect addressing mode](images/Day%2014/Screenshot%202026-06-18%20234938.png) | `R0` or `R1` can hold the address of the data byte being accessed. |
+| 49 | [Register-indirect addressing examples](images/Day%2014/Screenshot%202026-06-18%20235110.png) | `@R0/@R1` examples for reading, writing, immediate stores, and direct-to-indirect copies. |
+| 50 | [Indexed addressing](images/Day%2014/Screenshot%202026-06-18%20235419.png) | `A+DPTR` or `A+PC` forms a code-memory lookup address for `MOVC`. |
+| 51 | [ALE and external-memory port roles](images/Day%2014/Screenshot%202026-06-18%20235805.png) | ALE indicates low-address timing on Port 0; Port 2 joins Port 0 for 16-bit external addressing. |
+| 52 | [Port 2 and Port 3 external-memory notes](images/Day%2014/Screenshot%202026-06-19%20000133.png) | Port 2 supplies `A8-A15` during external memory; Port 3 keeps I/O plus alternate control functions. |
+| 53 | [Port 3 alternate-function table](images/Day%2014/Screenshot%202026-06-19%20000139.png) | `P3.0-P3.7` grouped as serial, interrupts, timers, and external-memory read/write signals. |
+| 54 | [Counters and timers](images/Day%2014/Screenshot%202026-06-19%20000542.png) | Timer/counters T0 and T1 count internal clock pulses or external events. |
+| 55 | [Timer interval timing](images/Day%2014/Screenshot%202026-06-19%20001006.png) | Timer overflow flags can synchronize periodic program actions and elapsed-time measurement. |
+| 56 | [Event counting and baud clock](images/Day%2014/Screenshot%202026-06-19%20001029.png) | Counter mode counts external transitions; timers can also provide the serial baud-rate clock. |
+| 57 | [Timer mode register TMOD](images/Day%2014/Screenshot%202026-06-19%20001407.png) | `TMOD` sets Timer 0 and Timer 1 operating modes and is not bit-addressable. |
+| 58 | [TMOD mode table](images/Day%2014/Screenshot%202026-06-19%20001534.png) | `M1 M0` select 13-bit, 16-bit, 8-bit auto-reload, or split timer mode. |
+| 59 | [TMOD C/T bit](images/Day%2014/Screenshot%202026-06-19%20002658.png) | `C/T=0` selects internal-clock timer operation; `C/T=1` selects external-input counter operation. |
+| 60 | [TMOD GATE bit](images/Day%2014/Screenshot%202026-06-19%20002820.png) | With `GATE=0`, software starts and stops timers through `TR0` and `TR1`. |
+| 61 | [GATE software-control slide](images/Day%2014/Screenshot%202026-06-19%20003111.png) | Cleaner full-frame version of the `GATE=0`, `TR0/TR1`, `SETB`, and `CLR` control rule. |
+| 62 | [Timer Mode 0: 13-bit timer](images/Day%2014/Screenshot%202026-06-19%20003351.png) | Mode 0 uses `THx` plus five low bits of `TLx` as a 13-bit timer, mainly for 8048 compatibility. |
+| 63 | [Timer Mode 1: 16-bit timer](images/Day%2014/Screenshot%202026-06-19%20003638.png) | Mode 1 cascades `THx` and `TLx` as a 16-bit up-counter that sets `TFx` on overflow. |
+| 64 | [Timer Mode 2: 8-bit auto-reload](images/Day%2014/Screenshot%202026-06-19%20003804.png) | Mode 2 makes `TLx` the 8-bit timer and uses `THx` as the reload value after overflow. |
+| 65 | [Timer Mode 3: split timer](images/Day%2014/Screenshot%202026-06-19%20004024.png) | Mode 3 splits Timer 0 into two 8-bit timers and changes how Timer 1 can be used. |
+| 66 | [Timer 1 behavior in Mode 3](images/Day%2014/Screenshot%202026-06-19%20004812.png) | In Mode 3, Timer 1 can still support baud generation or non-interrupt use, but it is detached from normal `TF1` interrupt behavior. |
+| 67 | [Timer mode block diagrams](images/Day%2014/Screenshot%202026-06-19%20005107.png) | Register/overflow diagrams for timer modes 0, 1, 2, and 3. |
+| 68 | [TCON register bit layout](images/Day%2014/Screenshot%202026-06-19%20005207.png) | `TCON` bits are `TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0`. |
+| 69 | [TCON external interrupt bits](images/Day%2014/Screenshot%202026-06-19%20005656.png) | `IE1/IE0` are external-interrupt flags; `IT1/IT0` select edge-triggered or level-triggered interrupt behavior. |
+| 70 | [TCON timer run and overflow bits](images/Day%2014/Screenshot%202026-06-19%20005704.png) | `TF1/TF0` are overflow flags; `TR1/TR0` are timer run-control bits. |
+| 71 | [Mode 1 operation checklist](images/Day%2014/Screenshot%202026-06-19%20010208.png) | Mode 1 loads 16-bit `THx/TLx`, starts with `TRx`, counts to `FFFFH`, then sets `TFx` on overflow. |
+| 72 | [Timer overflow flag and stop option](images/Day%2014/Screenshot%202026-06-19%20010522.png) | `TF0` and `TF1` can be polled after overflow, and software can stop the timer with `CLR TR0` or `CLR TR1`. |
+| 73 | [Timer flag block diagram](images/Day%2014/Screenshot%202026-06-19%20010642.png) | The internal clock is divided, gated by `TRx`, increments the timer registers, and sets `TFx` when the count rolls over. |
+| 74 | [Reload and clear after overflow](images/Day%2014/Screenshot%202026-06-19%20010652.png) | Repeated delays require reloading `THx/TLx` and clearing `TFx` after a rollover. |
+| 75 | [Time delay generation procedure](images/Day%2014/Screenshot%202026-06-19%20010810.png) | Delay generation is a sequence: configure `TMOD`, load `TH/TL`, start, poll `TFx`, stop, clear `TFx`, then reload. |
+| 76 | [Time delay generation clean view](images/Day%2014/Screenshot%202026-06-19%20010922.png) | Cleaner full-frame view of the same reusable timer-delay algorithm. |
+| 77 | [Mode 2 characteristics](images/Day%2014/Screenshot%202026-06-19%20011213.png) | Mode 2 is an 8-bit timer where `THx` holds the reload value and `TLx` counts upward to overflow. |
+| 78 | [Mode 2 auto-reload diagram](images/Day%2014/Screenshot%202026-06-19%20011239.png) | After `TLx` rolls over, it is automatically reloaded from `THx`; software clears `TFx` and continues. |
+| 79 | [Mode 2 delay procedure](images/Day%2014/Screenshot%202026-06-19%20011310.png) | Mode 2 delay loops load `THx` once, poll `TFx`, clear the flag, and return to polling because reload is automatic. |
+
+## Handwritten Notes Linked To Day 14
+
+These eight handwritten pages all belong to Day 14 because they are 8051-specific: they start from the microcontroller system boundary, then move through 8051 features, PSW/register-bank selection, stack and DPTR behavior, port latches, serial buffer, timer/control registers, program-memory control pins, internal memory layout, bit-addressable RAM, SFRs, external-memory expansion, addressing modes, and timer/counter control.
+
+### [8051 handwritten p001](images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg" alt="8051 handwritten microcontroller introduction and comparison" width="960"></a>
+
+This first handwritten page frames the 8051 as a microcontroller, not only as a CPU. The notes list ROM, RAM, decoder/control logic, I/O devices, peripheral devices, interrupt control, DMA/control support, and programmable I/O as the surrounding blocks that a microprocessor-based system may need externally. The point is that a microcontroller pulls many of those blocks into one chip so an embedded system can be smaller, more direct, and less dependent on separate interface hardware.
+
+The comparison table is important because it explains why the 8051 feels different from 8085 and 8086 study. A microprocessor system is more flexible and can have more external hardware, a single memory map for code/data in many designs, and more pins dedicated to bus expansion. A microcontroller sacrifices some expansion freedom but gains built-in ROM, RAM, I/O, serial support, timers, counters, and interrupt handling. That is why 8051 questions often ask about port pins, SFRs, timers, and bit-addressability instead of only bus cycles and external decoding.
+
+### [8051 handwritten p002](images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-002.jpg" alt="8051 handwritten features PSW stack DPTR and PC" width="960"></a>
+
+This page condenses the core 8051 feature list: 4 KB on-chip program memory, 128 bytes on-chip data memory, four register banks, 64 KB program and external-memory addressability, one instruction cycle based on the classic 12 MHz timing example, 32 bidirectional I/O lines, multiple operating modes, programmable serial data, 16-bit timer/counters, direct byte access, and bit addressability. Read these as resource limits and access paths, not as disconnected facts.
+
+The right side connects those resources to CPU state. `RS1` and `RS0` in `PSW` choose Bank 0 through Bank 3: `00 -> 00H-07H`, `01 -> 08H-0FH`, `10 -> 10H-17H`, and `11 -> 18H-1FH`. The page also ties stack behavior to `SP=07H` after reset, so stack use begins just above the default register-bank area unless software relocates it. DPTR is highlighted as a 16-bit pointer made of `DPH` and `DPL`, while PC is highlighted as the code-flow register that starts at `0000H` and advances or changes through control-transfer instructions.
+
+### [8051 handwritten p003](images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-003.jpg" alt="8051 handwritten ports SBUF timers and control registers" width="960"></a>
+
+This page is mainly about the software-visible hardware handles. Ports `P0`, `P1`, `P2`, and `P3` are shown as port SFRs with latch behavior. Writing `1` to a port bit stores a high value in the latch; depending on port hardware and external connection, that can release or drive the pin high. The note about using a port pin as input says the latch must first be written high so the external signal can be sensed correctly.
+
+The same page links `SBUF`, timer registers, and control registers. `SBUF` is one SFR name but acts as separate transmit and receive buffers: writing loads the transmit buffer, reading gets the receive buffer. Timer pairs `TH0/TL0` and `TH1/TL1` hold the timer/counter counts. Control registers such as `IE`, `IP`, `TMOD`, `TCON`, `SCON`, and `PCON` are the programmer's way to enable interrupts, set priorities, select timer modes, control timer status, configure serial behavior, and manage power/serial-related control bits.
+
+### [8051 handwritten p004](images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-004.jpg" alt="8051 handwritten PSEN ALE EA reset oscillator and memory organization" width="960"></a>
+
+This page explains the external-control pins that make 8051 memory expansion work. `PSEN` is program store enable, an active-low output used when external program memory is read. `ALE` demultiplexes the low address/data byte on Port 0 by letting external hardware latch the low address before Port 0 becomes a data bus. `EA` selects the code-memory source: high permits internal program memory use on classic parts, while low forces program fetches from external program memory.
+
+The page also connects reset and oscillator behavior to startup. `RST` must be high long enough for reset recognition, after which internal registers load appropriate startup values. The on-chip oscillator and the common 12 MHz example connect directly to runtime and machine-cycle timing. The memory-map notes on the right classify internal RAM into register banks, bit-addressable RAM, general-purpose RAM, and SFR space, which is the core mental model needed before addressing-mode questions make sense.
+
+### [8051 handwritten p005](images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-005.jpg" alt="8051 handwritten bit addressability SFRs external memory and port bus roles" width="960"></a>
+
+This page focuses on bit addressability and special function registers. The note says the 8051 contains 210 bit-addressable locations: 128 bits in internal RAM addresses `20H-2FH`, plus bit-addressable SFR bits. That is why bit instructions can set, clear, and test individual bits without first reading a byte, masking it, and writing it back. For port and flag work, this is a major 8051 advantage.
+
+The page also separates ordinary internal RAM from SFR space. SFRs are in `80H-FFH`, but not every location in that range is implemented. These registers are not general-purpose RAM; they are control/status registers connected to ports, timers, serial hardware, interrupt logic, accumulator/B, PSW, SP, and DPTR bytes. The external-memory notes reinforce that the 8051 can interface 64 KB external code memory and 64 KB external data memory, with Port 0 multiplexing low address/data and Port 2 supplying high address bits during external cycles.
+
+### [8051 handwritten p006](images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg" alt="8051 handwritten internal RAM regions and pin roles" width="960"></a>
+
+This page turns the internal RAM map into address ranges. `00H-1FH` contains the four register banks, `20H-2FH` is the bit-addressable RAM area, and `30H-7FH` is general-purpose RAM. The page also repeats that `20H-2FH` gives 16 bytes, or 128 individual bit variables, and that bits can be set or cleared directly. This is the bridge between the memory-map screenshots and the bit-instruction examples such as `SETB` and `CLR`.
+
+The pin notes connect the package to the memory model. Pins `1-8` are Port 1 I/O, pin 9 is active-high reset, pins `10-17` are Port 3 with I/O plus alternate functions, pins `12` and `13` are external interrupt inputs, pin 20 is ground, pins `21-28` are Port 2, pin 29 is `PSEN`, pin 30 is `ALE`, and pins `32-39` are Port 0. The practical takeaway is that port names in programs become physical pins in hardware, but some ports are temporarily consumed by external memory cycles.
+
+### [8051 handwritten p007](images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg" alt="8051 handwritten addressing modes and examples" width="960"></a>
+
+This page lists the addressing modes: immediate, register, direct, register-indirect, and indexed. The red note beside immediate addressing correctly states that the data is present directly inside the instruction. Register addressing names a register, direct addressing gives a fixed internal RAM or SFR address, register-indirect addressing uses a register as a pointer, and indexed addressing uses a base such as DPTR or PC plus accumulator offset for table lookup.
+
+The examples are useful because they expose invalid assumptions. `MOV DPTR,#4521H` loads a 16-bit immediate into DPTR, giving `DPH=45H` and `DPL=21H`. `MOV R7,DPL` is marked as not allowed because 8051 does not support arbitrary register-to-register moves in that form. The direct-address examples distinguish moving from a literal address such as `40H`, moving to SFR addresses such as `0F0H`, and using a `#` prefix for immediate constants such as `#55H`.
+
+### [8051 handwritten p008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg)
+
+<a href="images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg"><img src="images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg" alt="8051 handwritten I/O ports timers counters TMOD and auto reload" width="960"></a>
+
+The final handwritten page links I/O ports with timer/counter control. It notes that 8051 has four 8-bit I/O ports, each using eight pins. After reset, ports are ready as output latches but must be written high before being used reliably as inputs on classic quasi-bidirectional ports. Port 0 can become `AD0-AD7` during external-memory use, and the lower address byte must be latched because the same pins later carry data.
+
+The timer/counter notes explain why `TMOD` matters. A timer counts internal clock pulses for interval timing; a counter counts external pulses for event counting. Timer/counters are used for internal timing delays, event-frequency counting, and baud-rate generation for the built-in serial port. The page also shows the `M1 M0` mode table: Mode 0 is 13-bit timer mode, Mode 1 is 16-bit timer mode, Mode 2 is 8-bit auto-reload, and Mode 3 is split timer mode. In auto-reload, `THx` holds the reload value and `TLx` is reloaded when overflow occurs.
 
 ## Web-Checked Anchor Points
 
@@ -651,6 +754,403 @@ MOV R7,A
 
 `DPL` and `DPH` are direct-addressable SFRs, so many assemblers can treat a name such as `DPL` as a direct address. The core exam point remains: do not assume every register-looking pair has a direct register-to-register `MOV` encoding.
 
+### Page 45: Direct Addressing Mode
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20234503.png"><img src="images/Day%2014/Screenshot%202026-06-18%20234503.png" alt="8051 direct addressing mode" width="960"></a>
+
+Direct addressing means the instruction contains the byte address of the operand. In 8051, direct addressing can reach the lower 128 bytes of internal RAM and the SFR address space.
+
+Examples from the slide:
+
+```asm
+MOV R0,40H   ; copy internal RAM byte 40H into active-bank R0
+MOV 56H,A    ; copy A into internal RAM byte 56H
+MOV A,04H    ; copy direct address 04H into A
+```
+
+The last example is often compared with:
+
+```asm
+MOV A,R4
+```
+
+These are equivalent only when Bank 0 is selected, because Bank 0 maps `R4` to internal RAM address `04H`. If another register bank is selected, `MOV A,R4` reads that bank's `R4`, while `MOV A,04H` still reads the fixed direct address `04H`.
+
+Direct addressing is also how many SFRs are accessed. For example, a symbolic name such as `P1` or `DPL` is assembled as its direct SFR address.
+
+### Page 46: SFR Direct-Addressing Examples
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20234551.png"><img src="images/Day%2014/Screenshot%202026-06-18%20234551.png" alt="8051 SFR direct-addressing examples" width="960"></a>
+
+This page shows that SFRs can be addressed either by symbolic register name or by direct address. Two useful SFR addresses are:
+
+| SFR | Direct address |
+| --- | --- |
+| `ACC` / `A` | `E0H` |
+| `B` | `F0H` |
+
+So these pairs are equivalent in meaning:
+
+```asm
+MOV 0E0H,#55H  ; write 55H to ACC
+MOV A,#55H     ; write 55H to A
+
+MOV 0F0H,R0    ; write R0 to B
+MOV B,R0       ; write R0 to B
+```
+
+Using names is normally clearer, but address form is useful for understanding the SFR map and how assemblers translate symbolic names.
+
+### Page 47: SFR Address-Space Caution
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20234751.png"><img src="images/Day%2014/Screenshot%202026-06-18%20234751.png" alt="8051 SFR address-space caution" width="960"></a>
+
+SFR addresses are in the direct-address range `80H-FFH`, but that does not mean every address in `80H-FFH` is a usable register. Only implemented SFR addresses have defined behavior. Unused addresses are reserved and should not be used by the programmer.
+
+This is why a map or datasheet matters. The classic 8051 defines a standard set of SFRs, while derivatives often add more SFRs for extra peripherals. Code should rely only on addresses defined for the exact device being used.
+
+### Page 48: Register-Indirect Addressing Mode
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20234938.png"><img src="images/Day%2014/Screenshot%202026-06-18%20234938.png" alt="8051 register-indirect addressing mode" width="960"></a>
+
+Register-indirect addressing means the instruction names a register that contains the address of the data byte. The register is a pointer; the operand is at the address stored inside that register.
+
+For many 8051 `MOV` instructions, the indirect pointer register is `R0` or `R1`:
+
+```asm
+MOV A,@R0   ; A gets the byte from the internal RAM address held in R0
+MOV @R1,A   ; the internal RAM address held in R1 gets A
+```
+
+The `@` symbol is the key syntax marker. `MOV A,R0` copies the contents of `R0`; `MOV A,@R0` uses the contents of `R0` as an address and copies the byte from that addressed location.
+
+The slide says the pointed location could be a RAM or SFR address. In the standard 8051 internal data space, `@R0/@R1` indirect addressing is mainly used for internal RAM and upper RAM on derivatives; SFRs are normally reached by direct addressing. Keep that distinction tied to the exact instruction and chip variant.
+
+### Page 49: Register-Indirect Addressing Examples
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20235110.png"><img src="images/Day%2014/Screenshot%202026-06-18%20235110.png" alt="8051 register-indirect addressing examples" width="960"></a>
+
+This page gives concrete `@R0/@R1` examples:
+
+```asm
+MOV A,@R0       ; copy the byte at the address held in R0 into A
+MOV @R1,#35H    ; store immediate 35H at the address held in R1
+MOV add,@R0     ; copy the byte at the address held in R0 into direct location add
+MOV @R1,A       ; store A at the address held in R1
+MOV @R0,80H     ; copy the byte at direct address 80H into the address held in R0
+```
+
+Direct address `80H` is `P0` in the classic SFR map. The exact read behavior for ports can involve latch-versus-pin details, but the addressing-mode point is simpler: the source operand is direct address `80H`, and the destination is the internal RAM location pointed to by `R0`.
+
+### Page 50: Indexed Addressing
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20235419.png"><img src="images/Day%2014/Screenshot%202026-06-18%20235419.png" alt="8051 indexed addressing" width="960"></a>
+
+Indexed addressing forms an effective code-memory address from a base register plus an offset in the accumulator. In 8051, this is commonly used for lookup tables stored in program memory:
+
+```asm
+MOVC A,@A+DPTR
+MOVC A,@A+PC
+```
+
+`MOVC` means move from code memory. For `MOVC A,@A+DPTR`, the code byte is read from program-memory address `DPTR + A` and copied into `A`. For `MOVC A,@A+PC`, the base is the program counter instead of `DPTR`.
+
+This addressing mode is useful for constants such as display-code tables, conversion tables, jump-table support patterns, and other read-only data kept with the program.
+
+### Page 51: ALE And External-Memory Port Roles
+
+<a href="images/Day%2014/Screenshot%202026-06-18%20235805.png"><img src="images/Day%2014/Screenshot%202026-06-18%20235805.png" alt="8051 ALE and external-memory port roles" width="960"></a>
+
+This page summarizes Port 0's multiplexed role. During an external memory cycle, Port 0 first carries the low address byte `A0-A7`; `ALE` pulses so external hardware can latch that address. After the address phase, Port 0 carries data `D0-D7`.
+
+The slide phrases this as:
+
+```text
+ALE = 1: Port 0 has A0-A7 address information.
+ALE = 0: Port 0 is in the data phase for D0-D7.
+```
+
+The practical hardware rule is to use the ALE pulse edge to latch the low address byte. Do not think of `ALE` as carrying address or data itself; it is the timing/control signal for the external latch.
+
+When there is no external memory connection, the ports can be used as ordinary I/O according to their port-specific electrical behavior. When external memory is connected, Port 0 and usually Port 2 are consumed by the external bus: Port 0 provides multiplexed low address/data and Port 2 provides the high address byte for 16-bit external addressing.
+
+### Page 52: Port 2 And Port 3 External-Memory Notes
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20000133.png"><img src="images/Day%2014/Screenshot%202026-06-19%20000133.png" alt="8051 Port 2 and Port 3 external-memory notes" width="960"></a>
+
+This page makes the Port 2 tradeoff explicit. In a system using external memory, Port 2 provides the upper address byte `A8-A15` for the 16-bit external address. During those bus cycles, Port 2 is not available as ordinary I/O because it is part of the memory interface.
+
+Port 3 is different. It can be used as input/output, but it also carries important alternate signals such as serial I/O, external interrupts, timer inputs, and external data-memory `/RD` and `/WR`. The slide also notes that Port 3 does not require external pull-up resistors in the usual classic 8051 port structure.
+
+For exam answers, separate the port roles:
+
+```text
+Port 0: multiplexed A0-A7 / D0-D7 during external memory.
+Port 2: A8-A15 during external memory.
+Port 3: I/O plus alternate serial, interrupt, timer, RD, and WR functions.
+```
+
+### Page 53: Port 3 Alternate-Function Table
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20000139.png"><img src="images/Day%2014/Screenshot%202026-06-19%20000139.png" alt="8051 Port 3 alternate-function table" width="960"></a>
+
+This table is the cleanest Port 3 summary:
+
+| Port 3 bit | Alternate function | Pin | Group |
+| --- | --- | --- | --- |
+| `P3.0` | `RXD` | `10` | Serial communication |
+| `P3.1` | `TXD` | `11` | Serial communication |
+| `P3.2` | `/INT0` | `12` | External interrupt |
+| `P3.3` | `/INT1` | `13` | External interrupt |
+| `P3.4` | `T0` | `14` | Timer/counter input |
+| `P3.5` | `T1` | `15` | Timer/counter input |
+| `P3.6` | `/WR` | `16` | External data-memory write |
+| `P3.7` | `/RD` | `17` | External data-memory read |
+
+The overbar on `INT0`, `INT1`, `WR`, and `RD` means active-low signaling. Even when Port 3 pins can work as normal I/O, enabling the corresponding alternate hardware function gives that peripheral control of the pin behavior.
+
+### Page 54: Counters And Timers
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20000542.png"><img src="images/Day%2014/Screenshot%202026-06-19%20000542.png" alt="8051 counters and timers" width="960"></a>
+
+The original 8051 provides two 16-bit up counters, Timer/Counter 0 and Timer/Counter 1. They can reduce processor burden by counting events or generating timing intervals in hardware instead of forcing software loops for everything.
+
+Each block can be programmed in two broad ways:
+
+| Use | What is counted | Typical purpose |
+| --- | --- | --- |
+| Timer | Internal clock-derived pulses | Time delays, periodic intervals, baud-rate generation. |
+| Counter | External pulses on `T0` or `T1` pins | Event counting or pulse/frequency-related counting. |
+
+The slide lists three common uses: interval timing, event counting, and baud-rate generation for the built-in serial port. This connects back to the SFR list: `TH0/TL0`, `TH1/TL1`, `TMOD`, and `TCON` are the programmer-visible controls for these timer/counter blocks.
+
+### Page 55: Timer Interval Timing
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20001006.png"><img src="images/Day%2014/Screenshot%202026-06-19%20001006.png" alt="8051 timer interval timing" width="960"></a>
+
+The 8051 timers/counters can be used as timers for generating delays or as event counters for counting external events. In interval-timing applications, the timer is loaded and allowed to count until it overflows. On overflow, the corresponding timer overflow flag is set.
+
+Software can poll the overflow flag, or an interrupt can be enabled so the overflow automatically requests service. Typical periodic actions include checking input states, updating outputs, maintaining a software clock, or measuring elapsed time such as pulse width.
+
+The important mental model is:
+
+```text
+Initial timer value + internal clock ticks -> overflow -> flag/interrupt -> program action
+```
+
+### Page 56: Event Counting And Baud Clock
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20001029.png"><img src="images/Day%2014/Screenshot%202026-06-19%20001029.png" alt="8051 event counting and baud clock" width="960"></a>
+
+Event counting counts occurrences rather than measuring elapsed time. In classic 8051 counter mode, external transitions on the timer input pins are counted. The slide describes an event as an external stimulus that provides a `1`-to-`0` transition to a pin on the 8051 IC.
+
+This distinguishes the two modes:
+
+| Mode | Input source | Meaning |
+| --- | --- | --- |
+| Timer | Internal clock-derived pulses | Measures time. |
+| Counter | External transitions on `T0`/`T1` | Counts events. |
+
+The slide also repeats that timers can provide the baud-rate clock for the internal serial port. This is a major practical use of Timer 1 in many classic 8051 serial examples.
+
+### Page 57: Timer Mode Register TMOD
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20001407.png"><img src="images/Day%2014/Screenshot%202026-06-19%20001407.png" alt="8051 timer mode register TMOD" width="960"></a>
+
+`TMOD` is the Timer Mode register. It contains two 4-bit fields: one field controls Timer 0, and the other controls Timer 1. Each field selects the timer/counter operating mode and related operation control.
+
+The slide highlights two practical rules:
+
+```text
+TMOD is not bit-addressable.
+TMOD is usually initialized by software near the start of the program.
+```
+
+Because `TMOD` is not bit-addressable, code normally writes the whole byte or uses read-mask-write logic if only part of it must change. The lower two bits of each timer field select the mode, while the upper two bits specify operation-related control such as timer-versus-counter selection and gate control.
+
+### Page 58: TMOD Mode Table
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20001534.png"><img src="images/Day%2014/Screenshot%202026-06-19%20001534.png" alt="8051 TMOD mode table" width="960"></a>
+
+Each timer's `TMOD` field contains `GATE`, `C/T`, `M1`, and `M0`. The `M1 M0` pair selects the timer mode:
+
+| `M1 M0` | Mode | Meaning |
+| --- | --- | --- |
+| `00` | Mode 0 | 13-bit timer/counter mode. |
+| `01` | Mode 1 | 16-bit timer/counter mode, with `THx` and `TLx` cascaded. |
+| `10` | Mode 2 | 8-bit auto-reload mode; `THx` stores the reload value for `TLx`. |
+| `11` | Mode 3 | Split timer mode. |
+
+The slide heading appears to have a small label typo in the right-side bit group; the intended per-timer bit pattern is `GATE C/T M1 M0`.
+
+### Page 59: TMOD C/T Bit
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20002658.png"><img src="images/Day%2014/Screenshot%202026-06-19%20002658.png" alt="8051 TMOD C/T bit timer counter selection" width="960"></a>
+
+`C/T` is the timer-or-counter select bit inside each timer's `TMOD` field. When `C/T=0`, the block works as a timer and counts the internal system clock-derived pulses. That is the setting used for time delays, periodic interrupts, software timeouts, and baud-rate generation support.
+
+When `C/T=1`, the same hardware works as a counter and counts transitions arriving from the external timer input pin, `T0` or `T1`. That mode is for counting real external events. The register pair and overflow behavior still matter, but the source of increments changes from the internal clock to the outside pin.
+
+### Page 60: TMOD GATE Bit
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20002820.png"><img src="images/Day%2014/Screenshot%202026-06-19%20002820.png" alt="8051 TMOD GATE bit software timer control" width="960"></a>
+
+`GATE` decides how the timer/counter is allowed to run. When `GATE=0`, the timer is controlled by software through the run-control bits `TR0` and `TR1` in `TCON`. Setting the relevant `TRx` bit starts the timer, and clearing it stops the timer. In assembly form, that often appears as `SETB TR0`, `CLR TR0`, `SETB TR1`, or `CLR TR1`.
+
+When `GATE=1`, hardware gating through the external interrupt pin is added to the start condition. For Day 14, the essential exam point is the simpler software case shown on the slide: with `GATE=0`, the timer starts and stops under program control as long as the corresponding `TRx` bit is set or cleared.
+
+### Page 61: GATE Software-Control Slide
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20003111.png"><img src="images/Day%2014/Screenshot%202026-06-19%20003111.png" alt="8051 GATE software-control slide" width="960"></a>
+
+This is the cleaner full-frame version of the `GATE` explanation. It repeats the main rule: with `GATE=0`, timer start and stop are controlled through software, using `TR0` for Timer 0 and `TR1` for Timer 1. The timer does not need an external gate condition in this mode.
+
+The assembly implication is direct. `SETB TR0` or `SETB TR1` starts the selected timer/counter, while `CLR TR0` or `CLR TR1` stops it. This does not reset the timer count; it only controls whether the counting hardware is allowed to run.
+
+### Page 62: Timer Mode 0, 13-Bit Timer
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20003351.png"><img src="images/Day%2014/Screenshot%202026-06-19%20003351.png" alt="8051 Timer Mode 0 13-bit timer" width="960"></a>
+
+Mode 0 is the old 13-bit timer mode included for compatibility with the 8048 family. It is not commonly preferred in new designs, but it appears in exams because it proves whether the timer-register layout is understood. The timer uses `THx` together with the five least significant bits of `TLx`.
+
+Because only five bits of `TLx` participate, the upper three bits of `TLx` are not part of the 13-bit count. The counting range is therefore smaller than Mode 1's 16-bit range, and the overflow occurs when this 13-bit count wraps around.
+
+### Page 63: Timer Mode 1, 16-Bit Timer
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20003638.png"><img src="images/Day%2014/Screenshot%202026-06-19%20003638.png" alt="8051 Timer Mode 1 16-bit timer" width="960"></a>
+
+Mode 1 uses the combined `THx` and `TLx` registers as a normal 16-bit up-counter. `TLx` is the low byte and `THx` is the high byte, so the count runs from `0000H` through `FFFFH` if it is allowed to continue long enough.
+
+On the transition from `FFFFH` to `0000H`, the timer overflow flag `TFx` is set in `TCON`. The timer can keep counting, but software or an interrupt service routine must notice and clear the flag according to the program design.
+
+### Page 64: Timer Mode 2, 8-Bit Auto-Reload
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20003804.png"><img src="images/Day%2014/Screenshot%202026-06-19%20003804.png" alt="8051 Timer Mode 2 8-bit auto-reload" width="960"></a>
+
+Mode 2 uses `TLx` as the 8-bit timer/counter and `THx` as the reload register. When `TLx` overflows from `FFH` to `00H`, the overflow flag is set and the value from `THx` is automatically loaded back into `TLx`.
+
+This mode is useful when the same interval must repeat many times. Instead of software manually reloading the timer after every overflow, the hardware reloads `TLx`, giving consistent periodic timing once `TMOD` and `THx` are initialized.
+
+### Page 65: Timer Mode 3, Split Timer
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20004024.png"><img src="images/Day%2014/Screenshot%202026-06-19%20004024.png" alt="8051 Timer Mode 3 split timer" width="960"></a>
+
+Mode 3 is the split timer mode. Timer 0 is split into two separate 8-bit timers: `TL0` and `TH0`. Each half can overflow independently, so the chip effectively gains another small timer at the cost of normal Timer 1 interrupt behavior.
+
+The important restriction is that Timer 1 is affected when Timer 0 is in Mode 3. Timer 1 may still be used in limited ways, such as for serial baud-rate generation or non-interrupt timing, but the normal Timer 1 overflow-flag relationship is no longer available in the usual way.
+
+### Page 66: Timer 1 Behavior In Mode 3
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20004812.png"><img src="images/Day%2014/Screenshot%202026-06-19%20004812.png" alt="8051 Timer 1 behavior in Mode 3" width="960"></a>
+
+This page clarifies the Mode 3 side effect on Timer 1. When Timer 0 is in Mode 3, Timer 1 can be switched in and out of its own Mode 3 state, but it is usually not available as a normal interrupt-generating Timer 1 because it is no longer connected to `TF1` in the standard way.
+
+That does not make Timer 1 useless. It can still serve as a serial-port baud-rate generator or be used in program designs that do not require Timer 1 interrupts. For revision, remember Mode 3 as a tradeoff: more 8-bit timing resources from Timer 0, but less normal Timer 1 functionality.
+
+### Page 67: Timer Mode Block Diagrams
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20005107.png"><img src="images/Day%2014/Screenshot%202026-06-19%20005107.png" alt="8051 timer mode block diagrams" width="960"></a>
+
+The diagrams visualize the four timer modes. Mode 0 combines `THx` with five bits of `TLx`; Mode 1 cascades full `TLx` and `THx`; Mode 2 counts in `TLx` and reloads it from `THx`; Mode 3 splits Timer 0 into independent `TL0` and `TH0` 8-bit timers.
+
+Use this page to avoid memorizing the mode table blindly. Ask which register counts, which register reloads, which overflow flag is set, and whether the count is 13-bit, 16-bit, 8-bit auto-reload, or split. That sequence answers most timer-mode questions.
+
+### Page 68: TCON Register Bit Layout
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20005207.png"><img src="images/Day%2014/Screenshot%202026-06-19%20005207.png" alt="8051 TCON register bit layout" width="960"></a>
+
+`TCON` contains both timer-control bits and external-interrupt control/status bits. From bit 7 to bit 0, the layout shown is `TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0`. The upper half is timer-focused, and the lower half is external-interrupt-focused.
+
+`TR1` and `TR0` start and stop the timers. `TF1` and `TF0` are set by overflow. `IE1` and `IE0` are external-interrupt event flags. `IT1` and `IT0` select whether the external interrupt is edge-triggered or level-triggered.
+
+### Page 69: TCON External Interrupt Bits
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20005656.png"><img src="images/Day%2014/Screenshot%202026-06-19%20005656.png" alt="8051 TCON external interrupt bits" width="960"></a>
+
+This page focuses on the lower `TCON` bits. `IE1` is the external interrupt 1 edge flag and `IE0` is the external interrupt 0 edge flag. They are set when the selected external interrupt event is recognized and are cleared when the processor vectors to the corresponding interrupt service routine.
+
+`IT1` and `IT0` select trigger style. When the bit is set, the corresponding external interrupt is edge-triggered. When it is cleared, the interrupt is level-triggered. These bits are not timer-operation bits, even though they live in the same `TCON` register as the timer flags.
+
+### Page 70: TCON Timer Run And Overflow Bits
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20005704.png"><img src="images/Day%2014/Screenshot%202026-06-19%20005704.png" alt="8051 TCON timer run and overflow bits" width="960"></a>
+
+This page focuses on the upper `TCON` timer bits. `TF1` is set when Timer 1 overflows, and `TF0` is set when Timer 0 overflows. These flags indicate that a timer rolled over from its maximum value back to zero.
+
+`TR1` and `TR0` are run-control bits. Setting `TRx` enables counting for that timer; clearing it halts the timer. Clearing `TRx` does not clear the count register, so stopping a timer and resetting a timer are separate operations.
+
+### Page 71: Mode 1 Operation Checklist
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010208.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010208.png" alt="8051 Mode 1 operation checklist" width="960"></a>
+
+This page gives the operational sequence for Mode 1. First load the 16-bit initial value into `THx` and `TLx`. Then start the timer by setting `TR0` for Timer 0 or `TR1` for Timer 1. After that, the combined register pair counts upward.
+
+The timer continues until it reaches `FFFFH`. When the next count rolls over to `0000H`, the corresponding timer flag `TFx` is set. That flag is the software-visible sign that the programmed interval has elapsed or that a counter overflow event has occurred.
+
+### Page 72: Timer Overflow Flag And Stop Option
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010522.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010522.png" alt="8051 timer overflow flag and software stop option" width="960"></a>
+
+This page connects timer overflow to software control. Timer 0 has flag `TF0`; Timer 1 has flag `TF1`. When the selected timer rolls over, the matching flag becomes `1`, and the program can detect that state by polling the flag or by using the timer interrupt path if interrupts are enabled.
+
+The important practical point is that detecting overflow and stopping the timer are separate actions. `TFx` tells the program that overflow happened; `TRx` controls whether counting is allowed to continue. For a polling delay, a common pattern is to wait until `TFx` is set, then execute `CLR TR0` or `CLR TR1` to stop the timer before clearing the flag and preparing the next delay.
+
+### Page 73: Timer Flag Block Diagram
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010642.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010642.png" alt="8051 timer clock path and overflow flag diagram" width="960"></a>
+
+This cleaner diagram shows the same mechanism as a data path. With `C/T = 0`, the timer uses the internal clock path. On the classic 12-clock 8051 timing model, the oscillator is divided by 12 to create the machine-cycle timing source that increments the timer when the timer is enabled.
+
+The gate in the diagram represents the enable condition. If software control is selected, `TRx` must be set for the timer to count. The timer register pair then increments until it rolls from its maximum value back to zero. That rollover sets `TFx`, which is the flag software checks to know that the programmed count interval has expired.
+
+### Page 74: Reload And Clear After Overflow
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010652.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010652.png" alt="8051 timer reload and flag clear after rollover" width="960"></a>
+
+This page explains what must happen if the same delay is needed again. In Mode 0 or Mode 1, the timer does not automatically restore the original starting value after overflow. Once the count rolls over, the software must reload `THx` and `TLx` with the initial count for the next interval.
+
+The timer flag must also be cleared. If `TFx` is left as `1`, the next polling loop may immediately think the timer has already overflowed. For repeated delays, the safe sequence is therefore: stop if needed, clear `TFx`, reload the timer registers, start the timer again, and poll for the next overflow.
+
+### Page 75: Time Delay Generation Procedure
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010810.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010810.png" alt="8051 time delay generation procedure" width="960"></a>
+
+This page turns the timer theory into the standard programming algorithm for generating a delay. First load `TMOD` so the correct timer and mode are selected. Then load `TLx` and `THx` with the initial count value calculated for the desired delay.
+
+After loading the count, start the timer by setting the correct run-control bit. The program then monitors the timer flag with an instruction such as `JNB TFx,target`, meaning it keeps looping while the flag is not set. Once `TFx` becomes high, the delay interval has elapsed, so the program exits the loop, stops the timer, clears `TFx`, and reloads `THx/TLx` if the delay must repeat.
+
+### Page 76: Time Delay Generation Clean View
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20010922.png"><img src="images/Day%2014/Screenshot%202026-06-19%20010922.png" alt="8051 time delay generation clean full-frame view" width="960"></a>
+
+This full-frame version reinforces the exact order of operations. `TMOD` is configured once for the selected timer and mode, but the count registers usually need to be loaded again for every non-auto-reload delay cycle. That is why the final step returns to the loading step instead of directly returning only to the polling loop.
+
+The `JNB TFx,target` step is also important for assembly programs because it shows a polling approach rather than an interrupt-driven approach. The CPU repeatedly checks the flag until hardware sets it. This is simple and common in introductory delay routines, but it occupies the CPU during the wait; interrupt-based timing is preferred when the processor must perform other work during the interval.
+
+### Page 77: Mode 2 Characteristics
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20011213.png"><img src="images/Day%2014/Screenshot%202026-06-19%20011213.png" alt="8051 Mode 2 timer characteristics and operation" width="960"></a>
+
+This page introduces Mode 2 as the 8-bit auto-reload mode. Because the active counter is 8 bits wide, the count range is `00H` through `FFH`. The reload value is stored in `THx`, and that value is copied into `TLx` before the timer begins counting.
+
+After the timer is started with `SETB TR0` or `SETB TR1`, the `TLx` register increments upward. When `TLx` reaches `FFH` and then rolls over to `00H`, the timer flag `TFx` is set. This is different from Mode 1 because the counted width is only 8 bits, so the overflow point is the `TLx` rollover rather than a full `THx:TLx` 16-bit rollover.
+
+### Page 78: Mode 2 Auto-Reload Diagram
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20011239.png"><img src="images/Day%2014/Screenshot%202026-06-19%20011239.png" alt="8051 Mode 2 auto-reload timer diagram" width="960"></a>
+
+This diagram shows why Mode 2 is called auto-reload. `THx` stores the original reload byte, while `TLx` is the byte that actually counts. When `TLx` overflows, hardware copies the value from `THx` back into `TLx` automatically.
+
+For repeated Mode 2 delays, the programmer usually does not reload the original value every cycle. The program still must clear `TFx`, because the overflow flag remains set until software or the interrupt mechanism clears it. The contrast with Mode 1 is the key exam point: Mode 1 normally needs software to reload `THx/TLx`; Mode 2 reloads `TLx` from `THx` automatically.
+
+### Page 79: Mode 2 Delay Procedure
+
+<a href="images/Day%2014/Screenshot%202026-06-19%20011310.png"><img src="images/Day%2014/Screenshot%202026-06-19%20011310.png" alt="8051 Mode 2 time delay generation procedure" width="960"></a>
+
+This page gives the polling delay algorithm specifically for Mode 2. First configure `TMOD` for the selected timer and Mode 2. Then load `THx` with the initial count value, because `THx` is the reload source. After the timer is started, hardware handles the `THx` to `TLx` reload each time `TLx` overflows.
+
+The loop then watches `TFx` using an instruction such as `JNB TFx,target`. When `TFx` goes high, the interval has completed. For another interval, software clears `TFx` and can return to the polling step, because the active counter has already been reloaded from `THx`. This is the main efficiency advantage of Mode 2 in delay and baud-rate style use cases.
+
 ## Screenshot Deepening
 
 Day 14 is easiest if the screenshots are grouped into six layers:
@@ -661,11 +1161,11 @@ Day 14 is easiest if the screenshots are grouped into six layers:
 | 8051 resources | 3-4 | 4 KB internal program memory, 128 bytes internal RAM, four ports, timers, serial port, interrupts, PSW, SP, PC, and DPTR. |
 | CPU state and memory map | 5-9 | PSW selects register banks, SP lives in internal RAM addressing, PC controls program-memory flow. |
 | Port and serial contact points | 10-12 | Ports expose parallel I/O and alternate functions; `SBUF` exposes serial transmit/receive data. |
-| Timer/control plane | 13 | `TH0/TL0`, `TH1/TL1`, `TMOD`, `TCON`, `IE`, `IP`, `SCON`, and `PCON` expose timer, interrupt, serial, and power-control behavior. |
-| External control and start-up signals | 15-20, 28-29 | `PSEN`, `ALE`, `EA`, `RST`, oscillator inputs, Port 0, and Port 2 control external code fetches, bus demultiplexing, code-source selection, reset, timing, and memory expansion. |
+| Timer/control plane | 13, 54-79 | `TH0/TL0`, `TH1/TL1`, `TMOD`, `TCON`, `IE`, `IP`, `SCON`, and `PCON` expose timer, interrupt, serial, and power-control behavior. |
+| External control and start-up signals | 15-20, 28-29, 51-52 | `PSEN`, `ALE`, `EA`, `RST`, oscillator inputs, Port 0, and Port 2 control external code fetches, bus demultiplexing, code-source selection, reset, timing, and memory expansion. |
 | Internal memory organization | 21-27, 30-34 | Code and data spaces are separate; internal RAM is split into register banks, bit-addressable RAM, and general RAM, with SFRs in direct address space. |
-| Physical pin map | 35-38 | The 40-pin package maps ports, power, oscillator, reset, serial pins, interrupts, timers, and external-memory control signals to actual IC pins. |
-| Addressing modes | 39, 41-44 | Immediate, register, direct, register-indirect, and indexed modes describe how instructions locate operands. |
+| Physical pin map | 35-38, 53 | The 40-pin package maps ports, power, oscillator, reset, serial pins, interrupts, timers, and external-memory control signals to actual IC pins. |
+| Addressing modes | 39, 41-50 | Immediate, register, direct, register-indirect, and indexed modes describe how instructions locate operands. |
 | Pin control details | 40 | `PSEN`, `ALE`, `EA`, Port 0, and `VCC` complete the external-memory/pin-description picture. |
 
 The most important change from 8085/8086 study is the address-space model. In 8086, the segment-offset mechanism produces physical memory addresses inside a single 1 MB memory space. In 8051, program memory, internal data memory, external data memory, and SFRs are distinct spaces with different access instructions and addressing rules.
@@ -763,6 +1263,29 @@ This contrast is exam-heavy. `SP` is a programmer-visible SFR and can be moved. 
 - `TH0/TL0` and `TH1/TL1` are the byte pairs for Timer/Counters 0 and 1.
 - `TMOD` chooses timer modes; `TCON` holds timer and external-interrupt status/control bits.
 - `IE` enables interrupts; `IP` controls interrupt priority.
+- T0/T1 can count internal clock pulses as timers or external pulses as counters.
+- Timer/counters are commonly used for interval timing, event counting, and serial baud-rate generation.
+- Timer overflow flags can be polled or used with interrupts to schedule periodic program actions.
+- Counter mode counts external event transitions on timer input pins.
+- `TMOD` is not bit-addressable and is usually initialized as a full byte.
+- `TMOD` mode bits `M1 M0` select modes 0, 1, 2, and 3.
+- `C/T=0` selects timer mode from the internal clock; `C/T=1` selects counter mode from the external `T0` or `T1` input.
+- With `GATE=0`, software starts and stops the timers by setting or clearing `TR0` and `TR1`.
+- `SETB TRx` starts the selected timer/counter and `CLR TRx` stops it when software control is being used.
+- Mode 0 is 13-bit timer/counter mode and mainly remains for compatibility.
+- Mode 1 is 16-bit timer/counter mode using `THx:TLx`.
+- Mode 2 is 8-bit auto-reload mode, where `TLx` counts and `THx` stores the reload value.
+- Mode 3 splits Timer 0 into two 8-bit timers and restricts normal Timer 1 interrupt use.
+- `TCON = TF1 TR1 TF0 TR0 IE1 IT1 IE0 IT0`.
+- `TF1/TF0` are timer overflow flags; `TR1/TR0` are run-control bits.
+- `IE1/IE0` are external-interrupt flags; `IT1/IT0` select edge-triggered or level-triggered external interrupt behavior.
+- Polling `TFx` lets software detect that a timer interval has completed.
+- `CLR TR0` or `CLR TR1` stops the selected timer, but it does not reload the timer registers or clear the overflow flag.
+- After a Mode 0 or Mode 1 overflow, repeat delays require clearing `TFx` and reloading `THx/TLx` with the original count.
+- A polling delay routine usually configures `TMOD`, loads `THx/TLx`, starts `TRx`, waits with `JNB TFx,target`, stops the timer, clears `TFx`, and reloads for the next round.
+- In Mode 2, `THx` stores the 8-bit reload value and `TLx` is the active 8-bit counter.
+- When `TLx` overflows in Mode 2, hardware reloads `TLx` from `THx`; software still clears `TFx`.
+- A Mode 2 delay loop can clear `TFx` and return to polling without reloading `THx` every cycle.
 - `PSEN` is active low and is used for external program-memory fetches, not ordinary external data-memory reads.
 - `ALE` is a latch-timing signal; Port 0 carries the multiplexed low address/data value.
 - When Port 0 is used as `AD0-AD7`, `ALE` lets external hardware hold `A0-A7` before Port 0 becomes the data bus.
@@ -790,6 +1313,8 @@ This contrast is exam-heavy. `SP` is a programmer-visible SFR and can be moved. 
 - Pin 30 `ALE` latches the low address byte from Port 0.
 - Pin 31 `EA` controls whether internal code memory can be used.
 - Pin 40 `VCC` is the positive supply pin.
+- During external memory cycles, ALE high marks the low-address phase on Port 0; after that Port 0 carries data.
+- During external memory cycles, Port 2 supplies `A8-A15` and is not ordinary I/O for that bus use.
 - 8051 addressing modes include immediate, register, direct, register-indirect, and indexed.
 - Immediate addressing uses `#data`; register addressing uses active-bank `R0-R7`; direct addressing gives an internal/SFR address.
 - Register-indirect addressing uses `@R0` or `@R1`; indexed code lookup commonly uses `@A+DPTR` or `@A+PC`.
@@ -798,6 +1323,12 @@ This contrast is exam-heavy. `SP` is a programmer-visible SFR and can be moved. 
 - `MOV DPTR,A` is invalid; load `DPTR` with a 16-bit immediate or by setting `DPL` and `DPH`.
 - `MOV DPTR,#4521H` means `DPH = 45H` and `DPL = 21H`.
 - Arbitrary `MOV Rn,Rm` register-to-register copies are not the general 8051 form; use `A` as a temporary when needed.
+- Direct addressing names a fixed internal RAM or SFR byte address.
+- `MOV A,04H` equals `MOV A,R4` only when Bank 0 is selected.
+- `ACC`/`A` has SFR direct address `E0H`; `B` has SFR direct address `F0H`.
+- SFR space is `80H-FFH`, but unused addresses in that range are reserved.
+- Register-indirect addressing uses `@R0` or `@R1`; the register contents are treated as the target address.
+- `MOVC A,@A+DPTR` and `MOVC A,@A+PC` read lookup-table bytes from code memory.
 - Internal data RAM `00H-1FH` is register-bank space: four banks times eight registers.
 - After reset, Bank 0 is selected, so `R0-R7` refer to addresses `00H-07H`.
 - `R0-R7` instructions are normally shorter and faster than equivalent direct-address instructions.
