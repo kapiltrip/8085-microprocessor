@@ -163,6 +163,164 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [8051-microcontroller-notes page 006](images/HandWrittenNotes/8051-microcontroller-notes/page-006.jpg) | [Day 14](Day%2014.md) | Register-bank ranges, bit-addressable/general RAM ranges, pin roles, `PSEN`, `ALE`, and external-memory use. |
 | [8051-microcontroller-notes page 007](images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg) | [Day 14](Day%2014.md) | Addressing modes, immediate data, direct/SFR addressing, register-indirect examples, DPTR split, and invalid register-transfer forms. |
 | [8051-microcontroller-notes page 008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg) | [Day 14](Day%2014.md) | I/O port input/output behavior, external-memory port multiplexing, timers/counters, `TMOD`, mode table, and auto-reload. |
+| [Day 14 DPTR/register handwritten image](images/Day%2014/day-14-register-addressing-dptr-handwritten-note.jpg) | [Day 14](Day%2014.md) | `MOV DPTR,#4521H`, `DPH/DPL` split, and why arbitrary register-to-register moves are not a general 8051 form. |
+
+## Handwritten Depth Pass By Day
+
+This section is only for handwritten material. It does not add new video-screenshot topics. It deepens the existing notebook pages by explaining why each handwritten page group matters, how to reason through the examples, and what to check during revision. The details below were checked against Intel-authored manuals/datasheets and the MCS-51 user manual so the additions stay tied to the notebook content instead of becoming unrelated theory.
+
+### Day 01: 8085 CPU Core, Flags, Pins, And First Interrupt Map
+
+Handwritten pages: [till46 p001](images/HandWrittenNotes/till46/page-001.jpg) to [till46 p007](images/HandWrittenNotes/till46/page-007.jpg).
+
+These pages should be read as the hardware foundation for every later 8085 program trace. The accumulator and ALU pages are not just naming blocks; they explain the path by which an 8-bit result is produced and then summarized into flags. For every handwritten arithmetic example later, first compute the 8-bit result, then derive `S`, `Z`, `AC`, `P`, and `CY` from that result. Do not update flags from the instruction name alone, because instructions such as `INX`, `DCX`, `PUSH`, `POP`, and many data-transfer operations do not affect the same flags as arithmetic or logical operations.
+
+The pin and bus pages are the bridge from software to hardware. The 8085 has a 16-bit address space, but the lower address byte shares pins with the data bus as `AD0-AD7`. That is why `ALE` is central: it tells external hardware when to latch the low address before those same pins carry data. The handwritten interrupt vector calculations also belong here because they make the fixed interrupt entry points concrete: `RST n` starts at `8 x n`, so `RST 7.5`, `RST 6.5`, and `RST 5.5` map to `003CH`, `0034H`, and `002CH`.
+
+Revision rule: whenever a page shows a register, pin, or flag, ask whether it is internal CPU state, an external bus signal, or a control/status bit. Mixing those categories is the source of most early 8085 mistakes.
+
+### Day 02: Bus Cycles, Timing, Address Decoding, And I/O Spaces
+
+Handwritten pages: [till46 p008](images/HandWrittenNotes/till46/page-008.jpg) to [till46 p024](images/HandWrittenNotes/till46/page-024.jpg), plus [85completed p020](images/HandWrittenNotes/85completed/page-020.jpg).
+
+These notes deepen the difference between an instruction and the bus work needed to execute it. An instruction cycle is the whole instruction. A machine cycle is one external bus operation, such as opcode fetch, memory read, memory write, I/O read, or I/O write. A `T`-state is a single clock state inside those machine cycles. Therefore, when the handwritten pages ask for timing, count bus operations first; the T-state total follows from the type and number of machine cycles.
+
+The memory and I/O pages should be studied as address-selection problems. Memory-mapped I/O consumes normal memory addresses and uses memory control signals; isolated I/O uses the I/O address space and instructions such as `IN` and `OUT`. Address decoding is the hardware process that turns high-order address bits into a chip-select line. For a memory size such as `4K x 8`, the `4K` part means `2^12` byte locations, so 12 address lines select locations inside the chip and the remaining high-order address lines can be decoded for chip selection.
+
+Revision rule: in every timing or interfacing problem, write three rows: address lines used, control signal active, and data direction. That keeps `ALE`, `/RD`, `/WR`, `IO/M`, chip select, and bus direction from becoming a memorized but disconnected table.
+
+### Day 03: 8085 Data Transfer And Addressing In Real Traces
+
+Handwritten pages: [till47 p001](images/HandWrittenNotes/till47/page-001.jpg) to [till47 p010](images/HandWrittenNotes/till47/page-010.jpg).
+
+These handwritten pages are about finding the operand, not just naming the instruction. `MOV A,M` means the source is the memory byte pointed to by `HL`; `MOV M,R` means the destination is the memory byte pointed to by `HL`. `LDA` and `STA` carry a full 16-bit address in the instruction stream, so they are three-byte instructions. `LDAX` and `STAX` use only `BC` or `DE` as indirect register pairs, while `LHLD` and `SHLD` move two consecutive memory bytes and must be traced in low-byte/high-byte order.
+
+The `XCHG`, `DAD`, and register-pair pages should be traced with byte ownership marked explicitly. `XCHG` swaps `HL` with `DE`; it does not touch memory. `DAD rp` adds a 16-bit register pair to `HL`; only the carry flag is affected from the 16-bit addition. The note pages are valuable because they force you to distinguish register contents, memory contents, and addresses written inside the instruction.
+
+Revision rule: before executing any data-transfer instruction, label each operand as immediate data, register, memory through `HL`, memory through `BC/DE`, or direct 16-bit address. Once the operand source is correct, the trace usually becomes straightforward.
+
+### Day 04: Subroutines, Stack Byte Order, Branching, SIM, And RIM
+
+Handwritten pages: [till73 p001](images/HandWrittenNotes/till73/page-001.jpg) to [till73 p012](images/HandWrittenNotes/till73/page-012.jpg).
+
+The subroutine pages should be read around one invariant: `CALL` saves the return address on the stack, and `RET` rebuilds the program counter from the stack. The stack grows toward lower addresses in 8085 systems. When tracing `CALL`, `PUSH`, `POP`, and `RET`, always track the stack pointer after each byte-level operation, not only after the instruction. This makes return-address questions, accidental `POP H` effects, and stack-corruption problems much easier.
+
+The conditional branch/call/return pages use flags produced by earlier instructions. A conditional branch does not calculate the condition; it only tests a stored flag. This is why the page groups mix arithmetic traces with `JC`, `JNC`, `JZ`, `JNZ`, `CC`, `CNC`, `RC`, and `RNC`. The `SIM/RIM` pages add a different kind of bit reasoning: the accumulator becomes a packed control/status byte for interrupt masks, serial output/input, pending interrupt status, and interrupt-enable status.
+
+Revision rule: for stack pages, draw memory vertically and move `SP` byte by byte. For branch pages, write the flag source instruction beside the branch, because the branch is only as correct as the flag state it tests.
+
+### Day 05: 8085 Arithmetic, Logical Instructions, Rotates, And Branch Conditions
+
+Handwritten pages: [till47 p011](images/HandWrittenNotes/till47/page-011.jpg) to [till47 p024](images/HandWrittenNotes/till47/page-024.jpg).
+
+These pages deepen arithmetic through flag interpretation. `SUB` and `SBB` perform subtraction; in 8085 flag language, `CY` after subtraction represents borrow. `SUI` is immediate subtraction. `INR` and `DCR` update most arithmetic flags but do not affect carry, while `INX` and `DCX` are 16-bit register-pair operations that do not update the flags. `DAA` must be studied as a correction after BCD addition, using lower-nibble and upper-nibble correction driven by the result and auxiliary/carry conditions.
+
+The logical and rotate pages separate two data paths. `ANA`, `ORA`, `XRA`, `CMA`, and `CMP` operate on the accumulator result or flag state. `CMP` is especially important because it subtracts for flags without storing the subtraction result in the accumulator. Rotates (`RLC`, `RRC`, `RAL`, `RAR`) move bits through or around the carry flag, so carry is part of the data path for `RAL/RAR` but not the same way for `RLC/RRC`.
+
+Revision rule: make a three-column trace: accumulator before, operation in binary, flags after. For rotate pages, draw bit 7, bit 0, and `CY` before writing the final accumulator.
+
+### Day 06: Mixed 8085 Program Traces, Delay Loops, DAD, Stack, And Timing
+
+Handwritten pages: [till73 p013](images/HandWrittenNotes/till73/page-013.jpg) to [till73 p024](images/HandWrittenNotes/till73/page-024.jpg), plus [85completed p001](images/HandWrittenNotes/85completed/page-001.jpg) to [85completed p003](images/HandWrittenNotes/85completed/page-003.jpg).
+
+These pages are intentionally mixed because they train full-program tracing instead of isolated instruction recall. The `INR M`, `CMA`, `XRA`, `SUI`, `ANA`, `CMP`, `DAD`, and rotate examples require you to preserve state across several instructions. The deepest rule is to separate visible result from side effects. Some instructions change accumulator and flags, some change only flags, some change register pairs, and some change memory through `HL`.
+
+The delay-loop pages are timing pages disguised as programming examples. Count the body T-states for each loop pass, then account separately for the final branch evaluation if its timing differs when the branch is not taken. The stack and interrupt recaps on these pages also matter because they connect program flow to saved return addresses and vectoring behavior.
+
+Revision rule: for mixed traces, create a table with `A`, `B`, `C`, `D`, `E`, `H`, `L`, `HL`, memory touched, flags, `PC`, and `SP`. Only update a column when the instruction actually affects it.
+
+### Day 07: 8085 Interrupt Priority, Masking, Vectoring, SIM, And RIM
+
+Handwritten pages: [85completed p004](images/HandWrittenNotes/85completed/page-004.jpg) to [85completed p010](images/HandWrittenNotes/85completed/page-010.jpg), plus [85completed p019](images/HandWrittenNotes/85completed/page-019.jpg).
+
+The interrupt pages should be studied as three separate questions: can the interrupt be masked, where does execution go, and what priority does it have? `TRAP` is non-maskable and highest priority. `RST 7.5`, `RST 6.5`, and `RST 5.5` are maskable vectored interrupts. `INTR` is maskable and non-vectored, so external hardware supplies the instruction during interrupt acknowledge. The fixed-vector pages are important because the vector is not arbitrary; restart-style vectors are derived from the restart number.
+
+`SIM` and `RIM` are not ordinary arithmetic/data instructions. They interpret accumulator bits as a control byte or status byte. `SIM` controls mask bits, mask-set enable, serial output enable/data, and reset of the `RST 7.5` latch. `RIM` reads mask status, pending interrupt status, global interrupt-enable state, and serial input data. These pages should be revised by labelling all eight accumulator bits before interpreting the byte.
+
+Revision rule: never answer an interrupt question from priority alone. Always include maskability, vector address or supplied instruction, and whether `EI/DI` or `SIM` masking affects it.
+
+### Day 08: Programmed I/O, Handshaking, DMA, And Support Chips
+
+Handwritten pages: [85completed p011](images/HandWrittenNotes/85completed/page-011.jpg) to [85completed p018](images/HandWrittenNotes/85completed/page-018.jpg).
+
+These notes explain why support chips exist around a CPU. Programmed I/O is simple but CPU-heavy: the processor explicitly executes input/output instructions and often polls status. Handshaking adds control signals so a fast CPU and slower peripheral can coordinate when data is valid or accepted. DMA changes the ownership model: a DMA controller requests the bus, the CPU acknowledges when it can release the bus, and the controller supplies addresses and control signals for the transfer.
+
+The chip pages should be grouped by the job each IC removes from the CPU. `8255` adds programmable parallel I/O ports. `8253` adds programmable timing/counting channels. `8257` adds multi-channel DMA support. `8259` adds interrupt prioritization and vector handling. `8272`, `8275`, and `8279` specialize in floppy, display, keyboard, and display-control use cases. The point is not to memorize part numbers alone; it is to understand which repeated hardware task each chip performs.
+
+Revision rule: for each support chip, answer three things: what external device problem it solves, what signals/registers the CPU programs, and whether the CPU remains the bus master during the actual transfer.
+
+### Day 09: 8086 Pins, BIU/EU Split, Segmentation, And Prefetch
+
+Handwritten pages: [85completed p021](images/HandWrittenNotes/85completed/page-021.jpg) to [85completed p022](images/HandWrittenNotes/85completed/page-022.jpg), [86tilllnow p001](images/HandWrittenNotes/86tilllnow/page-001.jpg) to [86tilllnow p006](images/HandWrittenNotes/86tilllnow/page-006.jpg), and [scanned-2026-06-16-231727 p001](images/HandWrittenNotes/scanned-2026-06-16-231727/page-001.jpg) to [scanned-2026-06-16-231727 p007](images/HandWrittenNotes/scanned-2026-06-16-231727/page-007.jpg).
+
+These pages mark the shift from 8085 to 8086. The 8086 has a 16-bit data bus and 20-bit address bus, but many pins are multiplexed to keep the package practical. `AD0-AD15` carry address first and data later; `A16-A19/S3-S6` combine high-address and status use. `BHE/S7` matters because byte selection on a 16-bit bus depends on whether the low bank, high bank, or both banks are active.
+
+The BIU/EU pages explain why 8086 execution is not a simple fetch-then-execute model. The Bus Interface Unit forms physical addresses, fetches instruction bytes, manages the prefetch queue, and performs memory/I/O transfers. The Execution Unit decodes and executes instructions using the ALU, general registers, and flags. Segmentation is the address bridge: a 16-bit segment value shifted left four bits plus a 16-bit offset forms a 20-bit physical address.
+
+Revision rule: for every 8086 address, write `segment x 10H + offset`. For every pin question, first decide whether the chip is in minimum mode or maximum mode, because several pins change meaning.
+
+### Day 10: 8086 Flags, Addressing Modes, Interrupt Vectoring, MOV/IN/OUT, And Branches
+
+Handwritten pages: [86tilllnow p007](images/HandWrittenNotes/86tilllnow/page-007.jpg) to [86tilllnow p012](images/HandWrittenNotes/86tilllnow/page-012.jpg), plus [scanned-2026-06-16-231727 p008](images/HandWrittenNotes/scanned-2026-06-16-231727/page-008.jpg) to [scanned-2026-06-16-231727 p010](images/HandWrittenNotes/scanned-2026-06-16-231727/page-010.jpg).
+
+These pages deepen the 8086 programmer model. The flag register has status flags and control flags. `CF`, `PF`, `AF`, `ZF`, `SF`, and `OF` describe results; `TF`, `IF`, and `DF` control stepping, maskable interrupt recognition, and string direction. Addressing-mode pages must be solved in two phases: form the effective offset from base/index/displacement pieces, then combine it with the correct segment base.
+
+The interrupt-vector and data-transfer pages require exact byte thinking. The 8086 interrupt vector table uses four bytes per interrupt type: offset low/high and segment low/high. `MOV` allows many register/memory forms but not general memory-to-memory transfer. `IN` and `OUT` use I/O port addressing, with direct 8-bit port numbers or variable port addresses through `DX`. Branch notes must distinguish unsigned and signed conditions because the tested flag combinations differ.
+
+Revision rule: in 8086 handwritten problems, never stop at "addressing mode." Compute the effective offset, choose the default segment, form the physical address when asked, and only then move the byte or word.
+
+### Day 11: 8086 Data Movement, Effective Address, Far Pointers, And Stack Words
+
+Handwritten pages: [scanned-2026-06-16-231727 p011](images/HandWrittenNotes/scanned-2026-06-16-231727/page-011.jpg) to [scanned-2026-06-16-231727 p012](images/HandWrittenNotes/scanned-2026-06-16-231727/page-012.jpg).
+
+These pages focus on instructions where address and content are easy to confuse. `LEA` loads an effective offset; it does not read the memory byte or word at that address. `LES` loads a far pointer, so the memory operand supplies both an offset and the `ES` segment value. `XCHG` swaps operands according to allowed register/memory forms. `MOV` copies data but still follows size and addressing restrictions.
+
+The stack notes deepen word ordering. On 8086, stack operations move words, and the stack grows downward. A `PUSH` decrements `SP` by two and stores a word; `POP` reads a word and increments `SP` by two. When a page shows stack-to-memory or memory-to-stack movement, keep low byte/high byte layout separate from the logical 16-bit word value.
+
+Revision rule: when you see brackets, decide whether the instruction wants the address itself or the content at that address. `LEA` wants the address calculation; most memory operands want the content.
+
+### Day 12: 8086 Arithmetic, Multiplication, Division, BCD/ASCII Adjust, Logical, NEG, And CMP
+
+Handwritten pages: [scanned-2026-06-16-231727 p013](images/HandWrittenNotes/scanned-2026-06-16-231727/page-013.jpg) to [scanned-2026-06-16-231727 p018](images/HandWrittenNotes/scanned-2026-06-16-231727/page-018.jpg).
+
+These pages are mostly about implicit operands and result placement. `ADD/ADC` and `SUB/SBB` are direct arithmetic families; carry-in or borrow-in changes the operation. `MUL` and `IMUL` use implicit accumulator operands and produce double-width results: byte multiply uses `AL` and returns `AX`; word multiply uses `AX` and returns `DX:AX`. `DIV` and `IDIV` also use implicit dividends and fixed quotient/remainder destinations; an oversized quotient or division by zero triggers the divide-error path.
+
+The adjustment instructions are context-sensitive. `DAA` and `DAS` correct packed BCD after addition/subtraction. `AAA`, `AAM`, and `AAD` belong to unpacked/ASCII-style decimal adjustment workflows. `NEG` replaces an operand with its two's complement and sets flags from that operation. `CMP` performs subtraction for flags without storing the result.
+
+Revision rule: for every arithmetic page, write operand size first. Then write implicit registers, result registers, and which flags are meaningful. This prevents byte/word and signed/unsigned mistakes.
+
+### Day 13: 8086 Rotates/Shifts, Strings, Control Transfer, Process Control, I/O, And Interface Chips
+
+Handwritten pages: [scanned-2026-06-16-231727 p019](images/HandWrittenNotes/scanned-2026-06-16-231727/page-019.jpg) to [scanned-2026-06-16-231727 p024](images/HandWrittenNotes/scanned-2026-06-16-231727/page-024.jpg), plus [scanned-2026-06-16-231851 p001](images/HandWrittenNotes/scanned-2026-06-16-231851/page-001.jpg) to [scanned-2026-06-16-231851 p006](images/HandWrittenNotes/scanned-2026-06-16-231851/page-006.jpg).
+
+The rotate/shift pages should be revised by drawing the data path. `ROL/ROR` rotate inside the operand, while `RCL/RCR` include the carry flag as an extra bit. `SAL/SHL` shift left and insert zero; `SAR` preserves the sign bit during right shift. For multi-bit counts, flag interpretation can be more limited, so use the instruction definition instead of assuming every flag remains meaningful.
+
+The string pages are about implicit pointers and direction. `MOVS`, `CMPS`, `SCAS`, `LODS`, and `STOS` use `SI`, `DI`, `DS`, `ES`, and `DF` in specific ways. `REP` repeats based on `CX`, while compare/scan repeat forms also depend on `ZF`. The call/return pages deepen stack flow: near calls save only `IP`; far calls save `CS:IP`; `RET n` returns and then releases parameter bytes. The I/O interface pages connect this software model back to bus signals and support chips, including why min/max mode changes control-signal ownership and why memory-mapped and isolated I/O are decoded differently.
+
+Revision rule: for control-transfer pages, write what is pushed on the stack. For string pages, write which pointer changes and whether `DF` increments or decrements it. For I/O pages, write whether the address is a memory address or an I/O port address.
+
+### Day 14: 8051 Microcontroller System, SFRs, Bit Addressing, Ports, Addressing Modes, And Timers
+
+Handwritten pages: [8051-microcontroller-notes p001](images/HandWrittenNotes/8051-microcontroller-notes/page-001.jpg) to [8051-microcontroller-notes p008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg), plus the standalone [Day 14 DPTR/register handwritten image](images/Day%2014/day-14-register-addressing-dptr-handwritten-note.jpg).
+
+These pages should be read as the transition from microprocessor-system thinking to microcontroller-system thinking. The 8051 integrates CPU, internal program memory, internal data RAM, ports, timers/counters, serial interface, interrupt control, and SFRs into one control-oriented device. Its memory model is different from the 8085/8086 path: program memory, internal data memory, SFR direct addresses, bit-addressable RAM, and external data memory are distinct spaces with different access instructions.
+
+The SFR and addressing pages are where many mistakes happen. `PSW` selects register banks through `RS1 RS0`; `SP` is an 8-bit SFR and starts at `07H` on the classic 8051; `DPTR` is a 16-bit data pointer split into `DPH` and `DPL`; `PC` is 16 bits but is changed through control flow, not by a normal `MOV PC,data` form. The standalone handwritten image reinforces that `MOV DPTR,#4521H` loads `DPH=45H` and `DPL=21H`, while arbitrary `MOV Rn,Rm` register-to-register transfer is not the general 8051 style.
+
+The port and timer pages should be revised as SFR-controlled hardware. Port latches are not the same as physical pin voltage in every case, especially for classic quasi-bidirectional input use and Port 0 external-bus operation. Timer modes are selected through `TMOD`; run and overflow control/status are in `TCON`. In Mode 2, `THx` stores the reload value and `TLx` counts, which explains why the later Day 14 timer screenshots emphasize clearing `TFx` and the distinction between reload and flag handling.
+
+Revision rule: for every 8051 instruction, ask which address space it touches. For every port/timer question, name the SFR first, then the hardware behavior that SFR controls.
+
+## Web-Checked Primary Reference Spine
+
+These references were used only to verify and deepen the handwritten-note explanations above:
+
+- Intel, [MCS-80/85 Family User's Manual](http://retro.hansotten.nl/uploads/sdk85/8085_UserManual.pdf): 8085 CPU, pins, bus cycles, interrupts, and support-chip family context.
+- Intel, [8080/8085 Assembly Language Programming Manual](https://bitsavers.trailing-edge.com/components/intel/MCS80/9800301D_8080_8085_Assembly_Language_Programming_Manual_May81.pdf): 8085 instruction behavior, operands, flags, and assembler-level reasoning.
+- Intel, [The 8086 Family User's Manual](https://edge.edx.org/c4x/BITSPilani/EEE231/asset/8086_family_Users_Manual_1_.pdf): 8086 architecture, BIU/EU, segmentation, instructions, flags, stack, interrupts, and I/O.
+- Intel, [MCS-51 Microcontroller Family User's Manual](https://bitsavers.trailing-edge.com/components/intel/8051/MCS-51_Users_Manual_Feb94.pdf): 8051 memory spaces, SFRs, ports, timers, serial interface, interrupts, and instruction behavior.
+- Intel, [MCS-51 Instruction Set](https://www.keil.com/dd/docs/datashts/intel/ism51.pdf): 8051 addressing forms, `MOVX`, `MOVC`, bit instructions, and instruction restrictions.
+- Intel, [8255A Programmable Peripheral Interface](http://aturing.umcs.maine.edu/~meadow/courses/cos335/Intel8255A.pdf), [8253 Programmable Interval Timer](https://www.alldatasheet.com/datasheet-pdf/pdf/66099/INTEL/8253.html), [8257 Programmable DMA Controller](https://www.eecs.northwestern.edu/~ypa448/Microp/8257.pdf), and [8259A Programmable Interrupt Controller](https://pdos.csail.mit.edu/6.828/2010/readings/hardware/8259A.pdf): support-chip roles used in Day 08 and Day 13 handwritten notes.
 
 ## Expanded Page Notes
 
