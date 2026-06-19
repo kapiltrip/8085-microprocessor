@@ -13,6 +13,7 @@ Use these checks while studying this day:
 6. Serial status can be polled by software or used to request an interrupt.
 7. Baud rate means bit rate, not byte rate.
 8. Some serial modes use a fixed clock, while variable baud-rate modes commonly use Timer 1.
+9. For common Mode 1 serial programs, `TMOD=20H`, a suitable `TH1` reload, `SCON=50H`, and `TR1=1` are the core setup chain.
 ```
 
 ## Image Index
@@ -33,6 +34,18 @@ Use these checks while studying this day:
 | 12 | [Mode 1 transmit and receive timing](images/Day%2015/Screenshot%202026-06-19%20145103.png) | Mode 1 bit period is set by baud rate; `TI` is set at the stop bit, and receive timing aligns after a `1`-to-`0` start transition on `RXD`. |
 | 13 | [Mode 1 receive sampling and false start detection](images/Day%2015/Screenshot%202026-06-19%20145830.png) | The receiver samples near the middle of the bit time and rejects noise if the start bit is not still low after the validation count. |
 | 14 | [Mode 1 receive completion sequence](images/Day%2015/Screenshot%202026-06-19%20150358.png) | On valid reception, the stop bit is stored in `RB8`, the eight data bits load receive `SBUF`, and `RI` is set. |
+| 15 | [Mode 2: 9-bit UART fixed baud](images/Day%2015/Screenshot%202026-06-19%20150953.png) | Mode 2 sends an 11-bit frame with a programmable ninth bit; `TB8` supplies it on transmit and `RB8` stores it on receive. |
+| 16 | [Mode 2 clean view](images/Day%2015/Screenshot%202026-06-19%20151141.png) | Cleaner/cropped view of Mode 2 fixed-baud behavior, ninth-bit handling, and oscillator-derived baud-rate choices. |
+| 17 | [Mode 3: 9-bit UART variable baud](images/Day%2015/Screenshot%202026-06-19%20151657.png) | Mode 3 is like Mode 2's 9-bit UART frame, but its baud rate is programmable and timer-provided. |
+| 18 | [Multiprocessor communications](images/Day%2015/Screenshot%202026-06-19%20152848.png) | In modes 2 and 3, `SM2` can use the ninth bit in `RB8` to filter which received frames raise the serial interrupt. |
+| 19 | [Fixed baud rates in modes 0 and 2](images/Day%2015/Screenshot%202026-06-19%20153807.png) | Mode 0 baud is `fosc/12`; Mode 2 defaults to `fosc/64` after reset, with oscillator-derived fixed timing. |
+| 20 | [PCON effect on baud rate](images/Day%2015/Screenshot%202026-06-19%20153942.png) | Baud rate can be increased by using a higher oscillator frequency or by changing the baud-rate bit in `PCON`. |
+| 21 | [PCON register and SMOD](images/Day%2015/Screenshot%202026-06-19%20154147.png) | `PCON` is an 8-bit register; `SMOD` resets to `0` and can be set by software to double baud rate. |
+| 22 | [SMOD baud-rate doubling path](images/Day%2015/Screenshot%202026-06-19%20154527.png) | `SMOD` is `PCON.7`; setting it doubles baud rate in modes 1, 2, and 3, including Mode 2 `fosc/64` to `fosc/32`. |
+| 23 | [TH1 reload baud-rate comparison](images/Day%2015/Screenshot%202026-06-19%20154541.png) | Common `TH1` reload values show how `SMOD=1` doubles the baud rate compared with `SMOD=0`. |
+| 24 | [SMOD divider diagram](images/Day%2015/Screenshot%202026-06-19%20154610.png) | With an 11.0592 MHz crystal, the timing path shows `SMOD=1` using divide-by-16 and `SMOD=0` using divide-by-32. |
+| 25 | [Mode 1 serial programming setup](images/Day%2015/Screenshot%202026-06-19%20155615.png) | A practical setup sequence: `TMOD=20H` puts Timer 1 in Mode 2 auto-reload, `TH1` selects baud, `SCON=50H` selects Mode 1 with receive enabled, and `TR1=1` starts Timer 1. |
+| 26 | [Mode 1 setup clean view](images/Day%2015/Screenshot%202026-06-19%20155809.png) | Cleaner view of the same Mode 1 programming checklist: Timer 1 mode setup, `TH1` reload, `SCON=50H`, then `TR1`. |
 
 ## Page Notes
 
@@ -148,6 +161,104 @@ This page gives the final receive-side sequence after a valid Mode 1 frame has b
 
 This order matters in software. Once `RI=1`, the program can read `SBUF` to get the eight data bits. If the program also cares about the received stop-bit state, it can inspect `RB8`. After handling the character, software clears `RI` so the receiver can report the next completed character cleanly.
 
+### Page 15: Mode 2 9-Bit UART With Fixed Baud
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20150953.png"><img src="images/Day%2015/Screenshot%202026-06-19%20150953.png" alt="8051 serial Mode 2 9-bit UART fixed baud" width="960"></a>
+
+This page introduces Mode 2, the 9-bit UART mode with fixed baud-rate selection. Using the standard `SCON` bit naming from the 8051 manuals, Mode 2 is selected by `SM0=1` and `SM1=0`, which is the `SM0 SM1 = 10` combination. Some slides write the pair in the opposite textual order, so keep the actual `SCON.7=SM0` and `SCON.6=SM1` bit positions in mind.
+
+Mode 2 transmits or receives 11 bits per character: one start bit, eight data bits, one programmable ninth bit, and one stop bit. On transmit, the ninth bit is taken from `TB8`, so software can use it as a parity bit or an address/data marker. On receive, the incoming ninth bit is placed into `RB8`. The baud rate is fixed relative to the oscillator, commonly selected as either `1/32` or `1/64` of the oscillator frequency depending on the baud-rate doubling configuration.
+
+### Page 16: Mode 2 Clean View
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20151141.png"><img src="images/Day%2015/Screenshot%202026-06-19%20151141.png" alt="8051 serial Mode 2 fixed baud clean view" width="960"></a>
+
+This cleaner view repeats the Mode 2 essentials and is useful for revision. Mode 2 is the fixed-baud 9-bit UART mode: start bit, eight ordinary data bits, a programmable ninth bit, and a stop bit. The ninth bit is the reason `TB8` and `RB8` matter in this mode.
+
+The fixed-baud line is the contrast with Mode 3. Mode 2 does not use the same variable Timer 1 baud setup as Mode 1 or Mode 3. Its baud rate is oscillator-derived, with the common fixed choices controlled by the serial baud-rate doubling configuration.
+
+### Page 17: Mode 3 9-Bit UART With Variable Baud
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20151657.png"><img src="images/Day%2015/Screenshot%202026-06-19%20151657.png" alt="8051 serial Mode 3 9-bit UART variable baud" width="960"></a>
+
+This page completes the four-mode picture. Mode 3 uses the same 9-bit UART frame idea as Mode 2: start bit, eight data bits, programmable ninth bit, and stop bit. The difference is baud-rate generation. Mode 3 uses a programmable baud rate supplied by the timer path, so it is the 9-bit counterpart to Mode 1's variable-baud behavior.
+
+The summary line "modes 1, 2, and 3 are very similar" should be read carefully. They are similar because they are asynchronous framed modes. They differ in data-bit count and baud-rate source: Mode 1 is 8 data bits with variable baud, Mode 2 is 9 data bits with fixed baud, and Mode 3 is 9 data bits with variable baud.
+
+### Page 18: Multiprocessor Communications
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20152848.png"><img src="images/Day%2015/Screenshot%202026-06-19%20152848.png" alt="8051 multiprocessor communications using SM2 and RB8" width="960"></a>
+
+This page explains why the ninth bit exists in modes 2 and 3. In these modes, the ninth received bit is placed in `RB8`. If `SM2` is enabled, the serial interrupt behavior can be filtered so that a received frame activates service only when `RB8=1`. That gives software a way to distinguish special frames from ordinary data frames.
+
+The common use case is a master/slave network of multiple 8051-based devices. A master can transmit an address or attention frame with the ninth bit set, causing slaves to notice and check whether they are being addressed. Ordinary data frames can use the ninth bit cleared, allowing non-addressed slaves to ignore them at the interrupt level.
+
+### Page 19: Fixed Baud Rates In Modes 0 And 2
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20153807.png"><img src="images/Day%2015/Screenshot%202026-06-19%20153807.png" alt="8051 fixed baud rates in serial modes 0 and 2" width="960"></a>
+
+This page separates fixed baud-rate modes from timer-programmable baud-rate modes. In Mode 0, the baud rate is always the oscillator frequency divided by 12. If the oscillator is 12 MHz, Mode 0 shifts at 1 MHz. This matches Mode 0's shift-register nature rather than UART-style timer baud generation.
+
+Mode 2 is also fixed relative to the oscillator. After reset, its baud rate defaults to oscillator frequency divided by 64. With baud-rate doubling configured, the other common Mode 2 value is oscillator frequency divided by 32. This is why Mode 2 is fixed-baud while Mode 3, although also 9-bit, is variable-baud.
+
+### Page 20: PCON Effect On Baud Rate
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20153942.png"><img src="images/Day%2015/Screenshot%202026-06-19%20153942.png" alt="8051 PCON effect on baud rate" width="960"></a>
+
+This page explains why baud rate is not only a timer setting. The oscillator frequency is the base timing source, so a higher-frequency crystal can increase the available baud rates. The power control register `PCON` also contains a baud-rate-related bit, commonly called `SMOD`, that can double the serial baud rate in the modes where that feature applies.
+
+For revision, separate the three layers: oscillator frequency is the raw time base, Timer 1 or fixed dividers shape the serial clock depending on the mode, and `PCON.SMOD` can apply a doubling factor. If a baud-rate calculation is wrong, check all three layers before assuming the `SBUF` or `SCON` program is wrong.
+
+### Page 21: PCON Register And SMOD
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20154147.png"><img src="images/Day%2015/Screenshot%202026-06-19%20154147.png" alt="8051 PCON register and SMOD bit" width="960"></a>
+
+This page gives the `PCON` bit layout used for the baud-rate discussion. `PCON` is an 8-bit register whose high bit is `SMOD`; the lower named bits shown include `GF1`, `GF0`, `PD`, and `IDL`. For this serial-port topic, `SMOD` is the important bit because it controls baud-rate doubling.
+
+After reset, `SMOD=0`. Software can set `SMOD=1` to double the serial baud rate in the supported serial modes. That means the same timer reload or oscillator-derived base can produce two different serial bit rates depending on `SMOD`.
+
+### Page 22: SMOD Baud-Rate Doubling Path
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20154527.png"><img src="images/Day%2015/Screenshot%202026-06-19%20154527.png" alt="8051 SMOD baud-rate doubling path" width="960"></a>
+
+This page gives the practical effect of `SMOD`. `SMOD` is bit 7 of `PCON`. When software sets it, the serial baud rate is doubled in serial modes 1, 2, and 3. In Mode 2 specifically, the fixed baud rate changes from the reset/default `fosc/64` case to the doubled `fosc/32` case.
+
+The diagram uses the common 11.0592 MHz crystal because it divides cleanly into standard serial rates. The oscillator first feeds the 8051 timing path, then the serial baud path divides that timing further. With `SMOD=1`, the divider is effectively smaller, so the resulting baud-rate clock is doubled compared with `SMOD=0`.
+
+### Page 23: TH1 Reload Baud-Rate Comparison
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20154541.png"><img src="images/Day%2015/Screenshot%202026-06-19%20154541.png" alt="8051 TH1 reload baud-rate comparison for SMOD" width="960"></a>
+
+This table shows common Timer 1 reload values for variable baud-rate modes. The decimal values are negative reload offsets represented in 8-bit two's-complement form: `-3` is `FDH`, `-6` is `FAH`, `-12` is `F4H`, and `-24` is `E8H`. Loading these values into `TH1` changes how often Timer 1 overflows.
+
+The table also shows the doubling effect of `SMOD`. For the same `TH1` reload, `SMOD=1` doubles the baud rate compared with `SMOD=0`: `FDH` gives 9600 versus 19200, `FAH` gives 4800 versus 9600, `F4H` gives 2400 versus 4800, and `E8H` gives 1200 versus 2400.
+
+### Page 24: SMOD Divider Diagram
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20154610.png"><img src="images/Day%2015/Screenshot%202026-06-19%20154610.png" alt="8051 SMOD divider diagram" width="960"></a>
+
+This diagram gives the same baud-rate doubling idea as a clock path. With an 11.0592 MHz crystal, the classic 12-clock timing path gives a machine-cycle frequency of 921.6 kHz. The serial baud path then divides that timing. `SMOD=0` uses the lower baud result, while `SMOD=1` doubles it.
+
+The numbers shown beside the divider path are useful checkpoints: dividing 921.6 kHz by 32 gives 28.8 kHz, while dividing by 16 gives 57.6 kHz. Those are intermediate clocks used in the serial baud-rate generation path, not necessarily the final named UART baud in every mode. The main lesson is that `SMOD` halves the divider and therefore doubles the resulting serial timing.
+
+### Page 25: Mode 1 Serial Programming Setup
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20155615.png"><img src="images/Day%2015/Screenshot%202026-06-19%20155615.png" alt="8051 programming sequence for Mode 1 serial byte transfer" width="960"></a>
+
+This page converts the baud-rate discussion into a programming sequence for character-byte transfer. `TMOD=20H` means Timer 1 is configured in Mode 2, the 8-bit auto-reload timer mode. That mode is commonly used for 8051 serial baud generation because `TH1` can hold a reload value and the timer can overflow repeatedly at a steady rate without software reloading it after every overflow.
+
+`TH1` then receives the reload byte chosen for the required baud rate. The exact value depends on oscillator frequency, `SMOD`, and the target baud rate. This is why the previous table of `TH1` values matters: it is not an isolated table; it supplies the reload byte used by the serial initialization program.
+
+`SCON=50H` is the serial-control setup for a common Mode 1 receive/transmit program. In binary, `50H` is `01010000B`: `SM0=0`, `SM1=1` selects Mode 1, `SM2=0` disables multiprocessor filtering, `REN=1` enables reception, and `TB8/RB8/TI/RI` start clear. Finally, setting `TR1=1` starts Timer 1, so the baud-rate clock begins running and the serial port has the timing source needed for actual transfer.
+
+### Page 26: Mode 1 Setup Clean View
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20155809.png"><img src="images/Day%2015/Screenshot%202026-06-19%20155809.png" alt="cleaner 8051 Mode 1 serial setup checklist" width="960"></a>
+
+This page is a cleaner view of the same programming checklist, so use it as the final practical memory hook for Mode 1 serial initialization. The order is important: first configure Timer 1 behavior with `TMOD=20H`, then load `TH1` with the required baud-rate reload, then configure the serial control register with `SCON=50H`, and finally start Timer 1 with `TR1=1`.
+
+The checklist also shows the separation of responsibilities. `TMOD` and `TH1` belong to baud-rate generation. `SCON` belongs to serial mode and receiver enable. `TR1` belongs to timer start/stop control in `TCON`. A correct serial program needs all three areas to agree.
+
 ## Serial Port Deepening
 
 ### Software View
@@ -205,8 +316,8 @@ For basic serial programs, a common mental starting point is: select the require
 | --- | --- | --- |
 | `0` | `0` | Mode 0: 8-bit shift-register operation; `RXD` carries data and `TXD` outputs shift clock. |
 | `0` | `1` | Mode 1: 8-bit UART-style asynchronous operation with start/stop framing and variable baud rate. |
-| `1` | `0` | 9-bit asynchronous operation. |
-| `1` | `1` | 9-bit asynchronous operation with variable baud-rate style use. |
+| `1` | `0` | Mode 2: 9-bit UART operation with fixed oscillator-derived baud rate. |
+| `1` | `1` | Mode 3: 9-bit UART operation with variable timer-provided baud rate. |
 
 The screenshot's "three asynchronous modes" line is the key high-level memory hook: modes 1, 2, and 3 are framed asynchronous communication modes, while mode 0 is the shift-register mode. Once the mode is chosen, the remaining setup must match it: `REN` for reception, `TB8/RB8` relevance for 9-bit modes, and baud-rate generation for modes that need a programmable bit clock.
 
@@ -219,6 +330,12 @@ Mode 1 receive logic depends on edge detection and timing alignment. The start b
 False start-bit detection protects the receiver from noise spikes. A short low pulse can look like the beginning of a start bit, but if the line is not still low at the validation point, the hardware rejects it and goes back to idle. This is why serial reception is about both bit values and bit timing.
 
 For a valid Mode 1 receive frame, completion has three visible software effects: `RB8` receives the stop-bit state, receive `SBUF` receives the eight data bits, and `RI` becomes `1`. The program should treat `RI` as the signal that the received byte is ready to be consumed.
+
+Mode 2 is the point where `TB8` and `RB8` become actual ninth-bit fields rather than ordinary 8-bit UART leftovers. This ninth bit is useful for parity-like schemes or multiprocessor/address-mark communication patterns. The important difference from Mode 1 is that Mode 2 has an 11-bit frame and fixed baud-rate choices tied to the oscillator path.
+
+Mode 3 keeps the 11-bit frame structure of Mode 2 but changes the baud-rate source to the programmable timer path. A clean way to compare the asynchronous modes is: Mode 1 means 8-bit variable-baud UART, Mode 2 means 9-bit fixed-baud UART, and Mode 3 means 9-bit variable-baud UART.
+
+The multiprocessor feature belongs with modes 2 and 3 because those modes carry a ninth bit. `SM2` uses that ninth-bit information to reduce unnecessary serial service. Conceptually, `RB8=1` can mark an address/control frame, while `RB8=0` can mark ordinary data.
 
 ### Receiver Enable Setup
 
@@ -247,6 +364,16 @@ Polling and interrupts are two ways to react to the same flags. Polling repeated
 | Timer dependency | Wrong timer reload values produce wrong serial speed even if `SBUF` and `SCON` code looks correct. |
 
 Baud rate is measured in bits per second, so it is not the same as character rate. A transmitted character often includes framing bits in addition to the data bits, depending on the serial mode. Therefore, when solving baud-rate examples, count the bit timing produced by the timer first, then relate that to the character format.
+
+For mode comparison, keep these fixed/variable rules visible: Mode 0 is fixed at `fosc/12`; Mode 2 is fixed at `fosc/64` by default or `fosc/32` with baud-rate doubling; Modes 1 and 3 use variable baud-rate timing from the timer path.
+
+Baud rate can also be increased at the source or by control configuration. A higher oscillator increases clock-derived baud rates. Setting the baud-rate doubling bit in `PCON` changes the serial baud-rate divisor in the supported modes. This is why `PCON` belongs in serial-port setup even though it is not itself `SBUF` or `SCON`.
+
+`PCON` should not be treated as a serial data register. It is a power/control register, but its `SMOD` bit affects serial timing. After reset, `SMOD` is clear; setting it is an intentional software choice to double the baud rate.
+
+Common Timer 1 reload examples are easier if the reload byte is read as an 8-bit negative offset. `TH1=FDH` means `-3`, `TH1=FAH` means `-6`, `TH1=F4H` means `-12`, and `TH1=E8H` means `-24`. Smaller magnitude reloads overflow more often and produce higher baud rates.
+
+The practical Mode 1 setup joins four registers/bits in order. `TMOD=20H` prepares Timer 1 as an 8-bit auto-reload timer. `TH1` stores the baud-rate reload value. `SCON=50H` chooses Mode 1 and enables reception. `TR1=1` starts Timer 1, which starts the baud-rate timing path. If any one of these is missing, the serial code may look correct but fail: no Timer 1 mode, no reload, no serial mode/receive enable, or no running timer.
 
 ## Points To Remember
 
@@ -285,6 +412,27 @@ Baud rate is measured in bits per second, so it is not the same as character rat
 - Mode 1 receive samples the incoming stream near the middle of the bit timing window.
 - False start-bit detection rejects noise if the line is not still low after the validation count.
 - At the end of a valid Mode 1 receive, `RB8` holds the stop bit, receive `SBUF` holds the eight data bits, and `RI` is set.
+- Mode 2 is selected by the standard `SM0 SM1 = 10` bit combination.
+- Mode 2 uses an 11-bit frame: start bit, eight data bits, programmable ninth bit, stop bit.
+- In Mode 2, transmit ninth bit comes from `TB8`; receive ninth bit is stored in `RB8`.
+- Mode 2 baud rate is fixed relative to the oscillator, commonly `fosc/32` or `fosc/64` depending on baud-rate doubling.
+- Mode 3 uses the same 9-bit frame idea as Mode 2 but uses programmable timer-provided baud rate.
+- Modes 1, 2, and 3 are asynchronous framed modes; Mode 0 is the outlier shift-register mode.
+- `SM2` enables multiprocessor filtering behavior in the 9-bit serial modes.
+- With `SM2` use, `RB8=1` can mark a frame that should activate serial service, such as an address frame in a master/slave setup.
+- Mode 0 baud rate is fixed at `fosc/12`; with a 12 MHz oscillator, that is 1 MHz.
+- Mode 2 baud rate defaults to `fosc/64` after reset and can commonly be doubled to `fosc/32`.
+- Baud rate can be increased by using a higher-frequency oscillator.
+- `PCON` contains the serial baud-rate doubling control used in supported modes.
+- `SMOD` is the baud-rate doubling bit in `PCON`.
+- After reset, `SMOD=0`; setting `SMOD=1` doubles the supported serial baud rate.
+- For common Timer 1 baud examples, `TH1=FDH`, `FAH`, `F4H`, and `E8H` correspond to reload offsets `-3`, `-6`, `-12`, and `-24`.
+- With the same `TH1` reload, `SMOD=1` doubles the baud rate compared with `SMOD=0`.
+- With an 11.0592 MHz crystal, the classic machine-cycle frequency is 921.6 kHz.
+- `TMOD=20H` configures Timer 1 in Mode 2, the 8-bit auto-reload mode often used for serial baud generation.
+- `TH1` holds the reload value that controls Timer 1 overflow rate for variable-baud serial modes.
+- `SCON=50H` means `SM0=0`, `SM1=1`, and `REN=1`: Mode 1 with receive enabled and ordinary 8-bit UART framing.
+- `TR1=1` starts Timer 1, so the serial baud-rate timing path can run.
 - `SCON` contains serial control bits and serial status flags.
 - Serial status bits can be polled by software or used to cause serial interrupt handling.
 - Baud rate means serial bit rate.
