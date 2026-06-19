@@ -2,13 +2,6 @@
 
 Day 11 continues the 8086 instruction-set discussion from Day 10. The screenshots focus on data-transfer and address-related instructions: exchanging register or memory operands, loading an effective address, loading a far pointer into `ES` and a register, and pushing word-sized data onto the stack.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [XCHG and LEA instructions](images/Day%2011/Screenshot%202026-06-12%20163213.png) | `XCHG` swaps operands; `LEA` loads an offset address without changing flags. |
-| 2 | [LES and PUSH instructions](images/Day%2011/Screenshot%202026-06-12%20163257.png) | `LES` loads a register and `ES` from memory; `PUSH` stores a word on the stack. |
-
 ## Handwritten Notes Linked To Day 11
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: address versus contents, far pointer layout, stack byte order, and why stack instructions operate on words.

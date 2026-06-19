@@ -2,28 +2,6 @@
 
 Day 02 moves from "what the 8085 is" into "how it communicates with memory and I/O." The main idea is that every instruction is broken into **machine cycles**, and every machine cycle is broken into **T-states**. Once you understand this, timing diagrams, memory interfacing, instruction length, and addressing modes become connected instead of separate topics.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [Machine cycle status/control table](images/Day%2002/day-2-machine-cycle-status-control-table.png) | `IO/M`, `S1`, `S0`, `/RD`, `/WR`, and `/INTA` identify the current bus cycle. |
-| 2 | [Opcode fetch cycle overview](images/Day%2002/day-2-opcode-fetch-cycle-overview.png) | The CPU reads the opcode from memory and decodes the required work. |
-| 3 | [Opcode fetch timing diagram](images/Day%2002/day-2-opcode-fetch-timing-diagram.png) | Address, `ALE`, status lines, `/RD`, and data during an opcode fetch. |
-| 4 | [MVI B,05H timing example](images/Day%2002/day-2-mvi-b-05h-timing-example.png) | A two-byte instruction needs opcode fetch plus memory read. |
-| 5 | [I/O read timing diagram](images/Day%2002/day-2-io-read-timing-diagram.png) | `IN` reads data from an I/O port into the accumulator. |
-| 6 | [Address decoding and chip select](images/Day%2002/day-2-address-decoding-chip-select.png) | Decoders convert address lines into memory or I/O chip-select signals. |
-| 7 | [ROM interface with MPU](images/Day%2002/day-2-rom-interface-address-decoder.png) | ROM address pins, data pins, chip select, and output enable. |
-| 8 | [Partial address decoding and foldback](images/Day%2002/day-2-partial-address-decoding-foldback.png) | Incomplete decoding creates repeated/alias address ranges. |
-| 9 | [Memory mapped vs I/O mapped I/O](images/Day%2002/day-2-memory-mapped-vs-io-mapped-io.png) | Two ways to connect peripherals to an 8085 system. |
-| 10 | [Memory chip capacity question](images/Day%2002/day-2-memory-chip-capacity-question.png) | `4K x 8` means 4096 byte locations, 12 address lines, 8 data lines. |
-| 11 | [Memory map highest address question](images/Day%2002/day-2-memory-map-lowest-address-question.png) | Address range calculation using start address plus size minus one. |
-| 12 | [Instruction set classification](images/Day%2002/day-2-instruction-set-classification.png) | Instruction length, addressing modes, and operation groups. |
-| 13 | [Instruction symbols and abbreviations 1](images/Day%2002/day-2-instruction-symbols-abbreviations-1.png) | Meaning of common symbols used in instruction descriptions. |
-| 14 | [Instruction symbols and abbreviations 2](images/Day%2002/day-2-instruction-symbols-abbreviations-2.png) | Registers, register pairs, memory symbol `M`, port, flags, and operations. |
-| 15 | [One-byte instruction forms](images/Day%2002/day-2-one-byte-instruction-forms.png) | Operand information may be encoded in the opcode or implied. |
-| 16 | [Two-byte MVI instruction example](images/Day%2002/day-2-two-byte-instruction-mvi-example.png) | Opcode byte plus one immediate data byte. |
-| 17 | [Implicit addressing mode](images/Day%2002/day-2-implicit-addressing-mode.png) | Instructions where the operand is understood, often the accumulator. |
-
 ## Handwritten Notes Linked To Day 02
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.

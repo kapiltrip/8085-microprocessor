@@ -33,7 +33,7 @@ Unrelated screenshots should be moved to `C:\Users\kapil\OneDrive\Desktop\To Rev
 ## Study Order
 
 1. Read the day's Markdown file first.
-2. Use the image index at the top of the file to jump to the exact screenshot.
+2. Go through the embedded screenshots and handwritten pages in order.
 3. Study the explanation below each image.
 4. End with the "Points To Remember" section.
 5. Re-solve the examples without looking at the answer.

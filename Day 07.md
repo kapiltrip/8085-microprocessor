@@ -2,25 +2,6 @@
 
 Day 07 covers the May 31 interrupt screenshots. The main idea is that an interrupt is a controlled break in normal program execution. The CPU pauses the current program, saves enough context to return later, branches to an interrupt service routine, performs the service work, and then returns.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [Interrupt service routine flow](images/Day%2007/day-7-interrupt-service-routine-flow.png) | Main program and ISR flow. |
-| 2 | [Disable interrupt DI](images/Day%2007/day-7-disable-interrupt-di.png) | `DI` disables maskable interrupts. |
-| 3 | [TRAP non-maskable interrupt](images/Day%2007/day-7-trap-non-maskable-interrupt.png) | `TRAP` is highest-priority, vectored, and non-maskable. |
-| 4 | [RST 7.5 interrupt](images/Day%2007/day-7-rst-75-interrupt.png) | `RST 7.5` is maskable, vectored, and edge sensitive. |
-| 5 | [INTR acknowledge sequence](images/Day%2007/day-7-intr-acknowledge-sequence.png) | `INTR` needs interrupt acknowledge and an externally supplied instruction. |
-| 6 | [Interrupt vector table](images/Day%2007/day-7-interrupt-vector-table.png) | Vector addresses and interrupt-service locations. |
-| 7 | [Interrupt priority vector table](images/Day%2007/day-7-interrupt-priority-vector-table.png) | Priority, maskable status, vectoring, and triggering. |
-| 8 | [Maskable vectored interrupt process](images/Day%2007/day-7-maskable-vectored-interrupt-process.png) | How the CPU accepts and services a maskable vectored interrupt. |
-| 9 | [Interrupt mask flip-flop diagram](images/Day%2007/day-7-interrupt-mask-flip-flop-diagram.png) | Mask flip-flops and pending state. |
-| 10 | [Triggering levels: edge and level](images/Day%2007/day-7-triggering-levels-edge-level.png) | Edge-triggered and level-triggered interrupt behavior. |
-| 11 | [Bus arbitration daisy chaining question](images/Day%2007/day-7-bus-arbitration-daisy-chaining-question.png) | Daisy chaining assigns priority by position. |
-| 12 | [Non-maskable interrupt question](images/Day%2007/day-7-non-maskable-interrupt-question.png) | Non-maskable interrupt use case. |
-| 13 | [Interrupt handler question](images/Day%2007/day-7-interrupt-handler-question.png) | Interrupt handler/ISR role. |
-| 14 | [Non-maskable interrupt answer](images/Day%2007/day-7-non-maskable-interrupt-answer.png) | Reinforces non-maskable interrupt meaning. |
-
 ## Handwritten Notes Linked To Day 07
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.

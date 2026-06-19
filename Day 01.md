@@ -2,32 +2,6 @@
 
 This file explains every major term shown in the Day 01 screenshots: microprocessor, CPU, ALU, control unit, binary data, microcomputer, microcontroller, 4004/8008 history, PMOS/MOSFET, memory addressing, scale of integration, language levels, compiler/interpreter/assembler, Von Neumann/Harvard architecture, 8085 pins/signals, key 8085 specifications, `ALE`, clocking, interrupts, signal grouping, machine cycles, control/status signals, and serial I/O. The notes are written for 8085 study, so the definitions are connected back to the Intel 8085 wherever useful.
 
-## Image Links
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [What is a microprocessor?](images/Day%2001/day-1-what-is-a-microprocessor.png) | Meaning of microprocessor and processor |
-| 2 | [Microprocessor as a processing device](images/Day%2001/day-1-microprocessor-processing-device.png) | Binary numbers, program, and processing |
-| 3 | [CPU, ALU, CU, and microcontroller](images/Day%2001/day-1-cpu-alu-control-unit-microcontroller.png) | CPU blocks and control unit |
-| 4 | [Microcomputer vs microprocessor vs microcontroller](images/Day%2001/day-1-microcomputer-microprocessor-microcontroller.png) | Difference between related terms |
-| 5 | [History of microprocessors](images/Day%2001/day-1-history-intel-4004-8008.png) | Intel 4004 and Intel 8008 |
-| 6 | [Scale of integration](images/Day%2001/day-1-scale-of-integration.png) | SSI, MSI, LSI, VLSI, and ULSI |
-| 7 | [Assembly, low-level, and high-level languages](images/Day%2001/day-1-assembly-low-high-level-language.png) | Machine-dependent and machine-independent languages |
-| 8 | [Compiler, interpreter, and assembler](images/Day%2001/day-1-compiler-interpreter-assembler.png) | Translators from source language to machine language/object code |
-| 9 | [Von Neumann and Harvard architecture](images/Day%2001/day-1-von-neumann-harvard-architecture.png) | Program/data storage organization |
-| 10 | [8085 pins and signals overview](images/Day%2001/day-1-8085-pins-signals-overview.png) | 40 pins, +5 V supply, clock, and 8080A compatibility |
-| 11 | [8085 pins and signals close-up](images/Day%2001/day-1-8085-pins-signals-closeup.png) | Same pins/signals slide in cropped form |
-| 12 | [8085 pin configuration and functional diagram](images/Day%2001/day-1-8085-pin-configuration-functional-diagram.png) | Address bus, multiplexed address/data bus, control, interrupt, serial, and DMA signals |
-| 13 | [Key points of 8085 microprocessor](images/Day%2001/day-1-8085-key-points.png) | NMOS, 40-pin DIP, 8-bit data bus, 16 address lines, serial I/O, multiplexing, and `ALE` |
-| 14 | [ALE, clock, interrupts, and opcodes](images/Day%2001/day-1-8085-ale-clock-interrupts-opcodes.png) | `ALE` timing, multiplexing tradeoff, +5 V, hardware interrupts, clock frequency, and instruction/opcode count |
-| 15 | [Signal groups of 8085 microprocessor](images/Day%2001/day-1-8085-signal-groups.png) | Address bus, data bus, control/status, power/frequency, serial I/O, and externally initiated signals |
-| 16 | [Multiplexed address/data bus](images/Day%2001/day-1-8085-multiplexed-address-data-bus.png) | `AD0-AD7`, bidirectional 8-bit bus behavior, and time-division multiplexing |
-| 17 | [Control and status signals: RD and WR](images/Day%2001/day-1-8085-control-status-signals-rd-wr.png) | Active-low `RD`, `WR`, `IO/M`, `S1`, `S0`, and `ALE` |
-| 18 | [Machine cycle status table](images/Day%2001/day-1-8085-machine-cycle-status-table.png) | Status codes for opcode fetch, memory read/write, I/O read/write, interrupt acknowledge, and halt |
-| 19 | [ALE address latch enable](images/Day%2001/day-1-8085-ale-address-latch-enable.png) | Positive-going `ALE` pulse and low-address latching |
-| 20 | [Power supply and frequency signals](images/Day%2001/day-1-8085-power-frequency-signals.png) | `VCC`, `VSS`, `X1`, `X2`, and internal divide-by-two clocking |
-| 21 | [Serial I/O ports: SID and SOD](images/Day%2001/day-1-8085-serial-io-ports-sid-sod.png) | Serial input/output pins and the accumulator `D7` bit path |
-
 ## Handwritten Notes Linked To Day 01
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
