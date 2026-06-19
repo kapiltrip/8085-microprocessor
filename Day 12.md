@@ -13,40 +13,6 @@ For every 8086 instruction, ask five questions:
 5. Which flags are changed, cleared, undefined, or untouched?
 ```
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [MOV examples and `BP` addressing](images/Day%2012/Screenshot%202026-06-15%20161545.png) | Immediate, direct memory, register, register-indirect, segment-register, and word store forms of `MOV`. |
-| 2 | [XCHG and LEA](images/Day%2012/Screenshot%202026-06-15%20162837.png) | `XCHG` swaps equal-size operands; `LEA` loads an offset, not memory data. |
-| 3 | [IN instruction, immediate and DX port forms](images/Day%2012/Screenshot%202026-06-15%20170903.png) | `IN AL,port`, `IN AX,port`, and the role of `DX` for 16-bit port addresses. |
-| 4 | [IN instruction with annotations](images/Day%2012/Screenshot%202026-06-15%20171252.png) | Immediate port examples and the 0000H-FFFFH range possible through `DX`. |
-| 5 | [MOV examples with physical-address annotation](images/Day%2012/Screenshot%202026-06-15%20171949.png) | `DS:437AH`, `RESULT[BP]`, and the correct segment-offset interpretation. |
-| 6 | [ADD, ADC, SUB, SBB introduction](images/Day%2012/Screenshot%202026-06-15%20172546.png) | Addition with memory operands and carry, then subtraction instruction forms. |
-| 7 | [SUB and SBB flag effects](images/Day%2012/Screenshot%202026-06-15%20223644.png) | `SUB`, `SBB`, borrow through `CF`, and affected flags. |
-| 8 | [Byte array subtraction example](images/Day%2012/Screenshot%202026-06-15%20225034.png) | `DB` array indexing, `PRICES[BX]`, and byte subtraction from memory. |
-| 9 | [Word array subtraction example](images/Day%2012/Screenshot%202026-06-15%20230050.png) | `DW` array indexing, word offsets, little-endian storage, and `3000H - 0004H`. |
-| 10 | [MUL result and flags](images/Day%2012/Screenshot%202026-06-15%20230824.png) | Unsigned multiply result placement and `CF/OF` rule. |
-| 11 | [MUL result and flags with annotation](images/Day%2012/Screenshot%202026-06-15%20230928.png) | Upper byte/word decides `CF` and `OF`; other flags are undefined. |
-| 12 | [MUL byte and word examples](images/Day%2012/Screenshot%202026-06-15%20231037.png) | `MUL BH`, `MUL CX`, and `MUL BYTE PTR [BX]`. |
-| 13 | [MUL examples repeated](images/Day%2012/Screenshot%202026-06-15%20231041.png) | Reinforces unsigned byte/word multiply conventions. |
-| 14 | [MUL examples clear view](images/Day%2012/Screenshot%202026-06-15%20231259.png) | One-operand `MUL` and why size controls hidden registers. |
-| 15 | [IMUL source rule](images/Day%2012/Screenshot%202026-06-15%20231849.png) | Signed multiply, sign extension, result placement, and `CF/OF` rule. |
-| 16 | [IMUL and CBW examples](images/Day%2012/Screenshot%202026-06-15%20232308.png) | Signed byte-to-word extension and sample `IMUL` instructions. |
-| 17 | [IMUL examples repeated](images/Day%2012/Screenshot%202026-06-15%20233238.png) | Same signed multiply examples, focused on `CBW`. |
-| 18 | [IMUL examples final view](images/Day%2012/Screenshot%202026-06-15%20233837.png) | Signed multiplicand loading and result in `AX` or `DX:AX`. |
-| 19 | [DIV quotient overflow and flags](images/Day%2012/Screenshot%202026-06-15%20234500.png) | Unsigned division quotient/remainder, type 0 interrupt, and undefined flags. |
-| 20 | [IDIV signed division](images/Day%2012/Screenshot%202026-06-15%20234819.png) | Signed `DX:AX` dividend, signed quotient/remainder, and type 0 interrupt. |
-| 21 | [INC examples](images/Day%2012/Screenshot%202026-06-16%20000249.png) | Increment byte/word register or memory operands. |
-| 22 | [DEC instruction](images/Day%2012/Screenshot%202026-06-16%20000734.png) | Decrement byte/word destination and flag behavior without changing `CF`. |
-| 23 | [DAA after BCD addition](images/Day%2012/Screenshot%202026-06-16%20000946.png) | Packed BCD correction after addition in `AL`. |
-| 24 | [AAS after ASCII subtraction](images/Day%2012/Screenshot%202026-06-16%20001921.png) | ASCII digit subtraction and unpacked BCD adjustment. |
-| 25 | [AAM after multiply](images/Day%2012/Screenshot%202026-06-16%20002303.png) | Adjust product of unpacked BCD digits into two decimal digits in `AX`. |
-| 26 | [AAD before division](images/Day%2012/Screenshot%202026-06-16%20002501.png) | Convert unpacked BCD digits in `AH:AL` into binary in `AL`. |
-| 27 | [AAD with board annotation](images/Day%2012/Screenshot%202026-06-16%20003032.png) | ASCII/BCD adjustment before division and flag behavior. |
-| 28 | [OR instruction examples](images/Day%2012/Screenshot%202026-06-16%20003601.png) | Bitwise OR, destination update, and logical flag behavior. |
-| 29 | [CMP instruction](images/Day%2012/Screenshot%202026-06-16%20004203.png) | Compare by subtraction without saving the result. |
-
 ## Handwritten Notes Linked To Day 12
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: effective-address arithmetic, implicit operands, flag reliability, BCD/ASCII adjustment, and exact result placement.

@@ -2,17 +2,6 @@
 
 Day 03 focuses on how the 8085 moves data between registers and memory, how `HL` acts as a memory pointer, and how logical instructions such as `ORI`, `XRA`, and accumulator operations affect data and flags. This day is important because many later programming problems become simple once you can trace register contents carefully.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [MVI M,data and indirect addressing](images/Day%2003/day-3-mvi-m-data-indirect-addressing.png) | `M` means memory location addressed by `HL`; immediate data is stored there. |
-| 2 | [LHLD direct addressing example](images/Day%2003/day-3-lhld-direct-addressing-example.png) | Load `L` and `H` directly from two consecutive memory locations. |
-| 3 | [XCHG register-pair question](images/Day%2003/day-3-xchg-register-pair-question.png) | `XCHG` exchanges `HL` and `DE` register pairs. |
-| 4 | [Register-pair program tracing](images/Day%2003/day-3-register-pair-program-tracing.png) | Step-by-step tracing of `XRA`, `MOV`, `INX`, `DAD`, and register-pair effects. |
-| 5 | [ORI data immediate with accumulator](images/Day%2003/day-3-ori-data-immediate-accumulator.png) | Immediate OR operation: `A <- A OR data`. |
-| 6 | [XRA A clears accumulator](images/Day%2003/day-3-xra-a-clear-accumulator-note.png) | XORing a value with itself gives zero; `XRA A` clears `A`. |
-
 ## Handwritten Notes Linked To Day 03
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.

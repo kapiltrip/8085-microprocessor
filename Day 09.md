@@ -2,18 +2,6 @@
 
 Day 09 is the transition from 8085 to 8086. The biggest change is not only that the 8086 is a 16-bit processor. The deeper change is that 8086 separates bus work and execution work into two cooperating units: the **Bus Interface Unit** and the **Execution Unit**. This creates instruction prefetching and introduces segment-based memory addressing.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [8086 pin configuration](images/Day%2009/day-9-8086-pin-configuration.png) | 8086 pinout with multiplexed address/data/status/control signals. |
-| 2 | [8086 min/max mode signals](images/Day%2009/day-9-8086-min-max-mode-signals.png) | Compare minimum-mode and maximum-mode signal meanings. |
-| 3 | [8086 internal architecture](images/Day%2009/day-9-8086-internal-architecture.png) | 8086 is divided into BIU and EU. |
-| 4 | [8086 block diagram](images/Day%2009/day-9-8086-block-diagram.png) | Block diagram showing registers, bus interface, ALU, and control logic. |
-| 5 | [8086 bus interface unit](images/Day%2009/day-9-8086-bus-interface-unit.png) | BIU handles address/data transfer, queue fetch, memory, and I/O access. |
-| 6 | [8086 execution unit](images/Day%2009/day-9-8086-execution-unit.png) | EU receives opcodes from the queue, decodes, and executes instructions. |
-| 7 | [8086 general-purpose register uses](images/Day%2009/day-9-8086-general-purpose-register-uses.png) | AX, BX, CX, and DX have general and special-purpose roles. |
-
 ## Handwritten Notes Linked To Day 09
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.

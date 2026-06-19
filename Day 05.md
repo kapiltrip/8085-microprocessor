@@ -2,16 +2,6 @@
 
 Day 05 is mostly about careful instruction execution. The screenshots cover subtraction with borrow, compare flags, how instruction bytes occupy memory addresses, and bit-level accumulator rotation. These topics are common in 8085 exam questions because one wrong assumption about carry, sign, or instruction length changes the final answer.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [SBB/SUB borrow question 1](images/Day%2005/day-5-sbb-subtract-with-borrow-question-1.png) | Subtracting a larger byte from a smaller byte sets carry and sign. |
-| 2 | [SBB/SUB borrow question 2](images/Day%2005/day-5-sbb-subtract-with-borrow-question-2.png) | Same subtraction idea, with two's-complement result. |
-| 3 | [CMP B carry and zero flag question](images/Day%2005/day-5-cmp-b-carry-zero-flags-question.png) | `CMP` compares by internal subtraction without changing accumulator. |
-| 4 | [Instruction address placement example](images/Day%2005/day-5-instruction-address-placement-example.png) | Multi-byte instructions occupy consecutive memory locations. |
-| 5 | [Rotate and ORA accumulator question](images/Day%2005/day-5-rotate-ora-accumulator-question.png) | Trace `ORA`, `RRC`, `RAL`, and carry effects on accumulator bits. |
-
 ## Handwritten Notes Linked To Day 05
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.

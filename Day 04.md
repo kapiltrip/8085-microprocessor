@@ -2,21 +2,6 @@
 
 Day 04 is about control flow and stack-based execution. Earlier days explained how the 8085 fetches and executes ordinary instructions. This day explains how execution changes direction through conditional jumps, `CALL`, `RST`, stack operations, interrupt control, and bit-level serial/interrupt masking through `SIM` and `RIM`.
 
-## Image Index
-
-| No. | Image | Main idea |
-| --- | --- | --- |
-| 1 | [Conditional jump instructions table](images/Day%2004/day-4-conditional-jump-instructions-table.png) | Branching based on carry, zero, sign, parity, and other flags. |
-| 2 | [CALL instruction stack note](images/Day%2004/day-4-call-instruction-stack-note.png) | `CALL` saves return address on stack and jumps to subroutine. |
-| 3 | [RST n restart instruction](images/Day%2004/day-4-rst-n-restart-instruction.png) | `RST n` is a one-byte call to a fixed vector address. |
-| 4 | [Stack pointer operation note](images/Day%2004/day-4-stack-pointer-operation-note.png) | Stack operations use extra machine cycles for memory writes/reads. |
-| 5 | [PUSH and POP PSW note](images/Day%2004/day-4-push-pop-psw-note.png) | `PUSH PSW` and `POP PSW` save/restore accumulator and flags. |
-| 6 | [Stack pointer and HL question](images/Day%2004/day-4-stack-pointer-hl-question.png) | Program tracing before final stack solution. |
-| 7 | [Stack pointer and HL solution](images/Day%2004/day-4-stack-pointer-hl-question-solution.png) | Solved effect of `CALL` and `POP H` on `SP` and `HL`. |
-| 8 | [Signed input-port loop question](images/Day%2004/day-4-signed-input-port-loop-question.png) | Using `RAL` and `JNC` to test sign bit from an input port. |
-| 9 | [SIM SOD and RST 7.5 mask bits](images/Day%2004/day-4-sim-sod-rst75-mask-bits.png) | Accumulator bit fields used by `SIM`. |
-| 10 | [NOP, DI, EI, SIM, RIM common features](images/Day%2004/day-4-nop-di-ei-sim-rim-common-features.png) | One-byte implied instructions with no flags affected. |
-
 ## Handwritten Notes Linked To Day 04
 
 Each handwritten page is shown first as a large full-page image. The explanation below the image adds the technical layer: instruction behavior, bus cycles, flags, timing, address formation, or hardware reason behind the note.
