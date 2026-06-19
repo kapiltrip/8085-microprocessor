@@ -23,6 +23,16 @@ Use these checks while studying this day:
 | 2 | [SBUF and SCON software access](images/Day%2015/Screenshot%202026-06-19%20140057.png) | `SBUF` at `99H` is two internal buffers: write for transmit, read for receive. |
 | 3 | [Serial port block diagram](images/Day%2015/Screenshot%202026-06-19%20141111.png) | Transmit uses parallel-in serial-out flow to `TXD`; receive uses serial-in parallel-out flow from `RXD`. |
 | 4 | [SCON and baud-rate control](images/Day%2015/Screenshot%202026-06-19%20141140.png) | `SCON` at `98H` controls serial mode/status, and Timer 1 can supply variable baud-rate clocking. |
+| 5 | [SCON bit layout](images/Day%2015/Screenshot%202026-06-19%20141838.png) | `SCON = SM0 SM1 SM2 REN TB8 RB8 TI RI`; mode bits, receive enable, ninth-bit fields, and serial flags. |
+| 6 | [SCON simple-use note](images/Day%2015/Screenshot%202026-06-19%20142407.png) | For ordinary serial communication, keep `SM2`, `TB8`, and `RB8` cleared unless using multiprocessor or 9-bit features. |
+| 7 | [Receiver enable initialization](images/Day%2015/Screenshot%202026-06-19%20142934.png) | `REN` must be set to receive characters; `MOV SCON,#10H` sets `REN` in a clean byte, while `SETB REN` sets only that bit. |
+| 8 | [Serial interrupt flags](images/Day%2015/Screenshot%202026-06-19%20143037.png) | `RI` marks receive-buffer full; `TI` marks transmit-buffer empty/ready; hardware sets both and software clears them. |
+| 9 | [Serial modes of operation](images/Day%2015/Screenshot%202026-06-19%20143340.png) | `SM0/SM1` select four serial modes; three are asynchronous framed modes and one is shift-register mode. |
+| 10 | [Mode 0: 8-bit shift register](images/Day%2015/Screenshot%202026-06-19%20143616.png) | Mode 0 uses 8-bit shift-register operation, LSB first, with `RXD` as data and `TXD` as shift clock. |
+| 11 | [Mode 1: 8-bit UART variable baud](images/Day%2015/Screenshot%202026-06-19%20144240.png) | Mode 1 sends a 10-bit frame: start bit, eight data bits LSB first, and stop bit, with baud rate tied to Timer 1 overflow. |
+| 12 | [Mode 1 transmit and receive timing](images/Day%2015/Screenshot%202026-06-19%20145103.png) | Mode 1 bit period is set by baud rate; `TI` is set at the stop bit, and receive timing aligns after a `1`-to-`0` start transition on `RXD`. |
+| 13 | [Mode 1 receive sampling and false start detection](images/Day%2015/Screenshot%202026-06-19%20145830.png) | The receiver samples near the middle of the bit time and rejects noise if the start bit is not still low after the validation count. |
+| 14 | [Mode 1 receive completion sequence](images/Day%2015/Screenshot%202026-06-19%20150358.png) | On valid reception, the stop bit is stored in `RB8`, the eight data bits load receive `SBUF`, and `RI` is set. |
 
 ## Page Notes
 
@@ -58,6 +68,86 @@ This page introduces the serial control register `SCON` at SFR address `98H`. `S
 
 The page also connects serial operation to baud-rate generation. Baud rate is the serial bit rate. Some 8051 serial modes use a fixed rate derived from the oscillator, while variable baud-rate operation commonly uses Timer 1 as the baud-rate clock source. That is why Day 14's timer material directly supports Day 15's serial-port material: timer setup can determine how fast serial bits are transmitted and sampled.
 
+### Page 5: SCON Bit Layout
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20141838.png"><img src="images/Day%2015/Screenshot%202026-06-19%20141838.png" alt="8051 SCON bit layout" width="960"></a>
+
+This page gives the bit-level view of `SCON`: `SM0 SM1 SM2 REN TB8 RB8 TI RI`. The slide text says `SCON` is at `99H`, but that address belongs to `SBUF`; `SCON` is the bit-addressable serial control SFR at `98H`. Keeping this correction explicit avoids mixing up the two central serial SFRs.
+
+`SM0` and `SM1` select the serial mode. `SM2` supports multiprocessor communication behavior in the modes where that feature applies. `REN` enables or disables reception. `TB8` and `RB8` carry the ninth transmit/receive bit in 9-bit serial modes. `TI` is the transmit interrupt flag and `RI` is the receive interrupt flag; hardware sets these flags when the corresponding serial event completes, and software clears them after servicing.
+
+### Page 6: SCON Simple-Use Note
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20142407.png"><img src="images/Day%2015/Screenshot%202026-06-19%20142407.png" alt="8051 SCON simple-use note" width="960"></a>
+
+This note is a shortcut for ordinary serial-port setup. If the program is not using multiprocessor communication and is not using 9-bit serial data, then `SM2`, `TB8`, and `RB8` should be kept `0`. That leaves the program focused on the mode-select bits, receive enable, and the transmit/receive flags.
+
+The screenshot appears to write `TB5` and `RB5`, but in the `SCON` register the relevant bits are `TB8` and `RB8`. `TB8` is the ninth transmitted data bit and `RB8` is the ninth received data bit in 9-bit modes. For common 8-bit UART-style operation, those ninth-bit fields are not part of the data character, so clearing them avoids accidental 9-bit/multiprocessor behavior.
+
+### Page 7: Receiver Enable Initialization
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20142934.png"><img src="images/Day%2015/Screenshot%202026-06-19%20142934.png" alt="8051 receiver enable initialization" width="960"></a>
+
+This page explains how receiving is enabled in software. `REN` is `SCON.4`, so its bit value is `00010000B`, or `10H`. Writing `MOV SCON,#10H` sets `REN` and clears the other `SCON` bits, which is useful only when that complete control-byte value matches the intended mode and flag state.
+
+The second method, `SETB REN`, is more targeted. Because `SCON` is bit-addressable, software can set the receive-enable bit without disturbing `SM0`, `SM1`, `SM2`, `TB8`, `RB8`, `TI`, or `RI`. This distinction is important in real programs: full-byte initialization is convenient at startup, while bit operations are safer when other `SCON` bits already carry meaningful state.
+
+### Page 8: Serial Interrupt Flags
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20143037.png"><img src="images/Day%2015/Screenshot%202026-06-19%20143037.png" alt="8051 serial interrupt flags RI and TI" width="960"></a>
+
+This page explains the two serial event flags. `RI` is the receive interrupt flag. Hardware sets it when a character has been received and the receive buffer is ready for software to read. In a polling program, the CPU repeatedly checks `RI`; in an interrupt-driven program, the serial interrupt can be used so the CPU does not have to poll continuously.
+
+`TI` is the transmit interrupt flag. Hardware sets it when the transmitter reaches the point where software may treat the transmit buffer as ready for the next byte. Before sending another character, software should check that the transmitter is ready, then write the next byte to `SBUF`. Both `RI` and `TI` are cleared by software after the corresponding event has been handled.
+
+### Page 9: Serial Modes Of Operation
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20143340.png"><img src="images/Day%2015/Screenshot%202026-06-19%20143340.png" alt="8051 serial modes of operation" width="960"></a>
+
+This page connects the flag logic to transmit sequencing. If a previous character is still being sent, software should wait until transmission is finished before loading the next character. In practical polling code, that means checking `TI` before writing the next byte to `SBUF`, then clearing `TI` after acknowledging that transmit event.
+
+The page also introduces the four serial modes selected by `SM0` and `SM1` in `SCON`. Three modes are asynchronous serial modes, where each character is framed by start/stop timing. The remaining mode uses the serial port as a shift register. Therefore `SM0/SM1` are not just labels; they define the frame structure, bit count, and baud-rate source assumptions for the serial transfer.
+
+### Page 10: Mode 0 8-Bit Shift Register
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20143616.png"><img src="images/Day%2015/Screenshot%202026-06-19%20143616.png" alt="8051 serial Mode 0 8-bit shift register" width="960"></a>
+
+This page gives the details for serial Mode 0. Mode 0 is selected by clearing both serial mode bits: `SM0=0` and `SM1=0`. In this mode, the serial port behaves like an 8-bit shift register rather than a normal UART-style framed asynchronous link.
+
+The pin roles are different from the usual `TXD` transmit-data and `RXD` receive-data expectation. In Mode 0, serial data enters and exits through `RXD`, while `TXD` outputs the shift clock. Eight bits are shifted least-significant bit first, and the bit rate is fixed at one-twelfth of the on-chip oscillator frequency. Transmission starts when software writes to `SBUF`; reception starts when `REN=1` and `RI=0`, so clearing `RI` is part of preparing for another received byte.
+
+### Page 11: Mode 1 8-Bit UART With Variable Baud
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20144240.png"><img src="images/Day%2015/Screenshot%202026-06-19%20144240.png" alt="8051 serial Mode 1 8-bit UART variable baud" width="960"></a>
+
+This page gives the standard 8-bit UART-style serial mode. Mode 1 sends or receives 10 bits for each character: a start bit that is always `0`, eight data bits transmitted least-significant bit first, and a stop bit that is always `1`. Data is transmitted on `TXD` and received on `RXD`.
+
+Mode 1 uses variable baud-rate operation. In the classic 8051 setup, the baud-rate timing is derived from Timer 1 overflow behavior and the serial-port divider path. Writing to `SBUF` initiates a transmit request, but the actual serial shifting waits for the baud-rate timing path. On receive, the stop bit can be reflected in `RB8`, so `RB8` is not a ninth data bit in Mode 1; it records the received stop-bit state.
+
+### Page 12: Mode 1 Transmit And Receive Timing
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20145103.png"><img src="images/Day%2015/Screenshot%202026-06-19%20145103.png" alt="8051 Mode 1 transmit and receive timing" width="960"></a>
+
+This page adds the timing detail behind Mode 1. On transmit, the shifted frame appears on `TXD` beginning with the start bit, followed by the eight data bits, then the stop bit. The period of each bit is the reciprocal of the programmed baud rate, so timer programming directly controls how long each bit remains on the line.
+
+`TI` is set when the stop bit appears on `TXD`, marking that the transmit event has reached its completion point. On receive, the hardware watches `RXD` for a `1`-to-`0` transition, which is the falling edge into the start bit. The divide-by-16 receive timing path is reset/aligned to that incoming stream so the receiver samples the following bits at the correct positions inside each bit period.
+
+### Page 13: Mode 1 Receive Sampling And False Start Detection
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20145830.png"><img src="images/Day%2015/Screenshot%202026-06-19%20145830.png" alt="8051 Mode 1 receive sampling and false start detection" width="960"></a>
+
+This page explains why the receiver does not accept every falling edge as a real character. After the first `1`-to-`0` transition on `RXD`, the incoming bit stream is sampled relative to the 16-count receive timing path. Sampling near the middle of a bit time is important because the signal is most stable away from the transition edges.
+
+The false-start check requires the line to still be in the `0` state after the validation delay. If the line is not still low, the receiver treats the original edge as noise instead of a valid start bit. It then resets the receive logic and returns to the idle state, waiting for the next `1`-to-`0` transition.
+
+### Page 14: Mode 1 Receive Completion Sequence
+
+<a href="images/Day%2015/Screenshot%202026-06-19%20150358.png"><img src="images/Day%2015/Screenshot%202026-06-19%20150358.png" alt="8051 Mode 1 receive completion sequence" width="960"></a>
+
+This page gives the final receive-side sequence after a valid Mode 1 frame has been sampled. The stop bit is clocked into `RB8`, the eight received data bits are loaded into the receive side of `SBUF`, and the receive interrupt flag `RI` is set.
+
+This order matters in software. Once `RI=1`, the program can read `SBUF` to get the eight data bits. If the program also cares about the received stop-bit state, it can inspect `RB8`. After handling the character, software clears `RI` so the receiver can report the next completed character cleanly.
+
 ## Serial Port Deepening
 
 ### Software View
@@ -92,6 +182,62 @@ Full duplex is possible because transmit and receive paths are separate. The CPU
 
 `SCON` combines control and status. Control bits are written by software to choose behavior. Status flags are set by hardware when serial events finish, and software tests or clears them according to the program structure. This is the same general pattern seen in timers: configuration bits define behavior, while flags report events.
 
+### SCON Bit Quick Table
+
+| Bit | Symbol | Main meaning |
+| --- | --- | --- |
+| `SCON.7` | `SM0` | Serial mode select bit. |
+| `SCON.6` | `SM1` | Serial mode select bit. |
+| `SCON.5` | `SM2` | Multiprocessor-communication control in applicable modes. |
+| `SCON.4` | `REN` | Receive enable. |
+| `SCON.3` | `TB8` | Ninth transmit data bit in 9-bit modes. |
+| `SCON.2` | `RB8` | Ninth received data bit in 9-bit modes. |
+| `SCON.1` | `TI` | Transmit interrupt flag. |
+| `SCON.0` | `RI` | Receive interrupt flag. |
+
+The two most frequently tested status flags are `TI` and `RI`. `TI` tells software the transmitter has reached the completion point for the frame, and `RI` tells software a character has been received. Both flags must be cleared by software after handling; otherwise a polling loop or interrupt routine may repeatedly think the same old event is still new.
+
+For basic serial programs, a common mental starting point is: select the required mode with `SM0/SM1`, set `REN` if reception is needed, keep `SM2=0`, keep `TB8=0` and `RB8=0` unless using 9-bit communication, then handle `TI` and `RI` as event flags.
+
+### Serial Mode Selection
+
+| `SM0` | `SM1` | Mode idea |
+| --- | --- | --- |
+| `0` | `0` | Mode 0: 8-bit shift-register operation; `RXD` carries data and `TXD` outputs shift clock. |
+| `0` | `1` | Mode 1: 8-bit UART-style asynchronous operation with start/stop framing and variable baud rate. |
+| `1` | `0` | 9-bit asynchronous operation. |
+| `1` | `1` | 9-bit asynchronous operation with variable baud-rate style use. |
+
+The screenshot's "three asynchronous modes" line is the key high-level memory hook: modes 1, 2, and 3 are framed asynchronous communication modes, while mode 0 is the shift-register mode. Once the mode is chosen, the remaining setup must match it: `REN` for reception, `TB8/RB8` relevance for 9-bit modes, and baud-rate generation for modes that need a programmable bit clock.
+
+Mode 0 is useful to remember separately because it does not behave like the later asynchronous UART-style modes. It shifts exactly 8 bits, sends/receives the least-significant bit first, uses `TXD` as a clock output, and can be used for simple serial expansion of I/O capability.
+
+Mode 1 is the common 8-bit UART case: one start bit, eight data bits, and one stop bit. The frame is 10 bits long even though the data payload is 8 bits. This distinction matters for baud-rate calculations because baud counts transmitted bits, not just data bytes.
+
+Mode 1 receive logic depends on edge detection and timing alignment. The start bit begins with a high-to-low transition on `RXD`; after that, the serial timing path aligns sampling to the incoming bit stream. If the baud-rate setup is wrong, framing and sampling errors can occur even when the `SBUF` and `SCON` code is syntactically correct.
+
+False start-bit detection protects the receiver from noise spikes. A short low pulse can look like the beginning of a start bit, but if the line is not still low at the validation point, the hardware rejects it and goes back to idle. This is why serial reception is about both bit values and bit timing.
+
+For a valid Mode 1 receive frame, completion has three visible software effects: `RB8` receives the stop-bit state, receive `SBUF` receives the eight data bits, and `RI` becomes `1`. The program should treat `RI` as the signal that the received byte is ready to be consumed.
+
+### Receiver Enable Setup
+
+| Instruction | Effect | When it is appropriate |
+| --- | --- | --- |
+| `MOV SCON,#10H` | Writes the whole `SCON` byte with only `REN` set. | Early initialization when all other `SCON` bits are meant to be zero. |
+| `SETB REN` | Sets only `SCON.4`. | Safer after mode bits or flags already have meaningful values. |
+
+`REN` must be set for reception. If `REN=0`, the receiver is disabled even if the baud-rate source and pins are otherwise configured. For transmit-only programs, `REN` may be left cleared; for any program that expects incoming characters, enabling `REN` is part of serial-port initialization.
+
+### Serial Flag Service Pattern
+
+| Flag | Set by | Meaning | Software response |
+| --- | --- | --- | --- |
+| `RI` | Hardware | A character has been received; receive buffer is ready. | Read `SBUF`, then clear `RI`. |
+| `TI` | Hardware | Transmission reached the ready/completion point for the next byte. | Write next `SBUF` byte when needed, then clear `TI`. |
+
+Polling and interrupts are two ways to react to the same flags. Polling repeatedly tests `RI` or `TI` in software. Interrupt-driven serial I/O lets the serial hardware request service when the flag event occurs, but the service routine still has to identify which flag caused the serial event and clear the handled flag.
+
 ### Baud Rate Connection
 
 | Baud-rate case | What to remember |
@@ -114,6 +260,31 @@ Baud rate is measured in bits per second, so it is not the same as character rat
 - The transmit and receive `SBUF` buffers are separate internal registers behind one software-visible SFR address.
 - `TXD` is `P3.1`; `RXD` is `P3.0`.
 - `SCON` is at SFR address `98H` and is bit-addressable.
+- The screenshot that labels `SCON` as `99H` should be corrected: `SBUF = 99H`, `SCON = 98H`.
+- `SCON = SM0 SM1 SM2 REN TB8 RB8 TI RI`.
+- `SM0/SM1` select serial mode; `REN` enables reception.
+- For normal 8-bit, non-multiprocessor use, keep `SM2=0`, `TB8=0`, and `RB8=0`.
+- `REN` is `SCON.4`, so `MOV SCON,#10H` sets only `REN` in a fresh `SCON` byte.
+- `SETB REN` sets the receive-enable bit without rewriting the rest of `SCON`.
+- `TI` is the transmit flag and `RI` is the receive flag; software clears both after service.
+- `RI=1` means received data is ready in the receive buffer.
+- `TI=1` means the transmitter is ready/completed for the next transmit action.
+- A serial interrupt can be caused by receive or transmit flag activity, so software must check which flag is set.
+- Wait for transmit completion before writing the next transmit character to `SBUF`.
+- `SM0/SM1` choose one of four serial modes.
+- Modes 1, 2, and 3 are asynchronous framed modes; Mode 0 is shift-register style operation.
+- Mode 0 is selected with `SM0=0` and `SM1=0`.
+- In Mode 0, `RXD` carries serial data and `TXD` supplies the shift clock.
+- Mode 0 shifts 8 bits LSB first at a fixed oscillator-derived rate.
+- Mode 1 is an 8-bit UART mode with a 10-bit frame: start bit, eight data bits, stop bit.
+- Mode 1 sends data LSB first and uses variable baud-rate timing derived through the Timer 1/serial divider path.
+- In Mode 1 reception, `RB8` can hold the received stop-bit state.
+- In Mode 1, each bit period is `1 / baud rate`.
+- In Mode 1 transmit, `TI` is set when the stop bit appears on `TXD`.
+- In Mode 1 receive, a `1`-to-`0` transition on `RXD` indicates the start bit and lets receive timing align.
+- Mode 1 receive samples the incoming stream near the middle of the bit timing window.
+- False start-bit detection rejects noise if the line is not still low after the validation count.
+- At the end of a valid Mode 1 receive, `RB8` holds the stop bit, receive `SBUF` holds the eight data bits, and `RI` is set.
 - `SCON` contains serial control bits and serial status flags.
 - Serial status bits can be polled by software or used to cause serial interrupt handling.
 - Baud rate means serial bit rate.
