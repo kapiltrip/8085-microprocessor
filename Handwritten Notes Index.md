@@ -14,6 +14,7 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [8086-instructions-addressing-stack-arithmetic-logic-control-flow.pdf](HandWrittenNotes/8086-instructions-addressing-stack-arithmetic-logic-control-flow.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231727](images/HandWrittenNotes/scanned-2026-06-16-231727/) | 24 | 8086 pins, min/max mode, BIU/EU, flags, addressing, stack, arithmetic, rotate/string/control-transfer, and I/O. |
 | [8086-io-interfacing-support-chips-mcqs.pdf](HandWrittenNotes/8086-io-interfacing-support-chips-mcqs.pdf) | [images/HandWrittenNotes/scanned-2026-06-16-231851](images/HandWrittenNotes/scanned-2026-06-16-231851/) | 6 | 8086 I/O organization, min/max mode interface, `IN/OUT`, support chips, bus-loading MCQs, and stack segment size. |
 | [8051-microcontroller-architecture-memory-addressing-timers.pdf](HandWrittenNotes/8051-microcontroller-architecture-memory-addressing-timers.pdf) | [images/HandWrittenNotes/8051-microcontroller-notes](images/HandWrittenNotes/8051-microcontroller-notes/) | 8 | 8051 microcontroller overview, features, PSW/register banks, stack, DPTR/PC, ports, SBUF, timers, control pins, internal memory, addressing modes, and timer/counter control. |
+| [8051-serial-port-programming-instruction-set-mcqs.pdf](HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs.pdf) | [images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/) | 22 | 8051 timer continuation, `TCON`, serial port, `SBUF`, `SCON`, baud-rate generation, transmit/receive loops, 8096 comparison, MCQs, and 8051 instruction-set practice. |
 
 ## Page Map
 
@@ -164,6 +165,28 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [8051-microcontroller-notes page 007](images/HandWrittenNotes/8051-microcontroller-notes/page-007.jpg) | [Day 14](Day%2014.md) | Addressing modes, immediate data, direct/SFR addressing, register-indirect examples, DPTR split, and invalid register-transfer forms. |
 | [8051-microcontroller-notes page 008](images/HandWrittenNotes/8051-microcontroller-notes/page-008.jpg) | [Day 14](Day%2014.md) | I/O port input/output behavior, external-memory port multiplexing, timers/counters, `TMOD`, mode table, and auto-reload. |
 | [Day 14 DPTR/register handwritten image](images/Day%2014/day-14-register-addressing-dptr-handwritten-note.jpg) | [Day 14](Day%2014.md) | `MOV DPTR,#4521H`, `DPH/DPL` split, and why arbitrary register-to-register moves are not a general 8051 form. |
+| [8051 serial/instruction page 001](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-001.jpg) | [Day 15](Day%2015.md) | Timer/counter `C/T`, `GATE`, software/hardware run control, `TRx`, and Mode 0 13-bit timer behavior. |
+| [8051 serial/instruction page 002](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-002.jpg) | [Day 15](Day%2015.md) | Mode 1 16-bit timer, Mode 2 auto-reload, Mode 3 split timer, and Timer 1 behavior in Mode 3. |
+| [8051 serial/instruction page 003](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-003.jpg) | [Day 15](Day%2015.md) | `TCON` bit layout, timer overflow flags, run bits, and external interrupt trigger/status bits. |
+| [8051 serial/instruction page 004](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-004.jpg) | [Day 15](Day%2015.md) | Timer Mode 1 delay procedure: load `THx/TLx`, start `TRx`, poll `TFx`, clear/reload, and repeat. |
+| [8051 serial/instruction page 005](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-005.jpg) | [Day 15](Day%2015.md) | Serial port overview, `SBUF` transmit/receive buffers, `SCON`, baud clock, `TXD/RXD`, and Timer 1. |
+| [8051 serial/instruction page 006](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-006.jpg) | [Day 15](Day%2015.md) | `SCON` bits, serial mode select, receive enable, ninth-bit fields, and `TI/RI` flag service. |
+| [8051 serial/instruction page 007](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-007.jpg) | [Day 15](Day%2015.md) | Serial modes 0 to 3, shift-register mode, UART framing, ninth-bit modes, and fixed versus variable baud. |
+| [8051 serial/instruction page 008](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-008.jpg) | [Day 15](Day%2015.md) | Baud-rate derivation using oscillator frequency, machine-cycle clock, Timer 1 overflow, `SMOD`, and `TH1`. |
+| [8051 serial/instruction page 009](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-009.jpg) | [Day 15](Day%2015.md) | `PCON`, `SMOD`, baud-rate doubling, fixed baud in modes 0/2, and Timer 1-derived baud in modes 1/3. |
+| [8051 serial/instruction page 010](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-010.jpg) | [Day 15](Day%2015.md) | `TH1` reload examples, negative reload values, and standard baud-rate table reasoning. |
+| [8051 serial/instruction page 011](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-011.jpg) | [Day 15](Day%2015.md) | Ninth-bit serial communication, `SM2` multiprocessor filtering, `RB8/TB8`, `PCON`, and fixed baud notes. |
+| [8051 serial/instruction page 012](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-012.jpg) | [Day 15](Day%2015.md) | Receive-side framing, `RXD`, start/data/stop bits, receive `SBUF`, and `RI` polling sequence. |
+| [8051 serial/instruction page 013](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-013.jpg) | [Day 15](Day%2015.md) | Transmit and receive polling flows using `SBUF`, `TXD`, `RXD`, `TI`, and `RI`. |
+| [8051 serial/instruction page 014](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-014.jpg) | [Day 15](Day%2015.md) | Receive recap, Intel 8096/MCS-96 features, and 8051 architecture MCQ anchors. |
+| [8051 serial/instruction page 015](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-015.jpg) | [Day 15](Day%2015.md) | Reset values, port/SFR facts, Mode 1 UART, 11.0592 MHz timing, SBUF transmit, 8255/CRC MCQs. |
+| [8051 serial/instruction page 016](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-016.jpg) | [Day 15](Day%2015.md) | Data-transfer instructions, `MOV`, `MOVC`, `MOVX`, code memory, external data memory, ports, and `ALE`. |
+| [8051 serial/instruction page 017](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-017.jpg) | [Day 15](Day%2015.md) | `SWAP`, `XCH`, `PUSH`, `POP`, `ADD`, `ADDC`, and `SUBB` accumulator/stack behavior. |
+| [8051 serial/instruction page 018](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-018.jpg) | [Day 15](Day%2015.md) | `MUL`, `DIV`, `INC`, `DEC`, logical operations, rotates, and indexed jump behavior. |
+| [8051 serial/instruction page 019](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-019.jpg) | [Day 15](Day%2015.md) | Branch and jump instructions: `JC`, `DJNZ`, `JZ`, `JNZ`, `SJMP`, `AJMP`, and range/condition rules. |
+| [8051 serial/instruction page 020](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-020.jpg) | [Day 15](Day%2015.md) | `AJMP` 11-bit target formation, same-2 KB code-block limit, and short/local jump distinction. |
+| [8051 serial/instruction page 021](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-021.jpg) | [Day 15](Day%2015.md) | `LCALL`, `ACALL`, `RET`, `RETI`, return-address stack storage, and interrupt return behavior. |
+| [8051 serial/instruction page 022](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg) | [Day 15](Day%2015.md) | Final 8051 instruction MCQs: accumulator destinations, indirect operands, `CJNE`, BCD adjust, and flag effects. |
 
 ## Handwritten Depth Pass By Day
 
@@ -311,6 +334,20 @@ The port and timer pages should be revised as SFR-controlled hardware. Port latc
 
 Revision rule: for every 8051 instruction, ask which address space it touches. For every port/timer question, name the SFR first, then the hardware behavior that SFR controls.
 
+### Day 15: 8051 Serial Port, Timer Baud Generation, 8096 Comparison, MCQs, And Instruction Set
+
+Handwritten pages: [8051-serial-port-programming-instruction-set-mcqs p001](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-001.jpg) to [8051-serial-port-programming-instruction-set-mcqs p022](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg).
+
+These pages should be read as the second half of the 8051 block. Pages 001-004 finish timer/counter control, which belongs with Day 15 because serial baud-rate programming depends on Timer 1. The timer notes build a chain: `TMOD` selects timer/counter operation and mode, `TCON` supplies run and overflow flags, software starts the timer through `TRx`, and polling or interrupts respond to `TFx`. Mode 2 auto-reload is especially important because `TH1` can repeatedly reload `TL1`, producing the regular overflow stream used by common Mode 1 UART examples.
+
+Pages 005-013 are the serial-port core. `SBUF` is one software-visible SFR name at `99H`, but the hardware has separate transmit and receive buffers behind it. `SCON` at `98H` selects the serial mode and holds `TI/RI` event flags. The serial modes must be learned as frame format plus baud source: Mode 0 is shift-register style, Mode 1 is 8-bit UART with variable baud, Mode 2 is 9-bit UART with fixed oscillator-derived baud, and Mode 3 is 9-bit UART with variable baud. `PCON.7` (`SMOD`) doubles supported baud rates, while Timer 1 Mode 2 and `TH1` reload values provide the usual programmable baud path.
+
+Pages 014-015 are MCQ consolidation. Keep classic 8051 facts separate from 8096 facts: 8051 is the 8-bit MCS-51 controller with 40-pin package, four 8-bit ports, 128 bytes internal RAM, 4 KB classic on-chip ROM, `DPTR`, `PSW`, `SBUF`, `SCON`, and bit-addressable control style. 8096 belongs to Intel's 16-bit MCS-96 line, so notes about 16-bit CPU orientation, ADC/PWM, faster math/control features, and expanded control applications should not be mixed back into 8051 register questions.
+
+Pages 016-022 are instruction-set revision. The safe method is to classify every instruction by destination, source address space, and flag effect. `MOVC` reads code memory through `A+DPTR` or `A+PC`; `MOVX` reaches external data memory through `@DPTR` or `@R0/@R1`; `SWAP` changes nibbles inside `A`; `XCH` exchanges `A` with a byte operand; `PUSH` pre-increments `SP`; `POP` reads then decrements `SP`; `ADD/ADDC/SUBB` are accumulator-centered; and call/return forms depend on the stack. For branches, do not memorize only the mnemonic: write the tested condition and the target range (`SJMP` relative, `AJMP/ACALL` same 2 KB block, long forms full code space).
+
+Revision rule: for serial pages, draw the data flow (`SBUF` to shift register to `TXD`, and `RXD` to shift register to receive `SBUF`). For instruction pages, make a three-column trace: destination, source/address space, and flag effect.
+
 ## Web-Checked Primary Reference Spine
 
 These references were used only to verify and deepen the handwritten-note explanations above:
@@ -320,13 +357,14 @@ These references were used only to verify and deepen the handwritten-note explan
 - Intel, [The 8086 Family User's Manual](https://edge.edx.org/c4x/BITSPilani/EEE231/asset/8086_family_Users_Manual_1_.pdf): 8086 architecture, BIU/EU, segmentation, instructions, flags, stack, interrupts, and I/O.
 - Intel, [MCS-51 Microcontroller Family User's Manual](https://bitsavers.trailing-edge.com/components/intel/8051/MCS-51_Users_Manual_Feb94.pdf): 8051 memory spaces, SFRs, ports, timers, serial interface, interrupts, and instruction behavior.
 - Intel, [MCS-51 Instruction Set](https://www.keil.com/dd/docs/datashts/intel/ism51.pdf): 8051 addressing forms, `MOVX`, `MOVC`, bit instructions, and instruction restrictions.
+- Intel, [1991 Intel 16-Bit Embedded Controller Handbook](https://bitsavers.trailing-edge.com/components/intel/_dataBooks/1991_Intel_16-Bit_Embedded_Controller_Handbook.pdf): 8096/MCS-96 family context used to separate 16-bit controller facts from 8051 facts.
 - Intel, [8255A Programmable Peripheral Interface](http://aturing.umcs.maine.edu/~meadow/courses/cos335/Intel8255A.pdf), [8253 Programmable Interval Timer](https://www.alldatasheet.com/datasheet-pdf/pdf/66099/INTEL/8253.html), [8257 Programmable DMA Controller](https://www.eecs.northwestern.edu/~ypa448/Microp/8257.pdf), and [8259A Programmable Interrupt Controller](https://pdos.csail.mit.edu/6.828/2010/readings/hardware/8259A.pdf): support-chip roles used in Day 08 and Day 13 handwritten notes.
 
 ## Expanded Page Notes
 
 The original handwritten sets are displayed below as large full-page images. The explanation below each image is not a caption; it adds the technical reason behind the page: instruction semantics, bus-cycle/T-state derivation, flag behavior, stack byte order, interrupt vectoring, DMA bus ownership, or 8086 address formation.
 
-The two 8086 scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). The 8051 handwritten PDF is mapped to [Day 14](Day%2014.md) because every page is 8051-specific and matches that day's screenshots. That keeps each handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised. Every day file now also includes a `Handwritten And Screenshot Deepening` section to connect page images, handwritten notes, and exam-style reasoning.
+The two 8086 scanned PDFs from 2026-06-16 are mapped in the table above and explained directly inside [Day 09](Day%2009.md), [Day 10](Day%2010.md), [Day 11](Day%2011.md), [Day 12](Day%2012.md), and [Day 13](Day%2013.md). The first 8051 handwritten PDF is mapped to [Day 14](Day%2014.md) because it matches the 8051 architecture, memory, addressing, and timer screenshots. The new 22-page 8051 handwritten PDF is mapped to [Day 15](Day%2015.md) because it continues timers into serial-port programming, MCQs, 8096 comparison, and instruction-set practice. That keeps each handwritten page next to the matching video-screenshot topic instead of separating it from the day where it should be revised. Every day file now also includes a `Handwritten And Screenshot Deepening` section to connect page images, handwritten notes, and exam-style reasoning.
 
 ### `8085-basics-pins-timing-memory-io.pdf`
 
@@ -1373,3 +1411,137 @@ The examples are valuable because they show legal and illegal forms. `MOV DPTR,#
 Technical explanation: this page ties port behavior to external-memory use. The 8051 has four 8-bit I/O ports. After reset, port latches are high, but input use still depends on writing the latch high so the external signal can drive the pin. Port 0 becomes `AD0-AD7` during external-memory cycles, so the low address must be latched before the same pins are reused for data.
 
 The timer/counter half explains `TMOD` at the operating-mode level. A timer counts internal clock pulses and is used for interval timing, delays, and baud-rate support. A counter counts external pulses on timer input pins. The `M1 M0` table selects Mode 0 as 13-bit mode, Mode 1 as 16-bit mode, Mode 2 as 8-bit auto-reload, and Mode 3 as split timer mode. In auto-reload, `THx` stores the reload value and `TLx` is reloaded after overflow, making repeated timing intervals easier to generate.
+
+### `8051-serial-port-programming-instruction-set-mcqs.pdf`
+
+#### [8051 serial/instruction page 001](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-001.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-001.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-001.jpg" alt="8051 serial handwritten page 001 timer counter C T GATE TR mode 0" width="960"></a>
+
+Technical explanation: this page completes the `TMOD` control model. `C/T` chooses whether the timer block counts internal machine-cycle pulses or external input transitions. `GATE` chooses whether software alone controls running through `TRx`, or whether an external interrupt pin must also permit the timer. Mode 0 is a 13-bit compatibility mode, so only five low bits of `TLx` combine with `THx`; it should not be confused with the normal 16-bit range of Mode 1.
+
+#### [8051 serial/instruction page 002](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-002.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-002.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-002.jpg" alt="8051 serial handwritten page 002 timer mode 1 mode 2 mode 3" width="960"></a>
+
+Technical explanation: Mode 1 cascades `THx` and `TLx` into a 16-bit up-counter that sets `TFx` after rollover. Mode 2 uses `TLx` as the active 8-bit counter and `THx` as the automatic reload value, which is why it is useful for repeated intervals and serial baud generation. Mode 3 splits Timer 0 into two 8-bit timers and changes Timer 1's ordinary overflow/interrupt behavior, so it must be treated as a special case.
+
+#### [8051 serial/instruction page 003](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-003.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-003.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-003.jpg" alt="8051 serial handwritten page 003 TCON flags run bits interrupts" width="960"></a>
+
+Technical explanation: `TCON` is split between timer control/status and external interrupt control/status. `TF1/TR1/TF0/TR0` belong to timers; `IE1/IT1/IE0/IT0` belong to external interrupt flags and trigger selection. The page is useful because it prevents treating `TRx` and `TFx` as the same idea: `TRx` enables counting, while `TFx` reports that rollover occurred.
+
+#### [8051 serial/instruction page 004](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-004.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-004.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-004.jpg" alt="8051 serial handwritten page 004 timer delay polling" width="960"></a>
+
+Technical explanation: the timer delay procedure is load, start, poll, clear, reload, repeat. In Mode 1, software loads `THx/TLx`, sets `TRx`, waits for `TFx`, then clears the flag and reloads for another identical delay. `JNB TFx,label` is the polling idiom: keep looping while the overflow flag is still `0`. This same polling discipline later appears again as `JNB TI` or `JNB RI` for serial flags.
+
+#### [8051 serial/instruction page 005](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-005.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-005.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-005.jpg" alt="8051 serial handwritten page 005 SBUF SCON baud clock" width="960"></a>
+
+Technical explanation: this page introduces the serial-port data path. The CPU writes or reads bytes, while the serial port shifts bits on `TXD` and `RXD`. `SBUF` is the data doorway, but write and read access go to different internal buffers. `SCON` selects mode and reports status. Timer 1 appears in the diagram because variable-baud serial modes commonly use Timer 1 overflow as their time base.
+
+#### [8051 serial/instruction page 006](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-006.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-006.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-006.jpg" alt="8051 serial handwritten page 006 SCON bits TI RI" width="960"></a>
+
+Technical explanation: `SCON` contains mode bits (`SM0/SM1`), multiprocessor filtering (`SM2`), receive enable (`REN`), ninth-bit transmit/receive fields (`TB8/RB8`), and event flags (`TI/RI`). Hardware sets `TI` and `RI`; software clears them after handling. That makes `SCON` both a configuration register and a synchronization point between program code and serial hardware.
+
+#### [8051 serial/instruction page 007](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-007.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-007.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-007.jpg" alt="8051 serial handwritten page 007 serial modes" width="960"></a>
+
+Technical explanation: the mode table should be memorized with meaning, not only bit patterns. Mode 0 is shift-register transfer. Mode 1 is 8-bit UART with start and stop bits and variable baud. Mode 2 is 9-bit UART with fixed oscillator-derived baud. Mode 3 is 9-bit UART with variable baud. This is why `SM0/SM1` must always be studied together with frame size and baud source.
+
+#### [8051 serial/instruction page 008](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-008.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-008.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-008.jpg" alt="8051 serial handwritten page 008 baud calculation" width="960"></a>
+
+Technical explanation: baud-rate calculation starts with oscillator frequency. On a classic 12-clock 8051, the machine-cycle frequency is `fosc/12`, so `11.0592 MHz` becomes `921.6 kHz`. Timer 1 overflow is derived from that count rate and the `TH1` reload. Serial divider logic and `SMOD` then determine the final bit rate. Standard baud rates are easiest to derive when these stages are kept separate.
+
+#### [8051 serial/instruction page 009](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-009.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-009.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-009.jpg" alt="8051 serial handwritten page 009 PCON SMOD" width="960"></a>
+
+Technical explanation: `SMOD` is `PCON.7` and doubles supported serial baud rates when set. It resets to `0`, so doubled baud is a deliberate software choice. Mode 0 and Mode 2 have fixed oscillator-derived timing; Mode 1 and Mode 3 commonly use Timer 1. Separating fixed baud from timer-derived baud prevents mistakes when solving serial-mode questions.
+
+#### [8051 serial/instruction page 010](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-010.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-010.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-010.jpg" alt="8051 serial handwritten page 010 TH1 reloads" width="960"></a>
+
+Technical explanation: `TH1` reload values are two's-complement offsets in 8-bit auto-reload mode. `FDH`, `FAH`, `F4H`, and `E8H` correspond to `-3`, `-6`, `-12`, and `-24`, which change how often `TL1` overflows. The serial port then divides that overflow stream. This is why changing only `TH1` can change baud without changing the serial frame format.
+
+#### [8051 serial/instruction page 011](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-011.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-011.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-011.jpg" alt="8051 serial handwritten page 011 multiprocessor SM2 PCON" width="960"></a>
+
+Technical explanation: the ninth-bit pages explain why modes 2 and 3 are useful beyond simple character transfer. `TB8` can send a ninth bit, `RB8` stores the received ninth bit, and `SM2` can filter which frames generate receive service. This supports multiprocessor serial communication patterns where address frames and data frames are distinguished by the ninth bit.
+
+#### [8051 serial/instruction page 012](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-012.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-012.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-012.jpg" alt="8051 serial handwritten page 012 receive RI" width="960"></a>
+
+Technical explanation: receive-side programming follows the hardware frame. `RXD` sees a start bit, the receiver samples data bits at the baud timing, the stop bit is accepted, the byte is placed in receive `SBUF`, and `RI` becomes `1`. Software should read `SBUF`, store the byte, and clear `RI` before waiting for the next character.
+
+#### [8051 serial/instruction page 013](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-013.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-013.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-013.jpg" alt="8051 serial handwritten page 013 transmit receive loops" width="960"></a>
+
+Technical explanation: transmit and receive use opposite sides of the same software name. Writing `SBUF` starts transmit-side shifting through `TXD`; completion sets `TI`. Reading `SBUF` obtains receive-side data that arrived through `RXD`; completion sets `RI`. Robust polling code respects these flags so it neither overwrites a pending transmit byte nor loses an incoming receive byte.
+
+#### [8051 serial/instruction page 014](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-014.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-014.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-014.jpg" alt="8051 serial handwritten page 014 8096 and MCQs" width="960"></a>
+
+Technical explanation: this page combines receive recap, 8096 comparison, and 8051 MCQ facts. For 8051, anchor on 8-bit CPU, 40-pin classic package, 128 bytes RAM, 4 KB classic ROM, four 8-bit ports, `DPTR`, `PSW`, and SFR control. For 8096, anchor on the MCS-96 16-bit controller family with stronger control-system peripherals such as ADC/PWM and higher-performance control orientation.
+
+#### [8051 serial/instruction page 015](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-015.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-015.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-015.jpg" alt="8051 serial handwritten page 015 reset and clock MCQs" width="960"></a>
+
+Technical explanation: this page is an MCQ checkpoint. Reset facts include `SP=07H`, `PSW=00H`, Bank 0 selected, and port latches high. SFR facts include `P0=80H`, `TCON=88H`, `SCON=98H`, and `SBUF=99H`. The `11.0592 MHz` calculation gives `921.6 kHz` machine-cycle frequency and about `1.085 us` per machine cycle on the classic 12-clock 8051.
+
+#### [8051 serial/instruction page 016](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-016.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-016.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-016.jpg" alt="8051 serial handwritten page 016 MOV MOVC MOVX" width="960"></a>
+
+Technical explanation: this page separates data-transfer address spaces. `MOV` works in the internal data/SFR/register world. `MOVC` reads code memory into `A` using an indexed address such as `A+DPTR` or `A+PC`. `MOVX` reads or writes external data memory, either through `@DPTR` for 16-bit addressing or `@R0/@R1` for 8-bit external addressing. This distinction is one of the most important 8051 instruction-set boundaries.
+
+#### [8051 serial/instruction page 017](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-017.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-017.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-017.jpg" alt="8051 serial handwritten page 017 stack and arithmetic" width="960"></a>
+
+Technical explanation: `SWAP A` exchanges nibbles inside the accumulator. `XCH A,operand` exchanges bytes between `A` and an allowed operand. `PUSH direct` increments `SP` before storing; `POP direct` reads then decrements `SP`. `ADD`, `ADDC`, and `SUBB` place the result in `A`, so accumulator and flag tracing are central to these instructions.
+
+#### [8051 serial/instruction page 018](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-018.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-018.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-018.jpg" alt="8051 serial handwritten page 018 arithmetic logic rotate" width="960"></a>
+
+Technical explanation: `MUL AB` returns a 16-bit product in `B:A`, while `DIV AB` returns quotient in `A` and remainder in `B`. `INC`/`DEC` are not carry-setting arithmetic. Logical operations such as `ANL`, `ORL`, and `XRL` are mask/combine operations, and rotates must be separated into accumulator-only forms and carry-through forms. `JMP @A+DPTR` is indexed control flow through code memory.
+
+#### [8051 serial/instruction page 019](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-019.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-019.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-019.jpg" alt="8051 serial handwritten page 019 branches jumps" width="960"></a>
+
+Technical explanation: branch instructions must be revised by condition and range. `JC` tests carry, `DJNZ` decrements and then tests for nonzero, and `JZ/JNZ` test accumulator content. `SJMP` is relative and local, while `AJMP` is absolute within a 2 KB block. Confusing condition type with range is the common error on these pages.
+
+#### [8051 serial/instruction page 020](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-020.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-020.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-020.jpg" alt="8051 serial handwritten page 020 AJMP 2KB" width="960"></a>
+
+Technical explanation: `AJMP` uses an 11-bit target field and keeps the upper program-counter page bits, so it can only target the same 2 KB code block. It is shorter than `LJMP` but less flexible. Use `AJMP` only when the destination is inside the same block; otherwise the long jump form is required.
+
+#### [8051 serial/instruction page 021](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-021.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-021.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-021.jpg" alt="8051 serial handwritten page 021 calls returns RETI" width="960"></a>
+
+Technical explanation: `LCALL` pushes the return address and can reach the full code space. `ACALL` also pushes the return address but is limited to the same 2 KB block. `RET` pops the saved PC and resumes a normal subroutine caller. `RETI` pops the saved PC and additionally completes interrupt-service state, so interrupt service routines should end with `RETI`, not plain `RET`.
+
+#### [8051 serial/instruction page 022](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg)
+
+<a href="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg"><img src="images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg" alt="8051 serial handwritten page 022 final MCQs" width="960"></a>
+
+Technical explanation: the final page is a compact instruction MCQ drill. Read every answer through destination, source, and flag effect. `CJNE` jumps on not-equal and sets carry for unsigned less-than. `DA A` is for BCD adjustment after addition. Byte logical instructions normally do not update the PSW math flags. Accumulator-centered arithmetic must be traced through `A`, not through an arbitrary destination register.
