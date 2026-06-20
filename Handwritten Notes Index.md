@@ -348,6 +348,38 @@ Pages 016-022 are instruction-set revision. The safe method is to classify every
 
 Revision rule: for serial pages, draw the data flow (`SBUF` to shift register to `TXD`, and `RXD` to shift register to receive `SBUF`). For instruction pages, make a three-column trace: destination, source/address space, and flag effect.
 
+## Final Handwritten Review Addendum
+
+This final pass connects the handwritten pages across the full repo. The goal is not to add more definitions, but to make the notebook easier to revise as one system: how data is found, how results are checked, how control flow returns, and how external hardware is selected.
+
+### Stack And Return-Address Rules
+
+Read every stack page with stack direction first. In 8085, the stack grows downward: pushes and calls decrement `SP`, and the final `SP` points at the lower-addressed saved byte. For a saved 16-bit value, the low byte is at the address currently pointed to by `SP` and the high byte is at `SP+1` after the push/call has completed. That is why `POP`, `RET`, and manual stack traces should start from the current `SP`, not from the old pre-call value.
+
+In 8086, stack work is segment based: the physical address comes from `SS:SP`, word pushes subtract 2 from `SP`, and words are stored in little-endian byte order. Near calls save only `IP`; far calls save enough information to return across a segment boundary. In 8051, the stack is the opposite direction from 8085: `PUSH direct` increments `SP` first, then stores one byte in internal RAM, and `POP direct` reads first, then decrements `SP`. This is why the 8051 reset value `SP=07H` is dangerous if Bank 1 or low internal RAM variables are used without moving the stack.
+
+### Operand Location Before Mnemonic Memory
+
+The handwritten instruction pages become much clearer if the first question is "where is the operand?" In 8085, `M` always means the memory byte addressed by `HL`; `LDA/STA` carry a 16-bit direct address in the instruction; `LDAX/STAX` use only `BC` or `DE`; and `LHLD/SHLD` touch two consecutive memory bytes in low-byte then high-byte order.
+
+In 8086, an operand can be a register, immediate value, memory location through an effective address, stack word, or I/O port. The visible offset is not the full physical address; segment base plus offset is the real memory access. In 8051, the same-looking byte value can belong to different spaces depending on the instruction: internal data/SFR access through `MOV`, code-memory table reads through `MOVC`, and external data memory through `MOVX`. This is the cleanest way to avoid mixing 8085-style single-memory thinking with 8051's separate code/data/SFR/external spaces.
+
+### Flag Reasoning Across 8085, 8086, And 8051
+
+Do not revise flags as a single universal table. In 8085 arithmetic, compute the 8-bit result, then derive `S`, `Z`, `AC`, `P`, and `CY`; remember that register-pair increments/decrements and many data-transfer instructions do not update the same flag set. In 8086, signed and unsigned interpretation separate `OF` from `CF`: `CF` is about carry/borrow in unsigned arithmetic, while `OF` is about signed range. In 8051, `PSW` is not an 8085-style flag register because it also selects register banks through `RS1 RS0`, and there is no general zero flag used by `JZ/JNZ`; those branches test the accumulator value directly.
+
+### Timing, Bus Selection, And Hardware Ownership
+
+The timing pages should be solved by bus operation, not by memorizing final T-state totals. For 8085, split the instruction into machine cycles such as opcode fetch, memory read, memory write, I/O read, and I/O write; then count the T-states. For 8086, remember that multiplexed `AD0-AD15`, `A16-A19/S3-S6`, and `/BHE` exist because the processor is trying to fit address, data, and status functions onto limited pins while still supporting byte and word transfers.
+
+For I/O and DMA pages, ask who owns the bus at that moment. Programmed I/O keeps the CPU in control. Interrupt-driven I/O lets a device request service. DMA transfers data after bus control is granted to the DMA controller through the hold/acknowledge mechanism. The notes on 8255, 8253, 8257, 8259, 8272, 8275, and 8279 are therefore not random chip facts; each one removes a specific burden from CPU-only control.
+
+### Interrupt And Serial-Service Pattern
+
+Interrupt pages across the notebook follow the same service pattern: request, recognize, save enough return state, run the service routine, then return correctly. In 8085, fixed vectors and `SIM/RIM` make mask and pending-state questions important. In 8086, the interrupt type selects a four-byte vector in the IVT. In 8051, interrupt-related work is tied to SFR flags and hardware sources such as timers and serial events.
+
+For Day 15 serial pages, study `SBUF`, `SCON`, Timer 1, and `PCON.SMOD` as one pipeline. `TMOD=20H` chooses Timer 1 Mode 2 auto-reload, `TH1` sets the overflow interval, `TR1` starts the timing source, `SCON=50H` selects serial Mode 1 and enables reception, and `TI/RI` tell software when transmit or receive service is due. If a serial program fails, check that whole chain instead of only checking the `MOV SBUF,A` or `MOV A,SBUF` line.
+
 ## Web-Checked Primary Reference Spine
 
 These references were used only to verify and deepen the handwritten-note explanations above:
