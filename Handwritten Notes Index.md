@@ -188,6 +188,17 @@ The handwritten PDFs in `HandWrittenNotes/` have been rendered into page images 
 | [8051 serial/instruction page 021](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-021.jpg) | [Day 15](Day%2015.md) | `LCALL`, `ACALL`, `RET`, `RETI`, return-address stack storage, and interrupt return behavior. |
 | [8051 serial/instruction page 022](images/HandWrittenNotes/8051-serial-port-programming-instruction-set-mcqs/page-022.jpg) | [Day 15](Day%2015.md) | Final 8051 instruction MCQs: accumulator destinations, indirect operands, `CJNE`, BCD adjust, and flag effects. |
 
+## 8051 Full Forms Quick Index
+
+The detailed 8051 full-form tables are now kept in the day files so they stay close to the pages where the terms are used:
+
+| Where to revise | Terms covered |
+| --- | --- |
+| [Day 14: 8051 Full Forms And Meanings](Day%2014.md#8051-full-forms-and-meanings-architecture-pins-and-sfrs) | Architecture, memory, SFRs, flags, `PSW`, `SP`, `PC`, `DPTR`, ports, pins, external bus signals, timers, interrupts, and power/control registers. |
+| [Day 15: 8051 Full Forms And Meanings](Day%2015.md#8051-full-forms-and-meanings-serial-port-and-instructions) | Serial-port registers/bits, timer serial setup terms, `TXD/RXD`, `TI/RI`, `UART`, and 8051 instruction mnemonics such as `MOVC`, `MOVX`, `CJNE`, `DJNZ`, `AJMP`, `LCALL`, and `RETI`. |
+
+High-frequency memory hook: `SFR` means special hardware register, `PSW` means flags plus register-bank select, `DPTR` means 16-bit data pointer, `SBUF/SCON` are the serial data/control pair, and `TMOD/TCON` are the timer mode/control pair.
+
 ## Handwritten Depth Pass By Day
 
 This section is only for handwritten material. It does not add new video-screenshot topics. It deepens the existing notebook pages by explaining why each handwritten page group matters, how to reason through the examples, and what to check during revision. The details below were checked against Intel-authored manuals/datasheets and the MCS-51 user manual so the additions stay tied to the notebook content instead of becoming unrelated theory.

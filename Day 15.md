@@ -18,6 +18,76 @@ Use these checks while studying this day:
 11. For instruction-set slides, always identify the real destination, source address space, and flag effect before memorizing the mnemonic.
 ```
 
+## 8051 Full Forms And Meanings: Serial Port And Instructions
+
+Use this table while revising Day 15. The serial-port names are control/status bits, while the instruction names are operation mnemonics. Do not learn only the expansion; also learn what changes after the instruction or flag event.
+
+| Short form | Full form | Meaning in 8051 |
+| --- | --- | --- |
+| `SBUF` | Serial Buffer | Software-visible serial data register; write to transmit buffer, read from receive buffer. |
+| `SCON` | Serial Control register | Selects serial mode and holds serial control/status bits such as `REN`, `TI`, and `RI`. |
+| `PCON` | Power Control register | Contains `SMOD`, which doubles supported baud rate in relevant serial modes. |
+| `SMOD` | Serial Mode baud-rate control bit | `PCON.7`; when set, doubles serial baud rate for supported modes. |
+| `SM0`, `SM1` | Serial Mode select bits 0 and 1 | Select serial mode 0, 1, 2, or 3. |
+| `SM2` | Serial Mode 2 / multiprocessor control bit | Used mainly for multiprocessor communication filtering in 9-bit serial modes. |
+| `REN` | Receive Enable | Enables serial reception when set. |
+| `TB8` | Transmit Bit 8 | Ninth transmit bit used in serial modes 2 and 3. |
+| `RB8` | Receive Bit 8 | Ninth received bit stored in serial modes 2 and 3. |
+| `TI` | Transmit Interrupt flag | Set by hardware when transmit-side work completes; software must clear it after service. |
+| `RI` | Receive Interrupt flag | Set by hardware when a full character is received; software must read `SBUF` and clear it. |
+| `TXD` | Transmit Data | Serial output pin, alternate function of `P3.1`. |
+| `RXD` | Receive Data | Serial input pin, alternate function of `P3.0`. |
+| `UART` | Universal Asynchronous Receiver/Transmitter | Serial hardware style used for asynchronous start/data/stop-bit communication. |
+| `USART` | Universal Synchronous/Asynchronous Receiver/Transmitter | Serial device that can support both synchronous and asynchronous communication. |
+| `MCS-96` | Microcomputer System 96 family | Intel 16-bit embedded-controller family that includes 8096-style controllers. |
+| `ADC` | Analog-to-Digital Converter | Converts analog input voltage into a digital value for controller processing. |
+| `PWM` | Pulse Width Modulation | Output method that controls average power by changing pulse duty cycle. |
+| `CRC` | Cyclic Redundancy Check | Error-checking code used to detect accidental data corruption. |
+| `BCD` | Binary Coded Decimal | Decimal digits encoded in binary nibbles; used with `DA A`/decimal-adjust style questions. |
+| `C/T` | Counter/Timer select | `0` selects timer clocking; `1` selects external event counting. |
+| `GATE` | Gate control | Adds an external interrupt-pin condition to timer run control when enabled. |
+| `TR0`, `TR1` | Timer Run 0 and Timer Run 1 | Start/stop control bits for Timer 0 and Timer 1. |
+| `TF0`, `TF1` | Timer Flag 0 and Timer Flag 1 | Overflow flags set when Timer 0 or Timer 1 rolls over. |
+| `IE0`, `IE1` | External Interrupt Edge flags 0 and 1 | Status flags for external interrupt 0 and 1 events. |
+| `IT0`, `IT1` | Interrupt Type control bits 0 and 1 | Select level-triggered or edge-triggered behavior for external interrupts. |
+| `MOV` | Move | Copies data from source to destination inside allowed 8051 address spaces. |
+| `MOVC` | Move Code byte | Reads a byte from code memory using `A+DPTR` or `A+PC` into `A`. |
+| `MOVX` | Move External data | Transfers data between `A` and external data memory through `DPTR` or `R0/R1`. |
+| `XCH` | Exchange | Swaps `A` with an allowed byte operand. |
+| `SWAP` | Swap nibbles | Exchanges high and low nibbles inside `A`. |
+| `PUSH` | Push onto stack | Pre-increments `SP`, then stores a byte at the new stack location. |
+| `POP` | Pop from stack | Reads byte from current stack location, then decrements `SP`. |
+| `ADD` | Add | Adds operand to `A`; result stays in `A`. |
+| `ADDC` | Add with Carry | Adds operand plus carry flag to `A`. |
+| `SUBB` | Subtract with Borrow | Subtracts operand and carry/borrow from `A`. |
+| `MUL` | Multiply | `MUL AB` multiplies `A` by `B`; low byte goes to `A`, high byte to `B`. |
+| `DIV` | Divide | `DIV AB` divides `A` by `B`; quotient goes to `A`, remainder to `B`. |
+| `INC`, `DEC` | Increment, Decrement | Add or subtract one from the operand. |
+| `ANL` | AND Logical | Bitwise AND operation. |
+| `ORL` | OR Logical | Bitwise OR operation. |
+| `XRL` | Exclusive-OR Logical | Bitwise XOR operation. |
+| `CLR` | Clear | Clears a bit or accumulator, depending on operand. |
+| `CPL` | Complement | Inverts a bit, carry, or accumulator depending on operand. |
+| `SETB` | Set Bit | Sets a bit-addressable bit to `1`. |
+| `RL`, `RR` | Rotate Left, Rotate Right | Rotates accumulator bits without carry. |
+| `RLC`, `RRC` | Rotate Left through Carry, Rotate Right through Carry | Rotates accumulator bits through `CY`. |
+| `DA A` | Decimal Adjust Accumulator | Adjusts `A` after BCD addition. |
+| `JZ`, `JNZ` | Jump if Zero, Jump if Not Zero | Test whether accumulator `A` is zero or nonzero. |
+| `JC`, `JNC` | Jump if Carry, Jump if No Carry | Test the carry flag. |
+| `JB`, `JNB`, `JBC` | Jump if Bit set, Jump if Bit Not set, Jump if Bit set and Clear | Test bit-addressable locations; `JBC` also clears the bit when branch condition is true. |
+| `CJNE` | Compare and Jump if Not Equal | Compares operands, jumps if unequal, and sets carry for unsigned less-than. |
+| `DJNZ` | Decrement and Jump if Not Zero | Decrements first, then jumps if result is not zero. |
+| `SJMP` | Short Jump | Relative jump with short range. |
+| `AJMP` | Absolute Jump | 11-bit target jump within the same 2 KB code block. |
+| `LJMP` | Long Jump | Full 16-bit code-space jump. |
+| `ACALL` | Absolute Call | Same-2 KB-block call form. |
+| `LCALL` | Long Call | Full 16-bit code-space call form. |
+| `RET` | Return | Returns from a normal subroutine by popping the saved program counter. |
+| `RETI` | Return from Interrupt | Returns from an interrupt service routine and signals interrupt completion. |
+| `NOP` | No Operation | Consumes instruction time without changing programmer-visible state. |
+
+Quick serial rule: `SBUF` moves the byte, `SCON` controls the serial mode and flags, `Timer 1 + TH1` creates common baud timing, `PCON.SMOD` doubles supported baud, and `TI/RI` tell software when to service transmit/receive.
+
 ## Handwritten Notes Linked To Day 15
 
 These handwritten pages continue directly from the Day 14 8051 notebook pages. The first pages finish timer/counter control because Timer 1 is the normal source for many 8051 serial baud-rate examples. The middle pages match the Day 15 serial-port screenshots: `SBUF`, `SCON`, serial modes, `SMOD`, baud-rate generation, and transmit/receive polling. The last pages collect MCQs and 8051 instruction-set practice, so they belong with the Day 15 screenshot set instead of being left as a separate PDF.

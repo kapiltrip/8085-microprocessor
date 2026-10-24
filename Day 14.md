@@ -17,6 +17,56 @@ Use these checks while studying this day:
 10. For addressing-mode questions, distinguish where the operand is located from how the instruction names it.
 ```
 
+## 8051 Full Forms And Meanings: Architecture, Pins, And SFRs
+
+Use this table when a short form appears in the 8051 notes. The full form tells what the letters stand for; the meaning tells what it does in an actual 8051 program or circuit.
+
+| Short form | Full form | Meaning in 8051 |
+| --- | --- | --- |
+| `CPU` | Central Processing Unit | The execution core that fetches, decodes, and executes instructions. |
+| `ALU` | Arithmetic Logic Unit | The CPU block that performs arithmetic and logical operations. |
+| `ROM` | Read-Only Memory | Nonvolatile program/code storage in the classic 8051 model. |
+| `RAM` | Random Access Memory | Volatile data storage used for register banks, bit RAM, variables, and stack. |
+| `I/O` | Input/Output | Port-based communication between the 8051 and external devices. |
+| `MCU` or `uC` | Microcontroller Unit | A controller-on-chip that integrates CPU, memory, I/O, timers, and control peripherals. |
+| `MCS-51` | Microcomputer System 51 family | Intel family name for the 8051-style 8-bit microcontroller family. |
+| `SFR` | Special Function Register | Direct-addressed control/status register connected to ports, timers, serial hardware, interrupts, and CPU state. |
+| `ACC` or `A` | Accumulator | Main 8-bit working register used by arithmetic, logic, many data-transfer, and rotate instructions. |
+| `B` | B register | 8-bit register used mainly with `MUL AB` and `DIV AB`; also directly addressable as an SFR. |
+| `PSW` | Program Status Word | Flag and control register containing `CY`, `AC`, `F0`, `RS1`, `RS0`, `OV`, and `P`. |
+| `CY` | Carry flag | Records carry/borrow and is also used by rotate-through-carry and bit operations. |
+| `AC` | Auxiliary Carry flag | Records carry from bit 3 to bit 4; important for BCD adjustment. |
+| `F0` | User Flag 0 | General-purpose software flag inside `PSW`. |
+| `RS1`, `RS0` | Register Select 1 and Register Select 0 | Select active register bank: Bank 0, 1, 2, or 3. |
+| `OV` | Overflow flag | Indicates signed arithmetic overflow, especially after add/subtract and multiply/divide cases. |
+| `P` | Parity flag | Reflects accumulator parity; set according to the number of `1` bits in `A`. |
+| `SP` | Stack Pointer | 8-bit pointer to the top of the internal RAM stack; 8051 stack grows upward after pre-increment. |
+| `PC` | Program Counter | 16-bit code address register that points to the next instruction to fetch. |
+| `DPTR` | Data Pointer | 16-bit pointer used for external data access and code-memory table lookup. |
+| `DPH` | Data Pointer High byte | Upper 8 bits of `DPTR`. |
+| `DPL` | Data Pointer Low byte | Lower 8 bits of `DPTR`. |
+| `P0`, `P1`, `P2`, `P3` | Port 0, Port 1, Port 2, Port 3 | Four 8-bit I/O ports; some pins also serve external bus, interrupt, timer, and serial functions. |
+| `ALE` | Address Latch Enable | Pulse used to latch the low address byte from Port 0 during external memory cycles. |
+| `PSEN` | Program Store Enable | Active-low signal used when reading external program/code memory. |
+| `EA` | External Access | Code-memory source control: low forces external program memory; high permits internal code memory on classic parts. |
+| `RST` | Reset | Active-high reset input that starts the 8051 from a known state. |
+| `/RD` | Read | Active-low external data-memory read control signal on Port 3 alternate function. |
+| `/WR` | Write | Active-low external data-memory write control signal on Port 3 alternate function. |
+| `INT0`, `INT1` | External Interrupt 0 and External Interrupt 1 | External interrupt input pins on Port 3 alternate functions. |
+| `T0`, `T1` | Timer/Counter 0 input and Timer/Counter 1 input | External event-count inputs for Timer 0 and Timer 1 when used as counters. |
+| `XTAL1`, `XTAL2` | Crystal oscillator pins 1 and 2 | Oscillator input/output pins used with the clock crystal or external clock source. |
+| `VCC` | Positive supply voltage | Power-supply pin for the 8051. |
+| `VSS` | Ground supply reference | Ground/reference pin for the 8051. |
+| `TMOD` | Timer Mode register | Selects timer/counter operation and timer modes. |
+| `TCON` | Timer Control register | Holds timer run bits, timer overflow flags, and external interrupt control/status bits. |
+| `TH0`, `TL0` | Timer High 0 and Timer Low 0 | High and low count bytes for Timer 0. |
+| `TH1`, `TL1` | Timer High 1 and Timer Low 1 | High and low count bytes for Timer 1. |
+| `IE` | Interrupt Enable register | Enables or disables interrupt sources globally and individually. |
+| `IP` | Interrupt Priority register | Assigns interrupt priority levels. |
+| `PCON` | Power Control register | Contains power-control bits and `SMOD` for serial baud-rate doubling. |
+
+Quick memory rule: `SFR` means "control/status register," `PSW` means "flags plus bank select," `DPTR` means "16-bit pointer," and `ALE/PSEN/EA` are the external program-memory support signals.
+
 ## Handwritten Notes Linked To Day 14
 
 These eight handwritten pages all belong to Day 14 because they are 8051-specific: they start from the microcontroller system boundary, then move through 8051 features, PSW/register-bank selection, stack and DPTR behavior, port latches, serial buffer, timer/control registers, program-memory control pins, internal memory layout, bit-addressable RAM, SFRs, external-memory expansion, addressing modes, and timer/counter control.
